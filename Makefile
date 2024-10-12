@@ -26,6 +26,10 @@ clean-spm-cli-tools: ## clean Swift Package Manager cli tools cache
 install-xcode-template: ## install preconfigured xcode templates
 	sh scripts/xcode/install-xcode-template.sh
 
+.PHONY: create swift package
+create-swift-package: ## install preconfigured xcode templates
+	sh scripts/spm/create-swift-package.sh
+
 # Node
 .PHONY: setup-node
 setup-node: ## setup node version management environment
