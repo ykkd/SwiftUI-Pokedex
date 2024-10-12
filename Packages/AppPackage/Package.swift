@@ -5,8 +5,8 @@ import PackageDescription
 
 // MARK: - Pacakge
 let package = Package(
-    name: "Presentation",
-    platforms: [.iOS(.v17)],
+    name: "AppPackage",
+    platforms: [.iOS(.v17), .macOS(.v14)],
     products: Products.allValues,
     dependencies: Dependencies.allValues,
     targets: Targets.allValues
@@ -78,16 +78,16 @@ enum Targets: String, CaseIterable, PackageAtom {
     var targetType: TargetType {
         switch self {
         case .rootScreen:
-            .production
+            .screen
         }
     }
 
     var pathName: String {
         switch targetType {
-        case .production:
+        case .screen:
             "Screens/\(name)"
         case .test:
-            "Tests/\(name)"
+            "\(name)"
         }
     }
 
@@ -106,7 +106,7 @@ enum Targets: String, CaseIterable, PackageAtom {
 
     var value: Target {
         switch targetType {
-        case .production:
+        case .screen:
             .target(
                 name: name,
                 dependencies: dependencies,
@@ -167,7 +167,7 @@ extension String {
 extension Targets {
 
     enum TargetType {
-        case production
+        case screen
         case test
 
         var isTestTarget: Bool {

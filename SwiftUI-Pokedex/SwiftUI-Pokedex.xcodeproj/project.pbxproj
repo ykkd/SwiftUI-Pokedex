@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F00493912CBAAD9B009E1F62 /* RootScreen in Frameworks */ = {isa = PBXBuildFile; productRef = F00493902CBAAD9B009E1F62 /* RootScreen */; };
 		F0D5CC712CBA7A510018F437 /* base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = F0D5CC6F2CBA7A510018F437 /* base.xcconfig */; };
+		F0F338252CBAF41F00C53E97 /* RootScreen in Frameworks */ = {isa = PBXBuildFile; productRef = F0F338242CBAF41F00C53E97 /* RootScreen */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,7 +29,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F00492EE2CBA986D009E1F62 /* Presentation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Presentation; path = ../Packages/Presentation; sourceTree = SOURCE_ROOT; };
 		F0D5CC1A2CBA67790018F437 /* SwiftUI-Pokedex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SwiftUI-Pokedex.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0D5CC2B2CBA677B0018F437 /* SwiftUI-PokedexTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftUI-PokedexTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0D5CC352CBA677B0018F437 /* SwiftUI-PokedexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftUI-PokedexUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -41,6 +40,13 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+			);
+			target = F0D5CC192CBA67790018F437 /* SwiftUI-Pokedex */;
+		};
+		F0F3381E2CBAF3D000C53E97 /* Exceptions for "Packages" folder in "SwiftUI-Pokedex" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppPackage,
 			);
 			target = F0D5CC192CBA67790018F437 /* SwiftUI-Pokedex */;
 		};
@@ -65,6 +71,15 @@
 			path = "SwiftUI-PokedexUITests";
 			sourceTree = "<group>";
 		};
+		F0F3381D2CBAF3D000C53E97 /* Packages */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F0F3381E2CBAF3D000C53E97 /* Exceptions for "Packages" folder in "SwiftUI-Pokedex" target */,
+			);
+			name = Packages;
+			path = ../Packages;
+			sourceTree = SOURCE_ROOT;
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F00493912CBAAD9B009E1F62 /* RootScreen in Frameworks */,
+				F0F338252CBAF41F00C53E97 /* RootScreen in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,7 +118,7 @@
 		F0D5CC112CBA67790018F437 = {
 			isa = PBXGroup;
 			children = (
-				F00492EE2CBA986D009E1F62 /* Presentation */,
+				F0F3381D2CBAF3D000C53E97 /* Packages */,
 				F0D5CC702CBA7A510018F437 /* xcconfig */,
 				F0D5CC1C2CBA67790018F437 /* SwiftUI-Pokedex */,
 				F0D5CC2E2CBA677B0018F437 /* SwiftUI-PokedexTests */,
@@ -148,10 +163,11 @@
 			);
 			fileSystemSynchronizedGroups = (
 				F0D5CC1C2CBA67790018F437 /* SwiftUI-Pokedex */,
+				F0F3381D2CBAF3D000C53E97 /* Packages */,
 			);
 			name = "SwiftUI-Pokedex";
 			packageProductDependencies = (
-				F00493902CBAAD9B009E1F62 /* RootScreen */,
+				F0F338242CBAF41F00C53E97 /* RootScreen */,
 			);
 			productName = "SwiftUI-Pokedex";
 			productReference = F0D5CC1A2CBA67790018F437 /* SwiftUI-Pokedex.app */;
@@ -236,6 +252,7 @@
 			mainGroup = F0D5CC112CBA67790018F437;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				F0F3381F2CBAF40200C53E97 /* XCLocalSwiftPackageReference "../Packages/AppPackage" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F0D5CC1B2CBA67790018F437 /* Products */;
@@ -645,9 +662,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		F0F3381F2CBAF40200C53E97 /* XCLocalSwiftPackageReference "../Packages/AppPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/AppPackage;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
-		F00493902CBAAD9B009E1F62 /* RootScreen */ = {
+		F0F338242CBAF41F00C53E97 /* RootScreen */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = F0F3381F2CBAF40200C53E97 /* XCLocalSwiftPackageReference "../Packages/AppPackage" */;
 			productName = RootScreen;
 		};
 /* End XCSwiftPackageProductDependency section */
