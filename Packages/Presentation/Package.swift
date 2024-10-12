@@ -24,7 +24,7 @@ let swiftSettings: [PackageDescription.SwiftSetting] = [
 
 // MARK: - Products
 enum Products: String, CaseIterable, PackageAtom {
-    case splashScreen
+    case rootScreen
 
     var targets: [String] {
         Targets.targets(for: self)
@@ -69,7 +69,7 @@ enum Dependencies: String, CaseIterable, PackageAtom {
 
 // MARK: - Targets
 enum Targets: String, CaseIterable, PackageAtom {
-    case splashScreen
+    case rootScreen
 
     static var commonDependencies: [Target.Dependency] {
         []
@@ -77,7 +77,7 @@ enum Targets: String, CaseIterable, PackageAtom {
 
     var targetType: TargetType {
         switch self {
-        case .splashScreen:
+        case .rootScreen:
             .production
         }
     }
@@ -93,7 +93,7 @@ enum Targets: String, CaseIterable, PackageAtom {
 
     var dependencies: [Target.Dependency] {
         switch self {
-        case .splashScreen:
+        case .rootScreen:
             Self.commonDependencies
         }
     }
