@@ -10,6 +10,7 @@ help: ## Show this usage
 .PHONY: bootstrap
 bootstrap: ## bootsrap
 	echo "${TEXT_RED}run 'make setup-precommit-tool' before committing.${TEXT_NO_COLOR}"
+	make copy-lint-rule
 	make install-xcode-template
 	make build-spm-cli-tools
 	${SPM_CLI_COMMON_PATH}/mint bootstrap
@@ -29,6 +30,11 @@ install-xcode-template: ## install preconfigured xcode templates
 .PHONY: create swift package
 create-swift-package: ## install preconfigured xcode templates
 	sh scripts/spm/create-swift-package.sh
+
+# Lint
+.PHONY: copy-lint-rule
+copy-lint-rule: ## ymlファイルを条件を満たすpathにコピーする
+	sh scripts/lint-setup/copy_lint_rule.sh .swiftlint.yml Packages
 
 # Node
 .PHONY: setup-node

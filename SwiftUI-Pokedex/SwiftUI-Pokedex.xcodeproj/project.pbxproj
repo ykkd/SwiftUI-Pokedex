@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F00492ED2CBA9856009E1F62 /* SplashScreen in Frameworks */ = {isa = PBXBuildFile; productRef = F00492EC2CBA9856009E1F62 /* SplashScreen */; };
 		F0D5CC712CBA7A510018F437 /* base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = F0D5CC6F2CBA7A510018F437 /* base.xcconfig */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F00492EE2CBA986D009E1F62 /* Presentation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Presentation; path = ../Packages/Presentation; sourceTree = SOURCE_ROOT; };
 		F0D5CC1A2CBA67790018F437 /* SwiftUI-Pokedex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SwiftUI-Pokedex.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0D5CC2B2CBA677B0018F437 /* SwiftUI-PokedexTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftUI-PokedexTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0D5CC352CBA677B0018F437 /* SwiftUI-PokedexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftUI-PokedexUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -57,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F00492ED2CBA9856009E1F62 /* SplashScreen in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,13 +80,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F00492EB2CBA9856009E1F62 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F0D5CC112CBA67790018F437 = {
 			isa = PBXGroup;
 			children = (
+				F00492EE2CBA986D009E1F62 /* Presentation */,
 				F0D5CC702CBA7A510018F437 /* xcconfig */,
 				F0D5CC1C2CBA67790018F437 /* SwiftUI-Pokedex */,
 				F0D5CC2E2CBA677B0018F437 /* SwiftUI-PokedexTests */,
 				F0D5CC382CBA677B0018F437 /* SwiftUI-PokedexUITests */,
+				F00492EB2CBA9856009E1F62 /* Frameworks */,
 				F0D5CC1B2CBA67790018F437 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -126,6 +138,7 @@
 			);
 			name = "SwiftUI-Pokedex";
 			packageProductDependencies = (
+				F00492EC2CBA9856009E1F62 /* SplashScreen */,
 			);
 			productName = "SwiftUI-Pokedex";
 			productReference = F0D5CC1A2CBA67790018F437 /* SwiftUI-Pokedex.app */;
@@ -209,6 +222,9 @@
 			);
 			mainGroup = F0D5CC112CBA67790018F437;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F00492D82CBA963F009E1F62 /* XCLocalSwiftPackageReference "../Packages/Presentation" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F0D5CC1B2CBA67790018F437 /* Products */;
 			projectDirPath = "";
@@ -612,6 +628,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		F00492D82CBA963F009E1F62 /* XCLocalSwiftPackageReference "../Packages/Presentation" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/Presentation;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F00492EC2CBA9856009E1F62 /* SplashScreen */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F00492D82CBA963F009E1F62 /* XCLocalSwiftPackageReference "../Packages/Presentation" */;
+			productName = SplashScreen;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F0D5CC122CBA67790018F437 /* Project object */;
 }
