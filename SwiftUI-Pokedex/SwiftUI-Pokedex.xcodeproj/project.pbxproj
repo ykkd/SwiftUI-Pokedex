@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F07F53BF2CBAF8DE005455D2 /* DependencyContainer in Frameworks */ = {isa = PBXBuildFile; productRef = F07F53BE2CBAF8DE005455D2 /* DependencyContainer */; };
+		F07F53C22CBAF92C005455D2 /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = F07F53C12CBAF92C005455D2 /* Dependencies */; };
 		F0D5CC712CBA7A510018F437 /* base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = F0D5CC6F2CBA7A510018F437 /* base.xcconfig */; };
 		F0F338252CBAF41F00C53E97 /* RootScreen in Frameworks */ = {isa = PBXBuildFile; productRef = F0F338242CBAF41F00C53E97 /* RootScreen */; };
 /* End PBXBuildFile section */
@@ -87,7 +89,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F07F53C22CBAF92C005455D2 /* Dependencies in Frameworks */,
 				F0F338252CBAF41F00C53E97 /* RootScreen in Frameworks */,
+				F07F53BF2CBAF8DE005455D2 /* DependencyContainer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,8 +122,8 @@
 		F0D5CC112CBA67790018F437 = {
 			isa = PBXGroup;
 			children = (
-				F0F3381D2CBAF3D000C53E97 /* Packages */,
 				F0D5CC702CBA7A510018F437 /* xcconfig */,
+				F0F3381D2CBAF3D000C53E97 /* Packages */,
 				F0D5CC1C2CBA67790018F437 /* SwiftUI-Pokedex */,
 				F0D5CC2E2CBA677B0018F437 /* SwiftUI-PokedexTests */,
 				F0D5CC382CBA677B0018F437 /* SwiftUI-PokedexUITests */,
@@ -168,6 +172,8 @@
 			name = "SwiftUI-Pokedex";
 			packageProductDependencies = (
 				F0F338242CBAF41F00C53E97 /* RootScreen */,
+				F07F53BE2CBAF8DE005455D2 /* DependencyContainer */,
+				F07F53C12CBAF92C005455D2 /* Dependencies */,
 			);
 			productName = "SwiftUI-Pokedex";
 			productReference = F0D5CC1A2CBA67790018F437 /* SwiftUI-Pokedex.app */;
@@ -253,6 +259,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				F0F3381F2CBAF40200C53E97 /* XCLocalSwiftPackageReference "../Packages/AppPackage" */,
+				F07F53C02CBAF92C005455D2 /* XCRemoteSwiftPackageReference "swift-dependencies" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F0D5CC1B2CBA67790018F437 /* Products */;
@@ -669,7 +676,28 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		F07F53C02CBAF92C005455D2 /* XCRemoteSwiftPackageReference "swift-dependencies" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-dependencies.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		F07F53BE2CBAF8DE005455D2 /* DependencyContainer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F0F3381F2CBAF40200C53E97 /* XCLocalSwiftPackageReference "../Packages/AppPackage" */;
+			productName = DependencyContainer;
+		};
+		F07F53C12CBAF92C005455D2 /* Dependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F07F53C02CBAF92C005455D2 /* XCRemoteSwiftPackageReference "swift-dependencies" */;
+			productName = Dependencies;
+		};
 		F0F338242CBAF41F00C53E97 /* RootScreen */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F0F3381F2CBAF40200C53E97 /* XCLocalSwiftPackageReference "../Packages/AppPackage" */;
