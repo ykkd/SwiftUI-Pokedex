@@ -1,0 +1,46 @@
+# rule definitions
+## https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md
+
+# format options
+--swiftversion 6.0
+--self remove # Explicit self: "insert", "remove" (default) or "init-only" [R-TOON固有]
+--typeblanklines preserve # スコープの先頭の空白行は現状を保つ
+--lineaftermarks false # "MARK:"の後に空白行を挿入しない
+--allman false # インデントスタイルはK&Rを使用
+--elseposition same-line # Placement of else/catch: "same-line" (default) or "next-line"
+--guardelse same-line # Guard else: "same-line", "next-line" or "auto" (default)
+--emptybraces no-space # Empty braces: "no-space" (default), "spaced" or "linebreak"
+--extensionacl on-declarations # アクセスコントロールはextensionではなく宣言に対して記述する
+--importgrouping testable-first # "testable-first/last", "alpha" (default) or "length"
+--stripunusedargs closure-only # "closure-only", "unnamed-only" or "always" (default)
+--wrapparameters before-first # Wrap func params: "before-first", "after-first", "preserve"
+--wrapcollections before-first # Wrap array/dict: "before-first", "after-first", "preserve"
+--wrapconditions after-first # Wrap conditions: "before-first", "after-first", "preserve"
+--funcattributes prev-line # Function @attributes: "preserve", "prev-line", or "same-line"
+--typeattributes prev-line # Type @attributes: "preserve", "prev-line", or "same-line"
+--varattributes same-line # @IBOutletなどは同じ行に記述するようにsame-line
+--indent 4 # [R-TOON固有]
+--ifdef no-indent # [R-TOON固有]
+
+# file options
+--exclude Pods
+--exclude Carthage
+
+# enable opt-in rules
+--enable blankLinesBetweenImports # Remove blank lines between import statements.
+--enable blockComments # Changes block comments to single line comments.
+--enable markTypes # Adds a mark comment before top-level types and extensions.
+--enable wrapConditionalBodies # Wrap the bodies of inline conditional statements onto a new line.
+--enable wrapEnumCases # Writes one enum case per line.
+--enable wrapSwitchCases # Writes one switch case per line.
+--enable redundantReturn # Remove unneeded return keyword.
+
+# disable rules
+--disable wrapArguments
+
+## Appleは、view hierarchyを参照するoutlet以外strongを推奨しているが、wwdc2015以降あまり言及されてない
+## strongの方がパフォーマンスは良くなるかもしれないが、全部weakの方が循環参照のリスクは少なそうなので、一旦disable
+--disable strongOutlets # As per Apple's recommendation (https://developer.apple.com/videos/play/wwdc2015/407/ @ 32:30).
+
+## 複数行のステートメントのopening brace「{」の前に改行を強制しない
+--disable wrapMultilineStatementBraces

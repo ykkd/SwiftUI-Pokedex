@@ -1,0 +1,10 @@
+# gitの差分をlintする場合のルール
+
+# ベースのルール
+parent_config: .swiftlint.yml
+
+# 以下、追加ルール
+
+# 無効にするルール。
+disabled_rules:
+- todo #TODOをつけてコミット可能にする

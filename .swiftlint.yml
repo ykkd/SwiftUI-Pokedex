@@ -1,0 +1,194 @@
+# Rules
+# https://realm.github.io/SwiftLint/rule-directory.html
+
+# 無効にするルール。
+disabled_rules:
+# class-onlyのプロトコルにはclassではなくAnyObjectを指定させたいので無効
+- class_delegate_protocol
+#- colon
+#- comma
+# 配列にappendしてforeachでremoveするときも変数に取ってってwarningになるので無効
+- discarded_notification_center_observer
+# force_cast は場合によっては使用するため
+- force_cast
+#- todo
+# コードの記載のない改行を許可したい
+- trailing_whitespace
+- trailing_comma
+
+# デフォルト無効のルールのうち、有効にするものf。
+opt_in_rules:
+- anonymous_argument_in_multiline_closure
+# class-onlyのプロトコルにはclassではなくAnyObjectを指定
+- anyobject_protocol
+- array_init
+- attributes
+- balanced_xctest_lifecycle
+- capture_variable
+- closure_body_length
+# closureのインデントがXcodeのcontrol+iと違うので排除
+#- closure_end_indentation
+- closure_spacing
+- collection_alignment
+- conditional_returns_on_newline
+- contains_over_filter_count
+- contains_over_filter_is_empty
+- contains_over_first_not_nil
+- contains_over_range_nil_comparison
+- comma_inheritance
+- convenience_type
+- discourated_none_name
+- discouraged_object_literal
+- discourated_optional_collection
+- empty_collection_literal
+# isEmptyもってない時も言ってくるので排除
+#- empty_count
+- empty_string
+- expiring_todo
+- enum_case_associated_values_count
+- explicit_init
+#- explicit_type_interface
+- extension_access_modifier
+- fallthrough
+- fatal_error_message
+# ファイルヘッダを修正してもエラー解除されないため
+#- file_header
+- file_name:
+  excluded:
+    - "*+.swift"
+- file_name_no_space
+- file_types_order
+- first_where
+- flatmap_over_map_reduce
+# 場合によっては特に問題ないので
+#- force_unwrapping
+- function_default_parameter_at_end
+- ibinspectable_in_extension
+- identical_operands
+# Swift 5.7以降で有効にしたい
+#- if_let_shadowing
+- implicit_return
+#- implicitly_unwrapped_optional
+- indentation_width
+- joined_default_parameter
+- last_where
+- legacy_multiple
+- legacy_objc_type
+- let_var_whitespace
+- literal_expression_end_indentation
+- lower_acl_than_parent
+- missing_docs
+- modifier_order
+- multiline_arguments
+- multiline_arguments_brackets
+- multiline_function_chains
+- multiline_literal_brackets
+- multiline_parameters
+- multiline_parameters_brackets
+- nimble_operator
+- nslocalizedstring_key
+- nslocalizedstring_require_bundle
+- number_separator
+# リテラル使いにくいので
+#- object_literal
+- operator_usage_whitespace
+- optional_enum_case_matching
+- overridden_super_call
+- override_in_extension
+- pattern_matching_keywords
+- prefer_self_in_static_references
+- prefer_self_type_over_type_of_self
+- prefer_zero_over_explicit_init
+- private_action
+- private_outlet
+# CombineのSubjectはprivateにすべき
+- private_subject
+- prohibited_super_call
+- reduce_into
+- redundant_nil_coalescing
+- redundant_type_annotation
+- required_enum_case
+- return_value_from_void_function
+- self_binding
+- single_test_class
+- sorted_first_last
+# SwiftFormatを導入すれば、そちらで解決できる
+#- sorted_imports
+- static_operator
+- strict_fileprivate
+- switch_case_on_newline
+- test_case_accessibility
+- toggle_bool
+- trailing_closure
+- type_contents_order
+- typesafe_array_init
+- unavailable_function
+- unneeded_pa​​rentheses_in_closure_argument
+- unowned_variable_capture
+- untyped_error_in_catch
+- unused_declaration
+- unused_import
+- vertical_parameter_alignment_on_call
+- vertical_whitespace_closing_braces
+- weak_delegate
+- xct_specific_matcher
+# 定数リテラルは、比較演算子の右側に配置する（foo == 100はok、100 == fooはwarning）
+- yoda_condition
+
+excluded:
+- Tools/
+
+included:
+
+# configuration
+
+# ファイルの長さ
+# warning, errorはデフォルト設定にするけど、コメントのみの行は計算しない
+file_length:
+  warning: 400
+  error: 1000
+  ignore_comment_only_lines: true
+
+# 関数の長さ
+# warning, errorはデフォルト設定
+# 40超えるならfunctionの分割を検討すべき
+function_body_length:
+  warning: 40
+  error: 100
+
+# 1行あたりの文字数制限
+# UseCaseは命名が長くなりがちでProviderの呼び出し箇所が長くなるのでwarningを150行に変更
+line_length:
+  warning: 150
+  error: 200
+  ignores_comments: true
+
+# 型の長さ
+# warning, errorはデフォルト設定
+type_body_length:
+  warning: 200
+  error: 350
+
+# 40じゃ短いので80, tmp的な使い方もするので1
+identifier_name:
+  max_length: 80
+  min_length: 1
+
+# 循環的複雑度 enumのcaseは複雑度の計算から除外する
+cyclomatic_complexity:
+  ignores_case_statements: true
+
+# classの中でenumとかを入れ子で書くとwarningになるのではずす。一旦3まで
+nesting:
+  type_level: 3
+
+# 40じゃ短いので80, prefix的な使い方もするので2(例：MP)
+type_name:
+  max_length: 80
+  min_length: 2
+  allowed_symbols: ["_"]
+
+# Tapleは3つまで
+large_tuple: 3
+
+function_parameter_count: 7
