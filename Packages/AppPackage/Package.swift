@@ -24,6 +24,7 @@ let swiftSettings: [PackageDescription.SwiftSetting] = [
 
 // MARK: - Products
 enum Products: String, CaseIterable, PackageAtom {
+    case dependencyContainer
     case rootScreen
 
     var targets: [String] {
@@ -41,6 +42,7 @@ enum Products: String, CaseIterable, PackageAtom {
 // MARK: - Dependencies
 enum Dependencies: String, CaseIterable, PackageAtom {
     case swiftLint
+    case swiftDependencies = "swift-dependencies"
 
     var value: Package.Dependency {
         switch self {
@@ -48,6 +50,10 @@ enum Dependencies: String, CaseIterable, PackageAtom {
             .package(
                 url: "https://github.com/realm/SwiftLint.git",
                 from: "0.57.0"
+            )
+        case .swiftDependencies:
+            .package(
+                url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.4.1")
             )
         }
     }
@@ -69,6 +75,7 @@ enum Dependencies: String, CaseIterable, PackageAtom {
 
 // MARK: - Targets
 enum Targets: String, CaseIterable, PackageAtom {
+    case dependencyContainer
     case rootScreen
 
     static var commonDependencies: [Target.Dependency] {
@@ -77,24 +84,29 @@ enum Targets: String, CaseIterable, PackageAtom {
 
     var targetType: TargetType {
         switch self {
-        case .rootScreen:
-            .screen
+        case .dependencyContainer,
+             .rootScreen:
+            .production
         }
     }
 
     var pathName: String {
-        switch targetType {
-        case .screen:
-            "Screens/\(name)"
-        case .test:
+        switch self {
+        case .dependencyContainer:
             "\(name)"
+        case .rootScreen:
+            "Screens/\(name)"
         }
     }
 
     var dependencies: [Target.Dependency] {
         switch self {
+        case .dependencyContainer:
+            Self.commonDependencies + [
+                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
+            ]
         case .rootScreen:
-            Self.commonDependencies
+            Self.commonDependencies + []
         }
     }
 
@@ -106,7 +118,7 @@ enum Targets: String, CaseIterable, PackageAtom {
 
     var value: Target {
         switch targetType {
-        case .screen:
+        case .production:
             .target(
                 name: name,
                 dependencies: dependencies,
@@ -167,7 +179,7 @@ extension String {
 extension Targets {
 
     enum TargetType {
-        case screen
+        case production
         case test
 
         var isTestTarget: Bool {
