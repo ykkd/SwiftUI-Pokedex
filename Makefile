@@ -1,11 +1,14 @@
 SPM_CLI_COMMON_PATH := Tools/Common/.build/release
-
 TEXT_RED=\033[0;31m
 TEXT_NO_COLOR=\033[0m
 
 .PHONY: help
 help: ## Show this usage
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
+.PHONY: open
+open: ## Open xcworkspace
+	xed "SwiftUI-Pokedex"
 
 .PHONY: bootstrap
 bootstrap: ## bootsrap
