@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F0D5CC4C2CBA70750018F437 /* base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = F0D5CC4B2CBA70750018F437 /* base.xcconfig */; };
+		F0D5CC712CBA7A510018F437 /* base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = F0D5CC6F2CBA7A510018F437 /* base.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,7 +31,7 @@
 		F0D5CC1A2CBA67790018F437 /* SwiftUI-Pokedex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SwiftUI-Pokedex.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0D5CC2B2CBA677B0018F437 /* SwiftUI-PokedexTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftUI-PokedexTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0D5CC352CBA677B0018F437 /* SwiftUI-PokedexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftUI-PokedexUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F0D5CC4B2CBA70750018F437 /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
+		F0D5CC6F2CBA7A510018F437 /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -80,11 +80,11 @@
 		F0D5CC112CBA67790018F437 = {
 			isa = PBXGroup;
 			children = (
+				F0D5CC702CBA7A510018F437 /* xcconfig */,
 				F0D5CC1C2CBA67790018F437 /* SwiftUI-Pokedex */,
 				F0D5CC2E2CBA677B0018F437 /* SwiftUI-PokedexTests */,
 				F0D5CC382CBA677B0018F437 /* SwiftUI-PokedexUITests */,
 				F0D5CC1B2CBA67790018F437 /* Products */,
-				F0D5CC4B2CBA70750018F437 /* base.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,6 +96,14 @@
 				F0D5CC352CBA677B0018F437 /* SwiftUI-PokedexUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F0D5CC702CBA7A510018F437 /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				F0D5CC6F2CBA7A510018F437 /* base.xcconfig */,
+			);
+			path = xcconfig;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,7 +226,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0D5CC4C2CBA70750018F437 /* base.xcconfig in Resources */,
+				F0D5CC712CBA7A510018F437 /* base.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,7 +286,7 @@
 /* Begin XCBuildConfiguration section */
 		F0D5CC3D2CBA677B0018F437 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F0D5CC4B2CBA70750018F437 /* base.xcconfig */;
+			baseConfigurationReference = F0D5CC6F2CBA7A510018F437 /* base.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -340,7 +348,7 @@
 		};
 		F0D5CC3E2CBA677B0018F437 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F0D5CC4B2CBA70750018F437 /* base.xcconfig */;
+			baseConfigurationReference = F0D5CC6F2CBA7A510018F437 /* base.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

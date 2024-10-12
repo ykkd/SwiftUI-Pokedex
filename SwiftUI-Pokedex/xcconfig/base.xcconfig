@@ -1,0 +1,2 @@
+SWIFT_VERSION = 6.0
+OTHER_SWIFT_FLAGS = -Xfrontend -warn-long-function-bodies=100 -Xfrontend -warn-long-expression-type-checking=100
