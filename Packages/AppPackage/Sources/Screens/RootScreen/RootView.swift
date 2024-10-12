@@ -15,3 +15,7 @@ public struct RootView: View {
         Text("RootView")
     }
 }
+
+#Preview {
+    RootView()
+}
