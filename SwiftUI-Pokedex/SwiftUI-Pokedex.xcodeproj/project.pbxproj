@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F00492ED2CBA9856009E1F62 /* SplashScreen in Frameworks */ = {isa = PBXBuildFile; productRef = F00492EC2CBA9856009E1F62 /* SplashScreen */; };
+		F00493912CBAAD9B009E1F62 /* RootScreen in Frameworks */ = {isa = PBXBuildFile; productRef = F00493902CBAAD9B009E1F62 /* RootScreen */; };
 		F0D5CC712CBA7A510018F437 /* base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = F0D5CC6F2CBA7A510018F437 /* base.xcconfig */; };
 /* End PBXBuildFile section */
 
@@ -72,7 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F00492ED2CBA9856009E1F62 /* SplashScreen in Frameworks */,
+				F00493912CBAAD9B009E1F62 /* RootScreen in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,7 +151,7 @@
 			);
 			name = "SwiftUI-Pokedex";
 			packageProductDependencies = (
-				F00492EC2CBA9856009E1F62 /* SplashScreen */,
+				F00493902CBAAD9B009E1F62 /* RootScreen */,
 			);
 			productName = "SwiftUI-Pokedex";
 			productReference = F0D5CC1A2CBA67790018F437 /* SwiftUI-Pokedex.app */;
@@ -236,7 +236,6 @@
 			mainGroup = F0D5CC112CBA67790018F437;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				F00492D82CBA963F009E1F62 /* XCLocalSwiftPackageReference "../Packages/Presentation" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F0D5CC1B2CBA67790018F437 /* Products */;
@@ -646,18 +645,10 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		F00492D82CBA963F009E1F62 /* XCLocalSwiftPackageReference "../Packages/Presentation" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Packages/Presentation;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
-		F00492EC2CBA9856009E1F62 /* SplashScreen */ = {
+		F00493902CBAAD9B009E1F62 /* RootScreen */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F00492D82CBA963F009E1F62 /* XCLocalSwiftPackageReference "../Packages/Presentation" */;
-			productName = SplashScreen;
+			productName = RootScreen;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
