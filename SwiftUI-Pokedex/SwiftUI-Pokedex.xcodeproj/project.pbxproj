@@ -36,9 +36,22 @@
 		F0D5CC6F2CBA7A510018F437 /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F004937D2CBAABE9009E1F62 /* Exceptions for "SwiftUI-Pokedex" folder in "SwiftUI-Pokedex" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F0D5CC192CBA67790018F437 /* SwiftUI-Pokedex */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F0D5CC1C2CBA67790018F437 /* SwiftUI-Pokedex */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F004937D2CBAABE9009E1F62 /* Exceptions for "SwiftUI-Pokedex" folder in "SwiftUI-Pokedex" target */,
+			);
 			path = "SwiftUI-Pokedex";
 			sourceTree = "<group>";
 		};
@@ -424,12 +437,14 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "SwiftUI-Pokedex/SwiftUI_Pokedex.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI-Pokedex/Preview Content\"";
 				DEVELOPMENT_TEAM = D8T642JQFU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SwiftUI-Pokedex/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Pokedex;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -467,12 +482,14 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "SwiftUI-Pokedex/SwiftUI_Pokedex.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftUI-Pokedex/Preview Content\"";
 				DEVELOPMENT_TEAM = D8T642JQFU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SwiftUI-Pokedex/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Pokedex;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
