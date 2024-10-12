@@ -1,0 +1,6 @@
+# ui
+*.xib linguist-generated=true
+*.storyboard linguist-generated=true
+
+# other
+**/*.xcassets/**/Contents.json linguist-generated=true
