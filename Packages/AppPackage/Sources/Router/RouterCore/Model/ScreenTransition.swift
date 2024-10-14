@@ -12,4 +12,15 @@ public enum ScreenTransition {
     case sheet
     case fullScreen
     case alert
+
+    public var withNavigation: Bool {
+        switch self {
+        case .push,
+             .alert:
+            false
+        case .sheet,
+             .fullScreen:
+            true
+        }
+    }
 }
