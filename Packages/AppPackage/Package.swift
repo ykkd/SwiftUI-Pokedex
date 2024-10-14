@@ -31,6 +31,7 @@ enum Products: String, CaseIterable, PackageAtom {
     case router
     case getPokemonListUseCase
     case rootScreen
+    case pokemonListScreen
     case pokeAPIClientWrapper
 
     var targets: [String] {
@@ -103,6 +104,7 @@ enum Targets: String, CaseIterable, PackageAtom {
     case router
     case getPokemonListUseCase
     case rootScreen
+    case pokemonListScreen
     case pokeAPIClientWrapper
 
     var targetType: TargetType {
@@ -111,12 +113,22 @@ enum Targets: String, CaseIterable, PackageAtom {
              .entity,
              .logger,
              .routerCore,
-             .rootScreen,
              .router,
              .getPokemonListUseCase,
+             .rootScreen,
+             .pokemonListScreen,
              .pokeAPIClientWrapper:
             .production
         }
+    }
+
+    static var commonDependenciesForScreen: [Target.Dependency] {
+        [
+            Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
+            Targets.entity.asDependency,
+            Targets.router.asDependency,
+            Targets.dependencyContainer.asDependency,
+        ]
     }
 
     var pathName: String {
@@ -130,7 +142,8 @@ enum Targets: String, CaseIterable, PackageAtom {
             "Router/\(capitalizedName)"
         case .getPokemonListUseCase:
             "UseCases/\(capitalizedName)"
-        case .rootScreen:
+        case .rootScreen,
+             .pokemonListScreen:
             "Screens/\(capitalizedName)"
         case .pokeAPIClientWrapper:
             "Wrappers/\(capitalizedName)"
@@ -167,13 +180,9 @@ enum Targets: String, CaseIterable, PackageAtom {
                 Targets.entity.asDependency,
                 Targets.pokeAPIClientWrapper.asDependency,
             ]
-        case .rootScreen:
-            [
-                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
-                Targets.entity.asDependency,
-                Targets.router.asDependency,
-                Targets.dependencyContainer.asDependency,
-            ]
+        case .rootScreen,
+             .pokemonListScreen:
+            Self.commonDependenciesForScreen
         case .pokeAPIClientWrapper:
             [
                 Dependencies.swiftOpenAPIRuntime.asDependency(productName: .specified(name: "OpenAPIRuntime")),

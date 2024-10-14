@@ -10,6 +10,7 @@ import Foundation
 // MARK: - Screen
 public enum Screen: Equatable, Hashable {
     case root
+    case pokemonList
 }
 
 // MARK: Identifiable

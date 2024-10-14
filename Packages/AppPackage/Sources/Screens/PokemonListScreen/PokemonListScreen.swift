@@ -1,8 +1,8 @@
 //
-//  RootView.swift
-//  Presentation
+//  PokemonListScreen.swift
+//  AppPackage
 //
-//  Created by ykkd on 2024/10/12.
+//  Created by ykkd on 2024/10/15.
 //
 
 private import Dependencies
@@ -11,13 +11,9 @@ import Entity
 import Router
 import SwiftUI
 
-public struct RootView: View {
-
-    @Dependency(\.pokemonListViewContainer) private var pokemonListViewContainer
+public struct PokemonListView: View {
 
     @StateObject private var router: Router
-
-    @State private var selectedTab = RootTab.pokemonList
 
     private let input: CommonScreenInput
 
@@ -34,23 +30,13 @@ public struct RootView: View {
             router: router,
             withNavigation: input.withNavigation
         ) {
-            TabView(selection: $selectedTab) {
-                pokemonListViewContainer.view(
-                    Router(isPresented: .init(.constant(.pokemonList))),
-                    input
-                )
-                .tag(RootTab.pokemonList)
-                .tabItem {
-                    Image(systemName: "square.grid.2x2.fill")
-                }
-            }
+            Text("PokemonListView")
         }
-        .ignoresSafeArea()
     }
 }
 
 #Preview {
-    RootView(
+    PokemonListView(
         router: Router(
             isPresented: .constant(.root)
         ),

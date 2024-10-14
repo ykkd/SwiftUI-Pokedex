@@ -1,8 +1,8 @@
 //
-//  RootViewContainer.swift
+//  PokemonListViewContainer.swift
 //  AppPackage
 //
-//  Created by ykkd on 2024/10/13.
+//  Created by ykkd on 2024/10/15.
 //
 
 import Dependencies
@@ -10,8 +10,8 @@ import Entity
 import RouterCore
 import SwiftUI
 
-// MARK: - RootViewContainer
-public struct RootViewContainer: Sendable {
+// MARK: - PokemonListViewContainer
+public struct PokemonListViewContainer: Sendable {
 
     public var view: @MainActor @Sendable (
         _ router: BaseRouter,
@@ -29,17 +29,17 @@ public struct RootViewContainer: Sendable {
 }
 
 // MARK: TestDependencyKey
-extension RootViewContainer: TestDependencyKey {
+extension PokemonListViewContainer: TestDependencyKey {
 
     public static var testValue: Self {
-        .init(view: unimplemented("", placeholder: AnyView(Text("TestValue of RootView"))))
+        .init(view: unimplemented("", placeholder: AnyView(Text("TestValue of PokemonListView"))))
     }
 }
 
 extension DependencyValues {
 
-    public var rootViewContainer: RootViewContainer {
-        get { self[RootViewContainer.self] }
-        set { self[RootViewContainer.self] = newValue }
+    public var pokemonListViewContainer: PokemonListViewContainer {
+        get { self[PokemonListViewContainer.self] }
+        set { self[PokemonListViewContainer.self] = newValue }
     }
 }
