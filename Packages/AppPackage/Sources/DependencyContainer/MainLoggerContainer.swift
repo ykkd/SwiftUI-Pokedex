@@ -12,7 +12,7 @@ import os.log
 // MARK: - MainLoggerContainer
 public struct MainLoggerContainer: Sendable {
 
-    private var logger: Logger
+    private let logger: Logger
 
     public init() {
         logger = Logger(subsystem: "SwiftUI-Pokedex", category: "Main")
