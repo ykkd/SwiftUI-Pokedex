@@ -110,6 +110,8 @@ enum Targets: String, CaseIterable, PackageAtom {
 
     var dependencies: [Target.Dependency] {
         switch self {
+        case .entity:
+            []
         case .dependencyContainer:
             [
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
@@ -120,11 +122,15 @@ enum Targets: String, CaseIterable, PackageAtom {
             ]
         case .router:
             [
+                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
+                Targets.dependencyContainer.asDependency,
                 Targets.routerCore.asDependency,
             ]
-        case .entity,
-             .rootScreen:
-            []
+        case .rootScreen:
+            [
+                Targets.entity.asDependency,
+                Targets.router.asDependency,
+            ]
         }
     }
 
