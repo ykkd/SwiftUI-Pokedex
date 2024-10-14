@@ -115,6 +115,8 @@ enum Targets: String, CaseIterable, PackageAtom {
         case .dependencyContainer:
             [
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
+                Targets.entity.asDependency,
+                Targets.routerCore.asDependency,
             ]
         case .routerCore:
             [
