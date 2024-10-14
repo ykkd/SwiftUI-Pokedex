@@ -26,6 +26,7 @@ let swiftSettings: [PackageDescription.SwiftSetting] = [
 enum Products: String, CaseIterable, PackageAtom {
     case dependencyContainer
     case entity
+    case logger
     case routerCore
     case router
     case getPokemonListUseCase
@@ -97,6 +98,7 @@ enum Dependencies: String, CaseIterable, PackageAtom {
 enum Targets: String, CaseIterable, PackageAtom {
     case dependencyContainer
     case entity
+    case logger
     case routerCore
     case router
     case getPokemonListUseCase
@@ -107,6 +109,7 @@ enum Targets: String, CaseIterable, PackageAtom {
         switch self {
         case .dependencyContainer,
              .entity,
+             .logger,
              .routerCore,
              .rootScreen,
              .router,
@@ -119,7 +122,8 @@ enum Targets: String, CaseIterable, PackageAtom {
     var pathName: String {
         switch self {
         case .dependencyContainer,
-             .entity:
+             .entity,
+             .logger:
             "\(capitalizedName)"
         case .routerCore,
              .router:
@@ -137,6 +141,10 @@ enum Targets: String, CaseIterable, PackageAtom {
         switch self {
         case .entity:
             []
+        case .logger:
+            [
+                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
+            ]
         case .dependencyContainer:
             [
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
