@@ -27,6 +27,7 @@ enum Products: String, CaseIterable, PackageAtom {
     case dependencyContainer
     case entity
     case routerCore
+    case router
     case rootScreen
 
     var targets: [String] {
@@ -80,6 +81,7 @@ enum Targets: String, CaseIterable, PackageAtom {
     case dependencyContainer
     case entity
     case routerCore
+    case router
     case rootScreen
 
     var targetType: TargetType {
@@ -87,7 +89,8 @@ enum Targets: String, CaseIterable, PackageAtom {
         case .dependencyContainer,
              .entity,
              .routerCore,
-             .rootScreen:
+             .rootScreen,
+             .router:
             .production
         }
     }
@@ -97,7 +100,8 @@ enum Targets: String, CaseIterable, PackageAtom {
         case .dependencyContainer,
              .entity:
             "\(name)"
-        case .routerCore:
+        case .routerCore,
+             .router:
             "Router/\(name)"
         case .rootScreen:
             "Screens/\(name)"
@@ -106,6 +110,8 @@ enum Targets: String, CaseIterable, PackageAtom {
 
     var dependencies: [Target.Dependency] {
         switch self {
+        case .entity:
+            []
         case .dependencyContainer:
             [
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
@@ -114,9 +120,19 @@ enum Targets: String, CaseIterable, PackageAtom {
             [
                 Targets.entity.asDependency,
             ]
-        case .entity,
-             .rootScreen:
-            []
+        case .router:
+            [
+                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
+                Targets.dependencyContainer.asDependency,
+                Targets.routerCore.asDependency,
+            ]
+        case .rootScreen:
+            [
+                Targets.entity.asDependency,
+                Targets.router.asDependency,
+                Targets.dependencyContainer.asDependency,
+                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
+            ]
         }
     }
 

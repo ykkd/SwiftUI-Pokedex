@@ -6,14 +6,24 @@
 //
 
 import Dependencies
+import Entity
+import RouterCore
 import SwiftUI
 
 // MARK: - RootViewContainer
 public struct RootViewContainer: Sendable {
 
-    public var rootView: @MainActor @Sendable () -> AnyView
+    public var rootView: @MainActor @Sendable (
+        _ router: BaseRouter,
+        _ input: CommonScreenInput
+    ) -> AnyView
 
-    public init(rootView: @escaping @MainActor @Sendable () -> AnyView) {
+    public init(
+        rootView: @escaping @MainActor @Sendable (
+            _ router: BaseRouter,
+            _ input: CommonScreenInput
+        ) -> AnyView
+    ) {
         self.rootView = rootView
     }
 }

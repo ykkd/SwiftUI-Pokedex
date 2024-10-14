@@ -1,5 +1,5 @@
 //
-//  Router.swift
+//  BaseRouter.swift
 //  AppPackage
 //
 //  Created by ykkd on 2024/10/14.
@@ -8,9 +8,9 @@
 import Entity
 import SwiftUI
 
-// MARK: - Router
+// MARK: - BaseRouter
 @MainActor
-open class Router: Sendable, ObservableObject {
+open class BaseRouter: Sendable, ObservableObject {
 
     @Published private(set) var state: RouterState
 
@@ -23,7 +23,7 @@ open class Router: Sendable, ObservableObject {
     }
 }
 
-extension Router {
+extension BaseRouter {
 
     public func push(to screen: Screen) {
         state.navigationPath.append(screen)
@@ -76,7 +76,7 @@ extension Router {
     }
 }
 
-extension Router {
+extension BaseRouter {
 
     public var navigationPath: Binding<[Screen]> {
         binding(keyPath: \.navigationPath)
@@ -95,7 +95,7 @@ extension Router {
     }
 }
 
-extension Router {
+extension BaseRouter {
 
     private func binding<T>(keyPath: WritableKeyPath<RouterState, T>) -> Binding<T> {
         Binding(
