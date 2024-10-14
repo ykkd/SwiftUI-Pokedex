@@ -9,11 +9,11 @@ import Foundation
 
 public struct PokemonAggregate {
 
-    public let count: Int
+    public let totalCount: Int
     public let pokemons: [Pokemon]
 
-    public init(count: Int, pokemons: [Pokemon]) {
-        self.count = count
+    public init(totalCount: Int, pokemons: [Pokemon]) {
+        self.totalCount = totalCount
         self.pokemons = pokemons
     }
 }
