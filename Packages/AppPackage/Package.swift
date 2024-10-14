@@ -159,6 +159,7 @@ enum Targets: String, CaseIterable, PackageAtom {
             [
                 Dependencies.swiftOpenAPIRuntime.asDependency(productName: .specified(name: "OpenAPIRuntime")),
                 Dependencies.swiftOpenAPIUrlSession.asDependency(productName: .specified(name: "OpenAPIURLSession")),
+                Targets.entity.asDependency,
             ]
         }
     }
