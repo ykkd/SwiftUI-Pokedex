@@ -44,6 +44,7 @@ public struct RootView: View {
                     Image(systemName: "square.grid.2x2.fill")
                 }
             }
+            .navigationTitle(selectedTab.navigationTitle)
         }
         .ignoresSafeArea()
     }
