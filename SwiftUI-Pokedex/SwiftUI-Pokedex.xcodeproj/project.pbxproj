@@ -11,6 +11,7 @@
 		F07F53C22CBAF92C005455D2 /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = F07F53C12CBAF92C005455D2 /* Dependencies */; };
 		F07F53F32CBCF4AE005455D2 /* Router in Frameworks */ = {isa = PBXBuildFile; productRef = F07F53F22CBCF4AE005455D2 /* Router */; };
 		F07F53F52CBCF53A005455D2 /* Entity in Frameworks */ = {isa = PBXBuildFile; productRef = F07F53F42CBCF53A005455D2 /* Entity */; };
+		F07F54482CBD76C2005455D2 /* PokemonListScreen in Frameworks */ = {isa = PBXBuildFile; productRef = F07F54472CBD76C2005455D2 /* PokemonListScreen */; };
 		F0D5CC712CBA7A510018F437 /* base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = F0D5CC6F2CBA7A510018F437 /* base.xcconfig */; };
 		F0F338252CBAF41F00C53E97 /* RootScreen in Frameworks */ = {isa = PBXBuildFile; productRef = F0F338242CBAF41F00C53E97 /* RootScreen */; };
 /* End PBXBuildFile section */
@@ -93,6 +94,7 @@
 			files = (
 				F07F53F52CBCF53A005455D2 /* Entity in Frameworks */,
 				F07F53C22CBAF92C005455D2 /* Dependencies in Frameworks */,
+				F07F54482CBD76C2005455D2 /* PokemonListScreen in Frameworks */,
 				F0F338252CBAF41F00C53E97 /* RootScreen in Frameworks */,
 				F07F53BF2CBAF8DE005455D2 /* DependencyContainer in Frameworks */,
 				F07F53F32CBCF4AE005455D2 /* Router in Frameworks */,
@@ -180,6 +182,7 @@
 				F07F53C12CBAF92C005455D2 /* Dependencies */,
 				F07F53F22CBCF4AE005455D2 /* Router */,
 				F07F53F42CBCF53A005455D2 /* Entity */,
+				F07F54472CBD76C2005455D2 /* PokemonListScreen */,
 			);
 			productName = "SwiftUI-Pokedex";
 			productReference = F0D5CC1A2CBA67790018F437 /* SwiftUI-Pokedex.app */;
@@ -711,6 +714,11 @@
 		F07F53F42CBCF53A005455D2 /* Entity */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Entity;
+		};
+		F07F54472CBD76C2005455D2 /* PokemonListScreen */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F0F3381F2CBAF40200C53E97 /* XCLocalSwiftPackageReference "../Packages/AppPackage" */;
+			productName = PokemonListScreen;
 		};
 		F0F338242CBAF41F00C53E97 /* RootScreen */ = {
 			isa = XCSwiftPackageProductDependency;
