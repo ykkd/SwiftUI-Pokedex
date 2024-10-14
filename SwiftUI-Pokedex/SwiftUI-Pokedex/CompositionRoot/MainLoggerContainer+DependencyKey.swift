@@ -7,7 +7,6 @@
 
 import Dependencies
 import DependencyContainer
-import os.log
 
 extension MainLoggerContainer: @retroactive DependencyKey {
 
