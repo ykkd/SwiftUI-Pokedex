@@ -9,11 +9,24 @@ import Foundation
 
 // MARK: - Screen
 public enum Screen: Equatable, Hashable {
-    case root
+    case root(CommonInput)
 }
 
 // MARK: Identifiable
 extension Screen: Identifiable {
 
     public var id: Self { self }
+}
+
+// MARK: Screen.CommonInput
+extension Screen {
+
+    public struct CommonInput: Equatable, Hashable {
+
+        public let withNavigation: Bool
+
+        public init(withNavigation: Bool) {
+            self.withNavigation = withNavigation
+        }
+    }
 }
