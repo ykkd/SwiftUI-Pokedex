@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Screen
 public enum Screen: Equatable, Hashable {
-    case router
+    case root
 }
 
 // MARK: Identifiable
