@@ -46,6 +46,9 @@ enum Products: String, CaseIterable, PackageAtom {
 enum Dependencies: String, CaseIterable, PackageAtom {
     case swiftLint
     case swiftDependencies = "swift-dependencies"
+    case swiftOpenApiGenerater = "swift-openapi-generator"
+    case swiftOpenApiRuntime = "swift-openapi-runtime"
+    case swiftOpenApiUrlSession = "swift-openapi-urlsession"
 
     var value: Package.Dependency {
         switch self {
@@ -57,6 +60,18 @@ enum Dependencies: String, CaseIterable, PackageAtom {
         case .swiftDependencies:
             .package(
                 url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.4.1")
+            )
+        case .swiftOpenApiGenerater:
+            .package(
+                url: "https://github.com/apple/swift-openapi-generator", .upToNextMajor(from: "1.0.0")
+            )
+        case .swiftOpenApiRuntime:
+            .package(
+                url: "https://github.com/apple/swift-openapi-runtime", .upToNextMajor(from: "1.0.0")
+            )
+        case .swiftOpenApiUrlSession:
+            .package(
+                url: "https://github.com/apple/swift-openapi-urlsession", .upToNextMajor(from: "1.0.0")
             )
         }
     }
