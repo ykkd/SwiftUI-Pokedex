@@ -13,18 +13,18 @@ import SwiftUI
 // MARK: - RootViewContainer
 public struct RootViewContainer: Sendable {
 
-    public var rootView: @MainActor @Sendable (
+    public var view: @MainActor @Sendable (
         _ router: BaseRouter,
         _ input: CommonScreenInput
     ) -> AnyView
 
     public init(
-        rootView: @escaping @MainActor @Sendable (
+        view: @escaping @MainActor @Sendable (
             _ router: BaseRouter,
             _ input: CommonScreenInput
         ) -> AnyView
     ) {
-        self.rootView = rootView
+        self.view = view
     }
 }
 
@@ -32,7 +32,7 @@ public struct RootViewContainer: Sendable {
 extension RootViewContainer: TestDependencyKey {
 
     public static var testValue: Self {
-        .init(rootView: unimplemented("", placeholder: AnyView(Text("TestValue of RootView"))))
+        .init(view: unimplemented("", placeholder: AnyView(Text("TestValue of RootView"))))
     }
 }
 

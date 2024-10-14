@@ -33,7 +33,7 @@ extension Router {
     ) -> some View {
         switch screen {
         case .root:
-            rootViewContainer.rootView(
+            rootViewContainer.view(
                 router(transition: transition),
                 CommonScreenInput(withNavigation: transition.withNavigation)
             )
