@@ -13,7 +13,11 @@ import SwiftUI
 
 public struct RootView: View {
 
+    @Dependency(\.pokemonListViewContainer) private var pokemonListViewContainer
+
     @StateObject private var router: Router
+
+    @State private var selectedTab = RootTab.pokemonList
 
     private let input: CommonScreenInput
 
@@ -30,20 +34,18 @@ public struct RootView: View {
             router: router,
             withNavigation: input.withNavigation
         ) {
-            Text("RootView")
-            Button("Push Root") {
-                router.push(to: .root)
-            }
-            Button("Present Root(fullScreen)") {
-                router.present(fullScreen: .root)
-            }
-            Button("Present Root(sheet)") {
-                router.present(sheet: .root)
-            }
-            Button("dismiss") {
-                router.dismiss()
+            TabView(selection: $selectedTab) {
+                pokemonListViewContainer.view(
+                    Router(isPresented: .init(.constant(.pokemonList))),
+                    input
+                )
+                .tag(RootTab.pokemonList)
+                .tabItem {
+                    Image(systemName: "square.grid.2x2.fill")
+                }
             }
         }
+        .ignoresSafeArea()
     }
 }
 
