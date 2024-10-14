@@ -25,6 +25,8 @@ let swiftSettings: [PackageDescription.SwiftSetting] = [
 // MARK: - Products
 enum Products: String, CaseIterable, PackageAtom {
     case dependencyContainer
+    case entity
+    case routerCore
     case rootScreen
 
     var targets: [String] {
@@ -76,15 +78,15 @@ enum Dependencies: String, CaseIterable, PackageAtom {
 // MARK: - Targets
 enum Targets: String, CaseIterable, PackageAtom {
     case dependencyContainer
+    case entity
+    case routerCore
     case rootScreen
-
-    static var commonDependencies: [Target.Dependency] {
-        []
-    }
 
     var targetType: TargetType {
         switch self {
         case .dependencyContainer,
+             .entity,
+             .routerCore,
              .rootScreen:
             .production
         }
@@ -92,8 +94,11 @@ enum Targets: String, CaseIterable, PackageAtom {
 
     var pathName: String {
         switch self {
-        case .dependencyContainer:
+        case .dependencyContainer,
+             .entity:
             "\(name)"
+        case .routerCore:
+            "Router/\(name)"
         case .rootScreen:
             "Screens/\(name)"
         }
@@ -102,11 +107,16 @@ enum Targets: String, CaseIterable, PackageAtom {
     var dependencies: [Target.Dependency] {
         switch self {
         case .dependencyContainer:
-            Self.commonDependencies + [
+            [
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
             ]
-        case .rootScreen:
-            Self.commonDependencies + []
+        case .routerCore:
+            [
+                Targets.entity.asDependency,
+            ]
+        case .entity,
+             .rootScreen:
+            []
         }
     }
 
