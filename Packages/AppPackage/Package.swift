@@ -29,6 +29,7 @@ enum Products: String, CaseIterable, PackageAtom {
     case routerCore
     case router
     case rootScreen
+    case pokeAPIClientWrapper
 
     var targets: [String] {
         Targets.targets(for: self)
@@ -36,7 +37,7 @@ enum Products: String, CaseIterable, PackageAtom {
 
     var value: Product {
         Product.library(
-            name: name,
+            name: capitalizedName,
             targets: targets
         )
     }
@@ -46,9 +47,9 @@ enum Products: String, CaseIterable, PackageAtom {
 enum Dependencies: String, CaseIterable, PackageAtom {
     case swiftLint
     case swiftDependencies = "swift-dependencies"
-    case swiftOpenApiGenerater = "swift-openapi-generator"
-    case swiftOpenApiRuntime = "swift-openapi-runtime"
-    case swiftOpenApiUrlSession = "swift-openapi-urlsession"
+    case swiftOpenAPIGenerater = "swift-openapi-generator"
+    case swiftOpenAPIRuntime = "swift-openapi-runtime"
+    case swiftOpenAPIUrlSession = "swift-openapi-urlsession"
 
     var value: Package.Dependency {
         switch self {
@@ -61,15 +62,15 @@ enum Dependencies: String, CaseIterable, PackageAtom {
             .package(
                 url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.4.1")
             )
-        case .swiftOpenApiGenerater:
+        case .swiftOpenAPIGenerater:
             .package(
                 url: "https://github.com/apple/swift-openapi-generator", .upToNextMajor(from: "1.0.0")
             )
-        case .swiftOpenApiRuntime:
+        case .swiftOpenAPIRuntime:
             .package(
                 url: "https://github.com/apple/swift-openapi-runtime", .upToNextMajor(from: "1.0.0")
             )
-        case .swiftOpenApiUrlSession:
+        case .swiftOpenAPIUrlSession:
             .package(
                 url: "https://github.com/apple/swift-openapi-urlsession", .upToNextMajor(from: "1.0.0")
             )
@@ -98,6 +99,7 @@ enum Targets: String, CaseIterable, PackageAtom {
     case routerCore
     case router
     case rootScreen
+    case pokeAPIClientWrapper
 
     var targetType: TargetType {
         switch self {
@@ -105,7 +107,8 @@ enum Targets: String, CaseIterable, PackageAtom {
              .entity,
              .routerCore,
              .rootScreen,
-             .router:
+             .router,
+             .pokeAPIClientWrapper:
             .production
         }
     }
@@ -114,12 +117,14 @@ enum Targets: String, CaseIterable, PackageAtom {
         switch self {
         case .dependencyContainer,
              .entity:
-            "\(name)"
+            "\(capitalizedName)"
         case .routerCore,
              .router:
-            "Router/\(name)"
+            "Router/\(capitalizedName)"
         case .rootScreen:
-            "Screens/\(name)"
+            "Screens/\(capitalizedName)"
+        case .pokeAPIClientWrapper:
+            "Wrappers/\(capitalizedName)"
         }
     }
 
@@ -150,20 +155,33 @@ enum Targets: String, CaseIterable, PackageAtom {
                 Targets.dependencyContainer.asDependency,
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
             ]
+        case .pokeAPIClientWrapper:
+            [
+                Dependencies.swiftOpenAPIRuntime.asDependency(productName: .specified(name: "OpenAPIRuntime")),
+                Dependencies.swiftOpenAPIUrlSession.asDependency(productName: .specified(name: "OpenAPIURLSession")),
+            ]
         }
     }
 
     var plugins: [Target.PluginUsage] {
-        [
-            .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint"),
-        ]
+        switch self {
+        case .pokeAPIClientWrapper:
+            [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint"),
+                .plugin(name: "OpenAPIGenerator", package: "swift-openapi-generator"),
+            ]
+        default:
+            [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint"),
+            ]
+        }
     }
 
     var value: Target {
         switch targetType {
         case .production:
             .target(
-                name: name,
+                name: capitalizedName,
                 dependencies: dependencies,
                 path: "./Sources/\(pathName)",
                 swiftSettings: swiftSettings,
@@ -171,7 +189,7 @@ enum Targets: String, CaseIterable, PackageAtom {
             )
         case .test:
             .testTarget(
-                name: name,
+                name: capitalizedName,
                 dependencies: dependencies,
                 path: "./Tests/\(pathName)",
                 swiftSettings: swiftSettings,
@@ -185,7 +203,7 @@ enum Targets: String, CaseIterable, PackageAtom {
     }
 
     static func targets(for product: Products) -> [String] {
-        Targets.allCases.map(\.name).filter { $0 == product.name }
+        Targets.allCases.map(\.capitalizedName).filter { $0 == product.capitalizedName }
     }
 }
 
@@ -200,6 +218,10 @@ protocol PackageAtom {
 extension PackageAtom where Self: RawRepresentable, Self.RawValue == String {
 
     var name: String {
+        rawValue
+    }
+
+    var capitalizedName: String {
         rawValue.initialLetterUppercased()
     }
 }
