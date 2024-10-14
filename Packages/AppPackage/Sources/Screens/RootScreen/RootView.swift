@@ -13,7 +13,6 @@ import SwiftUI
 
 public struct RootView: View {
 
-    @Dependency(\.mainLoggerContainer) private var mainLogger
     @StateObject private var router: Router
 
     private let input: CommonScreenInput
@@ -36,11 +35,9 @@ public struct RootView: View {
                 router.push(to: .root)
             }
             Button("Present Root(fullScreen)") {
-                mainLogger.log(.info, message: "hige")
                 router.present(fullScreen: .root)
             }
             Button("Present Root(sheet)") {
-                mainLogger.log(.info, message: "hige")
                 router.present(sheet: .root)
             }
             Button("dismiss") {
