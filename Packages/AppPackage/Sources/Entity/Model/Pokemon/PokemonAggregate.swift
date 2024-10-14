@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - PokemonAggregate
-public struct PokemonAggregate {
+public struct PokemonAggregate: Sendable {
 
     public let totalCount: Int
     public let pokemons: [Pokemon]
