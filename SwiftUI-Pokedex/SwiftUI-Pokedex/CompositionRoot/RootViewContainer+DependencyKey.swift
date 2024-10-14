@@ -8,14 +8,15 @@
 import Dependencies
 import DependencyContainer
 import RootScreen
+import Router
 import SwiftUI
 
 extension RootViewContainer: @retroactive DependencyKey {
 
     public static var liveValue: Self {
-        .init {
+        .init { router, input in
             AnyView(
-                RootView()
+                RootView(router: router as! Router, input: input)
             )
         }
     }

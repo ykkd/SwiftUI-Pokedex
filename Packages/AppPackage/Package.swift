@@ -130,6 +130,8 @@ enum Targets: String, CaseIterable, PackageAtom {
             [
                 Targets.entity.asDependency,
                 Targets.router.asDependency,
+                Targets.dependencyContainer.asDependency,
+                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
             ]
         }
     }

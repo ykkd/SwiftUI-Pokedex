@@ -6,7 +6,9 @@
 //
 
 import Dependencies
+import Entity
 import RootScreen
+import Router
 import SwiftUI
 
 @main
@@ -16,7 +18,10 @@ struct SwiftUI_PokedexApp: App {
 
     var body: some Scene {
         WindowGroup {
-            rootViewContainer.rootView()
+            rootViewContainer.rootView(
+                Router(isPresented: .init(.constant(.root))),
+                CommonScreenInput(withNavigation: true)
+            )
         }
     }
 }

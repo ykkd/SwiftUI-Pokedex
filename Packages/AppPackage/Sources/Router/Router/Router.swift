@@ -5,12 +5,16 @@
 //  Created by ykkd on 2024/10/14.
 //
 
+import Dependencies
+import DependencyContainer
 import Entity
 import RouterCore
 import SwiftUI
 
 // MARK: - Router
 public final class Router: BaseRouter {
+
+    @Dependency(\.rootViewContainer) private var rootViewContainer
 
     override public func view(
         _ screen: Screen,
@@ -29,7 +33,10 @@ extension Router {
     ) -> some View {
         switch screen {
         case .root:
-            EmptyView() // TODO: fix
+            rootViewContainer.rootView(
+                router(transition: transition),
+                CommonScreenInput(withNavigation: transition.withNavigation)
+            )
         }
     }
 
