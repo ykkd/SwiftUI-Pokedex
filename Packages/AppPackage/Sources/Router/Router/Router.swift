@@ -15,6 +15,7 @@ import SwiftUI
 public final class Router: BaseRouter {
 
     @Dependency(\.rootViewContainer) private var rootViewContainer
+    @Dependency(\.pokemonListViewContainer) private var pokemonListViewContainer
 
     override public func view(
         _ screen: Screen,
@@ -34,6 +35,11 @@ extension Router {
         switch screen {
         case .root:
             rootViewContainer.view(
+                router(transition: transition),
+                CommonScreenInput(withNavigation: transition.withNavigation)
+            )
+        case .pokemonList:
+            pokemonListViewContainer.view(
                 router(transition: transition),
                 CommonScreenInput(withNavigation: transition.withNavigation)
             )
