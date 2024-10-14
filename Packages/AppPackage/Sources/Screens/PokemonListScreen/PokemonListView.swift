@@ -15,6 +15,8 @@ public struct PokemonListView: View {
 
     @StateObject private var router: Router
 
+    @State private var state: PokemonListViewState = .init()
+
     private let input: CommonScreenInput
 
     public init(
@@ -30,7 +32,12 @@ public struct PokemonListView: View {
             router: router,
             withNavigation: input.withNavigation
         ) {
-            Text("PokemonListView")
+            List(state.pokemons) { pokemon in
+                Text("\(pokemon.name)")
+            }
+        }
+        .task {
+            await state.getData(100, offset: 0)
         }
     }
 }

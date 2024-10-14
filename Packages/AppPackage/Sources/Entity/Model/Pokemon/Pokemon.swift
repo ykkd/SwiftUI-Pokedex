@@ -7,7 +7,11 @@
 
 import Foundation
 
-public struct Pokemon: Sendable, Hashable {
+public struct Pokemon: Sendable, Hashable, Identifiable {
+
+    public var id: Int {
+        number
+    }
 
     public let name: String
 
