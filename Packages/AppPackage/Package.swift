@@ -27,6 +27,7 @@ enum Products: String, CaseIterable, PackageAtom {
     case dependencyContainer
     case entity
     case routerCore
+    case router
     case rootScreen
 
     var targets: [String] {
@@ -80,6 +81,7 @@ enum Targets: String, CaseIterable, PackageAtom {
     case dependencyContainer
     case entity
     case routerCore
+    case router
     case rootScreen
 
     var targetType: TargetType {
@@ -87,7 +89,8 @@ enum Targets: String, CaseIterable, PackageAtom {
         case .dependencyContainer,
              .entity,
              .routerCore,
-             .rootScreen:
+             .rootScreen,
+             .router:
             .production
         }
     }
@@ -97,7 +100,8 @@ enum Targets: String, CaseIterable, PackageAtom {
         case .dependencyContainer,
              .entity:
             "\(name)"
-        case .routerCore:
+        case .routerCore,
+             .router:
             "Router/\(name)"
         case .rootScreen:
             "Screens/\(name)"
@@ -113,6 +117,10 @@ enum Targets: String, CaseIterable, PackageAtom {
         case .routerCore:
             [
                 Targets.entity.asDependency,
+            ]
+        case .router:
+            [
+                Targets.routerCore.asDependency,
             ]
         case .entity,
              .rootScreen:
