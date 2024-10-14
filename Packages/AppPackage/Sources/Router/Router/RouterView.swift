@@ -30,12 +30,6 @@ public struct RouterView<Content: View>: View {
 
     public var body: some View {
         content(withNavigation)
-            .sheet(item: router.presentingSheet) { screen in
-                router.view(screen, transition: .sheet)
-            }
-            .fullScreenCover(item: router.presentingFullScreen) { screen in
-                router.view(screen, transition: .fullScreen)
-            }
     }
 
     @ViewBuilder
@@ -46,12 +40,15 @@ public struct RouterView<Content: View>: View {
                     .navigationDestination(for: Screen.self) { screen in
                         router.view(screen, transition: .push)
                     }
+                    .sheet(item: router.presentingSheet) { screen in
+                        router.view(screen, transition: .sheet)
+                    }
+                    .fullScreenCover(item: router.presentingFullScreen) { screen in
+                        router.view(screen, transition: .fullScreen)
+                    }
             }
         } else {
             content
-                .navigationDestination(for: Screen.self) { screen in
-                    router.view(screen, transition: .push)
-                }
         }
     }
 }
