@@ -8,30 +8,46 @@
 import Foundation
 import OpenAPIRuntime
 private import OpenAPIURLSession
+import Dependencies
 import Entity
 
-// MARK: - PokeAPIClientWrapperProtocol
-public protocol PokeAPIClientWrapperProtocol {
-    func getPokemonList(limit: Int, offset: Int) async throws -> PokemonAggregate
+// MARK: - PokeAPIClientWrapper
+public struct PokeAPIClientWrapper: Sendable {
+
+    private let client: any APIProtocol
+
+    public init() {
+        do {
+            client = try Client(
+                serverURL: Servers.server1(),
+                transport: URLSessionTransport()
+            )
+        } catch {
+            fatalError("server url is invalid")
+        }
+    }
 }
 
-// MARK: - PokeAPIClientWrapper
-public struct PokeAPIClientWrapper: PokeAPIClientWrapperProtocol {
+// MARK: DependencyKey
+extension PokeAPIClientWrapper: DependencyKey {
 
-    private let client: Client
+    public static var liveValue: Self {
+        PokeAPIClientWrapper()
+    }
+}
 
-    public init() throws {
-        client = try Client(
-            serverURL: Servers.server1(),
-            transport: URLSessionTransport()
-        )
+extension DependencyValues {
+
+    public var pokeAPIClientWrapper: PokeAPIClientWrapper {
+        get { self[PokeAPIClientWrapper.self] }
+        set { self[PokeAPIClientWrapper.self] = newValue }
     }
 }
 
 // MARK: - PokemonList
 extension PokeAPIClientWrapper {
 
-    public func getPokemonList(limit: Int, offset: Int) async throws -> PokemonAggregate {
+    public func getPokemonList(limit: Int, offset: Int) async throws(ApplicationError) -> PokemonAggregate {
         do {
             let response = try await client.pokemon_list(query: .init(limit: 0, offset: 0, q: ""))
             let json = try response.ok.body.json

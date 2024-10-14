@@ -28,6 +28,7 @@ enum Products: String, CaseIterable, PackageAtom {
     case entity
     case routerCore
     case router
+    case getPokemonListUseCase
     case rootScreen
     case pokeAPIClientWrapper
 
@@ -98,6 +99,7 @@ enum Targets: String, CaseIterable, PackageAtom {
     case entity
     case routerCore
     case router
+    case getPokemonListUseCase
     case rootScreen
     case pokeAPIClientWrapper
 
@@ -108,6 +110,7 @@ enum Targets: String, CaseIterable, PackageAtom {
              .routerCore,
              .rootScreen,
              .router,
+             .getPokemonListUseCase,
              .pokeAPIClientWrapper:
             .production
         }
@@ -121,6 +124,8 @@ enum Targets: String, CaseIterable, PackageAtom {
         case .routerCore,
              .router:
             "Router/\(capitalizedName)"
+        case .getPokemonListUseCase:
+            "UseCases/\(capitalizedName)"
         case .rootScreen:
             "Screens/\(capitalizedName)"
         case .pokeAPIClientWrapper:
@@ -148,12 +153,18 @@ enum Targets: String, CaseIterable, PackageAtom {
                 Targets.dependencyContainer.asDependency,
                 Targets.routerCore.asDependency,
             ]
+        case .getPokemonListUseCase:
+            [
+                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
+                Targets.entity.asDependency,
+                Targets.pokeAPIClientWrapper.asDependency,
+            ]
         case .rootScreen:
             [
+                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
                 Targets.entity.asDependency,
                 Targets.router.asDependency,
                 Targets.dependencyContainer.asDependency,
-                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
             ]
         case .pokeAPIClientWrapper:
             [
