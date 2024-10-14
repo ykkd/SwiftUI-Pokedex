@@ -43,9 +43,11 @@ public struct RouterView<Content: View>: View {
                     .sheet(item: router.presentingSheet) { screen in
                         router.view(screen, transition: .sheet)
                     }
+                #if !os(macOS)
                     .fullScreenCover(item: router.presentingFullScreen) { screen in
                         router.view(screen, transition: .fullScreen)
                     }
+                #endif
             }
         } else {
             content
