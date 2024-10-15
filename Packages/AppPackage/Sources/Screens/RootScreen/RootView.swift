@@ -10,6 +10,7 @@ private import DependencyContainer
 import Entity
 import Router
 import SwiftUI
+private import SFSafeSymbols
 
 public struct RootView: View {
 
@@ -41,7 +42,7 @@ public struct RootView: View {
                 )
                 .tag(RootTab.pokemonList)
                 .tabItem {
-                    Image(systemName: "square.grid.2x2.fill")
+                    Image(systemSymbol: .squareGrid2x2Fill)
                 }
             }
             .navigationTitle(selectedTab.navigationTitle)

@@ -11,6 +11,7 @@ import Entity
 import Router
 import SwiftUI
 private import DesignSystem
+private import SFSafeSymbols
 
 public struct PokemonListView: View {
 
@@ -53,7 +54,7 @@ public struct PokemonListView: View {
                                         Spacer()
                                         HStack {
                                             Spacer()
-                                            Image(systemName: "xmark.octagon")
+                                            Image(systemSymbol: .xmarkOctagonFill)
                                                 .resizable()
                                                 .frame(width: 16, height: 16)
                                             Spacer()
