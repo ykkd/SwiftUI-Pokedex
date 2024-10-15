@@ -24,7 +24,7 @@ public struct Pokemon: Sendable, Hashable, Identifiable {
         urlString: String
     ) {
         guard let number = PokemonNumberGenerator.generate(from: urlString),
-              let imageUrl = PokemonImageURLGenerator.generateThumbnailURL(from: number) else {
+              let imageUrl = PokemonImageURLGenerator.generateImageURL(from: number) else {
             return nil
         }
         self.name = name
