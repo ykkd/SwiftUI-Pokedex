@@ -40,12 +40,13 @@ public struct PokemonListView: View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: SpaceToken.s) {
                     ForEach(state.pokemons) { pokemon in
-                        VStack(spacing: SpaceToken.xs) {
+                        VStack(spacing: SpaceToken.s) {
                             AsyncImage(url: pokemon.imageUrl) { phase in
                                 if let image = phase.image {
                                     image
                                         .resizable()
-                                        .aspectRatio(1.0, contentMode: .fill)
+                                        .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
+                                        .aspectRatio(AspectToken.square.value, contentMode: .fill)
                                         .frame(maxWidth: .infinity)
                                 } else if phase.error != nil {
                                     VStack {
@@ -55,12 +56,12 @@ public struct PokemonListView: View {
                                             Image(systemName: "xmark.octagon")
                                                 .resizable()
                                                 .frame(width: 16, height: 16)
-                                                .aspectRatio(1.0, contentMode: .fill)
                                             Spacer()
                                         }
                                         Spacer()
                                     }
                                     .frame(maxWidth: .infinity)
+                                    .aspectRatio(AspectToken.square.value, contentMode: .fill)
                                 } else {
                                     VStack {
                                         Spacer()
@@ -68,21 +69,38 @@ public struct PokemonListView: View {
                                             Spacer()
                                             Image(.pokeBall)
                                                 .resizable()
-                                                .aspectRatio(1.0, contentMode: .fill)
                                             Spacer()
                                         }
                                         Spacer()
                                     }
                                     .frame(maxWidth: .infinity)
+                                    .aspectRatio(AspectToken.square.value, contentMode: .fill)
                                 }
                             }
-                            Text("\(pokemon.name)")
-                                .fontWithLineHeight(token: .bodyRegular)
+                            Divider()
+                            HStack {
+                                VStack(alignment: .leading, spacing: SpaceToken.xs) {
+                                    Text("\(pokemon.name)")
+                                        .fontWithLineHeight(token: .captionTwoSemibold)
+                                        .foregroundStyle(Color(.labelPrimary))
+                                        .lineLimit(1)
+                                    Text("No.\(pokemon.number)")
+                                        .fontWithLineHeight(token: .captionTwoRegular)
+                                        .foregroundStyle(Color(.labelSecondary))
+                                        .lineLimit(1)
+                                }
+                                Spacer()
+                            }
                         }
-                        .aspectRatio(1.0, contentMode: .fit)
+                        .padding(SpaceToken.s)
+                        .aspectRatio(AspectToken.square.value, contentMode: .fit)
+                        .background(Color(.systemBackground))
+                        .cornerRadius(RadiusToken.l)
                     }
                 }
+                .padding(.horizontal, SpaceToken.m)
             }
+            .background(Color(.systemBackgroundSecondary))
         }
         .task {
             await state.getData(100, offset: 0)
