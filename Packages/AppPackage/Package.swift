@@ -131,6 +131,7 @@ enum Targets: String, CaseIterable, PackageAtom {
             Targets.entity.asDependency,
             Targets.router.asDependency,
             Targets.dependencyContainer.asDependency,
+            Targets.designSystem.asDependency,
         ]
     }
 
