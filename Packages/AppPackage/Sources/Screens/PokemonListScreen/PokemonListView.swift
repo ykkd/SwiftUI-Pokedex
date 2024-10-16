@@ -75,10 +75,9 @@ extension PokemonListView {
         .background(Color(.systemBackgroundSecondary))
     }
 
-    @ViewBuilder
     private func itemView(_ pokemon: Pokemon) -> some View {
         VStack(spacing: SpaceToken.s) {
-            pokemonImage(pokemon.imageUrl)
+            pokemonImage(pokemon)
             Divider()
             pokemonInformation(pokemon)
         }
@@ -88,35 +87,22 @@ extension PokemonListView {
         .cornerRadius(RadiusToken.l)
     }
 
-    @ViewBuilder
-    private func pokemonImage(_ imageUrl: URL) -> some View {
-        AsyncImage(url: imageUrl) { phase in
-            if let image = phase.image {
+    private func pokemonImage(_ pokemon: Pokemon) -> some View {
+        FallbackableAsyncImage(
+            pokemon.imageUrl,
+            fallbackUrl: pokemon.subImageUrl) { image in
                 image
                     .resizable()
                     .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
                     .aspectRatio(AspectToken.square.value, contentMode: .fill)
                     .frame(maxWidth: .infinity)
-            } else if phase.error != nil {
-                CenteringView {
-                    Image(systemSymbol: .xmarkOctagonFill)
-                        .resizable()
-                        .frame(width: 16, height: 16)
-                }
-                .frame(maxWidth: .infinity)
-                .aspectRatio(AspectToken.square.value, contentMode: .fill)
-            } else {
-                CenteringView {
-                    Image(.pokeBall)
-                        .resizable()
-                }
-                .frame(maxWidth: .infinity)
-                .aspectRatio(AspectToken.square.value, contentMode: .fill)
+            } placeholder: {
+                placeholder()
+            } errorView: { _ in
+                errorView()
             }
-        }
     }
 
-    @ViewBuilder
     private func pokemonInformation(_ pokemon: Pokemon) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: SpaceToken.xs) {
@@ -132,6 +118,25 @@ extension PokemonListView {
             Spacer()
         }
     }
+
+    private func errorView() -> some View {
+        CenteringView {
+            Image(systemSymbol: .xmarkOctagonFill)
+                .resizable()
+                .frame(width: 16, height: 16)
+        }
+        .frame(maxWidth: .infinity)
+        .aspectRatio(AspectToken.square.value, contentMode: .fill)
+    }
+
+    private func placeholder() -> some View {
+        CenteringView {
+            Image(.pokeBall)
+                .resizable()
+        }
+        .frame(maxWidth: .infinity)
+        .aspectRatio(AspectToken.square.value, contentMode: .fill)
+    }
 }
 
 #Preview {
@@ -143,4 +148,67 @@ extension PokemonListView {
             withNavigation: true
         )
     )
+}
+
+// MARK: - FallbackableAsyncImage
+public struct FallbackableAsyncImage<C: View, P: View, E: View>: View {
+
+    public let content: (Image) -> C
+    public let placeholder: (() -> P)?
+    public let errorView: ((any Error) -> E)?
+
+    private let primaryUrl: URL?
+    private let fallbackUrl: URL?
+
+    @State private var needsFallback: Bool = false
+
+    public init(
+        _ primaryUrl: URL?,
+        fallbackUrl: URL?,
+        content: @escaping (Image) -> C,
+        placeholder: @escaping () -> P,
+        errorView: @escaping (any Error) -> E
+    ) {
+        self.primaryUrl = primaryUrl
+        self.fallbackUrl = fallbackUrl
+        self.content = content
+        self.placeholder = placeholder
+        self.errorView = errorView
+    }
+
+    public var body: some View {
+        if needsFallback {
+            asyncImage(fallbackUrl)
+        } else {
+            asyncImage(primaryUrl) {
+                needsFallback = true
+            }
+        }
+    }
+
+    private func asyncImage(_ url: URL?, onError: (() -> Void)? = nil) -> some View {
+        AsyncImage(url: url) { phase in
+            if let image = phase.image {
+                content(image)
+            } else if let error = phase.error {
+                if let errorView {
+                    errorView(error)
+                        .onAppear {
+                            onError?()
+                        }
+                } else {
+                    EmptyView()
+                        .onAppear {
+                            onError?()
+                        }
+                }
+            } else {
+                if let placeholder {
+                    placeholder()
+                } else {
+                    ProgressView()
+                }
+            }
+        }
+    }
 }
