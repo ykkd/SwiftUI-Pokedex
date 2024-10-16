@@ -40,6 +40,9 @@ public struct PokemonListView: View {
                 .task {
                     await state.getInitialData()
                 }
+                .refreshable {
+                    await state.refresh()
+                }
         }
     }
 }

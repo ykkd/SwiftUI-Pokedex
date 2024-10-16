@@ -141,6 +141,7 @@ enum Targets: String, CaseIterable, PackageAtom {
             Targets.designSystem.asDependency,
             Dependencies.sfSafeSymbols.asDependency(productName: .usePackageName),
             Targets.screenExtension.asDependency,
+            Targets.logger.asDependency,
         ]
     }
 

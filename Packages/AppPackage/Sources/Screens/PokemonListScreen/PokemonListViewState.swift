@@ -10,6 +10,7 @@ import GetPokemonListUseCase
 import Observation
 private import Dependencies
 import Entity
+import Logger
 
 // MARK: - PokemonListViewState
 @MainActor
@@ -19,22 +20,48 @@ final class PokemonListViewState {
     @ObservationIgnored
     @Dependency(\.getPokemonListUseCase) private var getPokemonListUseCase
 
+    @ObservationIgnored
+    @Dependency(\.mainLogger) private var logger
+
     private let limitPerPage: Int = 50
 
     private(set) var totalCount: Int = .zero
 
-    private(set) var pokemons: [Pokemon] = []
+    private(set) var pokemons: [Pokemon] = [] {
+        didSet {
+            logger.log(.debug, message: "number of pokemons: \(pokemons.count)")
+        }
+    }
 
-    private(set) var isLoading = false
+    private(set) var isLoading: Bool = false {
+        didSet {
+            logger.log(.debug, message: "isLoading: \(isLoading)")
+        }
+    }
 
     var shouldShowBottomProgress: Bool {
-        pokemons.count == totalCount || !isLoading
+        guard totalCount != .zero else {
+            return false
+        }
+        return pokemons.count == totalCount || !isLoading
+    }
+
+    private var limitForRefresh: Int {
+        if pokemons.count != .zero {
+            pokemons.count
+        } else {
+            limitPerPage
+        }
     }
 
     init() {}
 
     func getInitialData() async {
         await getData(limitPerPage, offset: .zero)
+    }
+
+    func refresh() async {
+        await getInitialData()
     }
 
     func getNextPageIfNeeded(last pokemon: Pokemon) async {
