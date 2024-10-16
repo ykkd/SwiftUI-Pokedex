@@ -76,10 +76,14 @@ extension PokemonListView {
     }
 
     private func itemView(_ pokemon: Pokemon) -> some View {
-        VStack(spacing: SpaceToken.s) {
-            pokemonImage(pokemon)
-            Divider()
-            pokemonInformation(pokemon)
+        Button {
+            // TODO: implement
+        } label: {
+            VStack(spacing: SpaceToken.s) {
+                pokemonImage(pokemon)
+                Divider()
+                pokemonInformation(pokemon)
+            }
         }
         .padding(SpaceToken.s)
         .aspectRatio(AspectToken.square.value, contentMode: .fit)
