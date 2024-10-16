@@ -40,7 +40,8 @@ final class PokemonListViewState {
     }
 
     var shouldShowBottomProgress: Bool {
-        guard totalCount != .zero else {
+        guard totalCount != .zero,
+              !pokemons.isEmpty else {
             return false
         }
         return pokemons.count == totalCount || !isLoading
