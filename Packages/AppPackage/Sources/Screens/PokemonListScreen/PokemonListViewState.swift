@@ -11,6 +11,7 @@ import Observation
 private import Dependencies
 import Entity
 
+// MARK: - PokemonListViewState
 @MainActor
 @Observable
 final class PokemonListViewState {
@@ -18,15 +19,36 @@ final class PokemonListViewState {
     @ObservationIgnored
     @Dependency(\.getPokemonListUseCase) private var getPokemonListUseCase
 
+    private let limitPerPage: Int = 50
+
     private(set) var totalCount: Int = .zero
 
     private(set) var pokemons: [Pokemon] = []
 
     private(set) var isLoading = false
 
+    var shouldShowBottomProgress: Bool {
+        pokemons.count == totalCount || !isLoading
+    }
+
     init() {}
 
-    func getData(_ limit: Int, offset: Int) async {
+    func getInitialData() async {
+        await getData(limitPerPage, offset: .zero)
+    }
+
+    func getNextPageIfNeeded(last pokemon: Pokemon) async {
+        guard pokemons.last == pokemon,
+              totalCount != pokemons.count else {
+            return
+        }
+        await getData(limitPerPage, offset: pokemon.number + 1)
+    }
+}
+
+extension PokemonListViewState {
+
+    private func getData(_ limit: Int, offset: Int) async {
         defer { isLoading = false }
         do {
             isLoading = true

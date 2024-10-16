@@ -38,7 +38,7 @@ public struct PokemonListView: View {
         ) {
             content()
                 .task {
-                    await state.getData(100, offset: 0)
+                    await state.getInitialData()
                 }
         }
     }
@@ -57,17 +57,14 @@ extension PokemonListView {
                 ForEach(state.pokemons) { pokemon in
                     itemView(pokemon)
                         .task {
-                            if state.pokemons.last == pokemon,
-                               state.totalCount != state.pokemons.count {
-                                await state.getData(100, offset: pokemon.number + 1)
-                            }
+                            await state.getNextPageIfNeeded(last: pokemon)
                         }
                 }
             }
             .overlay(alignment: .bottom) {
                 ProgressView()
                     .frame(height: 60)
-                    .hidden(state.pokemons.count == state.totalCount || !state.isLoading)
+                    .hidden(state.shouldShowBottomProgress)
             }
             .padding(.horizontal, SpaceToken.m)
         }
