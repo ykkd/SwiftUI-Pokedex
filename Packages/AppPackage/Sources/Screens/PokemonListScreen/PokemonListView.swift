@@ -21,6 +21,8 @@ public struct PokemonListView: View {
 
     @State private var state: PokemonListViewState = .init()
 
+    @State private var ids: [UUID] = []
+
     private let input: CommonScreenInput
 
     public init(
@@ -41,6 +43,7 @@ public struct PokemonListView: View {
                     await state.getInitialData()
                 }
                 .refreshable {
+                    try? await Task.sleep(for: .seconds(2.0))
                     await state.refresh()
                 }
         }
@@ -90,29 +93,32 @@ extension PokemonListView {
 
     @ViewBuilder
     private func pokemonImage(_ imageUrl: URL) -> some View {
-        AsyncImage(url: imageUrl) { phase in
-            if let image = phase.image {
-                image
+        RefreshableAsyncImage(id: Binding(
+            get: { state.getImageId(for: imageUrl) },
+            set: { _ in }
+        ),
+        imageUrl: imageUrl
+        ) { image in
+            image
+                .resizable()
+                .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
+                .aspectRatio(AspectToken.square.value, contentMode: .fill)
+                .frame(maxWidth: .infinity)
+        } placeholder: {
+            CenteringView {
+                Image(.pokeBall)
                     .resizable()
-                    .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
-                    .aspectRatio(AspectToken.square.value, contentMode: .fill)
-                    .frame(maxWidth: .infinity)
-            } else if phase.error != nil {
-                CenteringView {
-                    Image(systemSymbol: .xmarkOctagonFill)
-                        .resizable()
-                        .frame(width: 16, height: 16)
-                }
-                .frame(maxWidth: .infinity)
-                .aspectRatio(AspectToken.square.value, contentMode: .fill)
-            } else {
-                CenteringView {
-                    Image(.pokeBall)
-                        .resizable()
-                }
-                .frame(maxWidth: .infinity)
-                .aspectRatio(AspectToken.square.value, contentMode: .fill)
             }
+            .frame(maxWidth: .infinity)
+            .aspectRatio(AspectToken.square.value, contentMode: .fill)
+        } errorView: { _ in
+            CenteringView {
+                Image(systemSymbol: .xmarkOctagonFill)
+                    .resizable()
+                    .frame(width: 16, height: 16)
+            }
+            .frame(maxWidth: .infinity)
+            .aspectRatio(AspectToken.square.value, contentMode: .fill)
         }
     }
 
@@ -143,4 +149,51 @@ extension PokemonListView {
             withNavigation: true
         )
     )
+}
+
+// MARK: - RefreshableAsyncImage
+public struct RefreshableAsyncImage<C: View, P: View, E: View>: View {
+
+    public let content: (Image) -> C
+    public let placeholder: (() -> P)?
+    public let errorView: ((any Error) -> E)?
+
+    private let imageUrl: URL
+
+    @Binding private var id: UUID
+
+    public init(
+        id: Binding<UUID>,
+        imageUrl: URL,
+        content: @escaping (Image) -> C,
+        placeholder: (() -> P)?,
+        errorView: ((any Error) -> E)?
+    ) {
+        _id = id
+        self.imageUrl = imageUrl
+        self.content = content
+        self.placeholder = placeholder
+        self.errorView = errorView
+    }
+
+    public var body: some View {
+        AsyncImage(url: imageUrl) { phase in
+            if let image = phase.image {
+                content(image)
+            } else if let error = phase.error {
+                if let errorView {
+                    errorView(error)
+                } else {
+                    EmptyView()
+                }
+            } else {
+                if let placeholder {
+                    placeholder()
+                } else {
+                    EmptyView()
+                }
+            }
+        }
+        .id(id)
+    }
 }

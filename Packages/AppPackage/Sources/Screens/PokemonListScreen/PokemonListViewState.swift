@@ -39,6 +39,8 @@ final class PokemonListViewState {
         }
     }
 
+    private(set) var imageIds: [URL: UUID] = [:]
+
     var shouldShowBottomProgress: Bool {
         guard totalCount != .zero else {
             return false
@@ -61,7 +63,10 @@ final class PokemonListViewState {
     }
 
     func refresh() async {
-        await getInitialData()
+        for url in imageIds.keys {
+            imageIds[url] = .init()
+        }
+//        await getInitialData()
     }
 
     func getNextPageIfNeeded(last pokemon: Pokemon) async {
@@ -70,6 +75,14 @@ final class PokemonListViewState {
             return
         }
         await getData(limitPerPage, offset: pokemon.number + 1)
+    }
+
+    func getImageId(for imageUrl: URL) -> UUID {
+        if imageIds[imageUrl] == nil {
+            let id = UUID()
+            imageIds[imageUrl] = id
+        }
+        return imageIds[imageUrl]!
     }
 }
 
