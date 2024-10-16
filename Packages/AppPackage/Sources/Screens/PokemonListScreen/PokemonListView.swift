@@ -101,7 +101,7 @@ public struct PokemonListView: View {
                 }
                 .padding(.horizontal, SpaceToken.m)
             }
-            .navigationTitle("Pokedex")
+            .navigationTitle(RootTab.pokemonList.navigationTitle)
             .background(Color(.systemBackgroundSecondary))
         }
         .task {
