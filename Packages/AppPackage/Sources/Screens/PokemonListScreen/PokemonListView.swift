@@ -38,7 +38,7 @@ public struct PokemonListView: View {
             let itemCount = 3
             let columns: [GridItem] = Array(repeating: item, count: itemCount)
 
-            ScrollView {
+            ScrollView(.vertical) {
                 LazyVGrid(columns: columns, spacing: SpaceToken.s) {
                     ForEach(state.pokemons) { pokemon in
                         VStack(spacing: SpaceToken.s) {
@@ -101,6 +101,7 @@ public struct PokemonListView: View {
                 }
                 .padding(.horizontal, SpaceToken.m)
             }
+            .navigationTitle("Pokedex")
             .background(Color(.systemBackgroundSecondary))
         }
         .task {
