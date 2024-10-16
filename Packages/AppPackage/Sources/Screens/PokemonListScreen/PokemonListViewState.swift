@@ -22,10 +22,14 @@ final class PokemonListViewState {
 
     private(set) var pokemons: [Pokemon] = []
 
+    private(set) var isLoading = false
+
     init() {}
 
     func getData(_ limit: Int, offset: Int) async {
+        defer { isLoading = false }
         do {
+            isLoading = true
             let data = try await getPokemonListUseCase.execute(limit, offset: offset)
             totalCount = data.totalCount
             // 新しいポケモンを追加

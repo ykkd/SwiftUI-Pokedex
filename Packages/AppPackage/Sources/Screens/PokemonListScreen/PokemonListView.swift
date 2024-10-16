@@ -12,6 +12,7 @@ import Router
 import SwiftUI
 private import DesignSystem
 private import SFSafeSymbols
+private import ScreenExtension
 
 // MARK: - PokemonListView
 public struct PokemonListView: View {
@@ -55,11 +56,18 @@ extension PokemonListView {
             LazyVGrid(columns: columns, spacing: SpaceToken.s) {
                 ForEach(state.pokemons) { pokemon in
                     itemView(pokemon)
-                        .padding(SpaceToken.s)
-                        .aspectRatio(AspectToken.square.value, contentMode: .fit)
-                        .background(Color(.systemBackground))
-                        .cornerRadius(RadiusToken.l)
+                        .task {
+                            if state.pokemons.last == pokemon,
+                               state.totalCount != state.pokemons.count {
+                                await state.getData(100, offset: pokemon.number + 1)
+                            }
+                        }
                 }
+            }
+            .overlay(alignment: .bottom) {
+                ProgressView()
+                    .frame(height: 60)
+                    .hidden(state.pokemons.count == state.totalCount || !state.isLoading)
             }
             .padding(.horizontal, SpaceToken.m)
         }
@@ -74,6 +82,10 @@ extension PokemonListView {
             Divider()
             pokemonInformation(pokemon)
         }
+        .padding(SpaceToken.s)
+        .aspectRatio(AspectToken.square.value, contentMode: .fit)
+        .background(Color(.systemBackground))
+        .cornerRadius(RadiusToken.l)
     }
 
     @ViewBuilder
