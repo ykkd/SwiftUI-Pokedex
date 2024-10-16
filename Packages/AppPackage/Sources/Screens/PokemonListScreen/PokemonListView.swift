@@ -37,7 +37,11 @@ public struct PokemonListView: View {
             withNavigation: input.withNavigation
         ) {
             content()
+                .when(state.pokemons.isEmpty) { _ in
+                    emptyView()
+                }
                 .task {
+                    try? await Task.sleep(for: .seconds(2.0))
                     await state.getInitialData()
                 }
                 .refreshable {
@@ -137,9 +141,35 @@ extension PokemonListView {
         CenteringView {
             Image(.pokeBall)
                 .resizable()
+                .frame(width: 64, height: 64)
         }
         .frame(maxWidth: .infinity)
         .aspectRatio(AspectToken.square.value, contentMode: .fill)
+    }
+    
+    private func emptyView() -> some View {
+        GeometryReader { geometry in
+            ScrollView {
+                CenteringView {
+                    Image(.pokeBall)
+                        .resizable()
+                        .frame(width: 64, height: 64)
+                        .rotationEffect(.degrees(state.isEmptyViewAnimating ? 360 : 0))
+                        .animation(
+                            .linear(duration: 0.5).repeatForever(autoreverses: false),
+                            value: state.isLoading
+                        )
+                        .task {
+                            try? await Task.sleep(for: .seconds(0.2))
+                            state.updateIsEmptyViewAnimating(true)
+                        }
+                }
+                .frame(width: geometry.size.width, height: geometry.size.height)
+            }
+            .refreshable {
+                await state.refresh()
+            }
+        }
     }
 }
 
