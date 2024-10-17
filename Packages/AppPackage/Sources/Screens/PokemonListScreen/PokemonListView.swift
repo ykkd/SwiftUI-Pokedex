@@ -43,9 +43,6 @@ public struct PokemonListView: View {
                 .task {
                     await state.getInitialData()
                 }
-                .refreshable {
-                    await state.refresh()
-                }
         }
     }
 }
@@ -58,22 +55,24 @@ extension PokemonListView {
         let itemCount = 3
         let columns: [GridItem] = Array(repeating: item, count: itemCount)
 
-        ScrollView(.vertical) {
-            LazyVGrid(columns: columns, spacing: SpaceToken.s) {
-                ForEach(state.pokemons) { pokemon in
-                    itemView(pokemon)
-                        .task {
-                            await state.getNextPageIfNeeded(last: pokemon)
-                        }
-                }
+        LazyVGrid(columns: columns, spacing: SpaceToken.s) {
+            ForEach(state.pokemons) { pokemon in
+                itemView(pokemon)
+                    .task {
+                        await state.getNextPageIfNeeded(last: pokemon)
+                    }
             }
-            .overlay(alignment: .bottom) {
-                ProgressView()
-                    .frame(height: 60)
-                    .hidden(state.shouldShowBottomProgress)
-            }
-            .padding(.horizontal, SpaceToken.m)
         }
+        .overlay(alignment: .bottom) {
+            ProgressView()
+                .frame(height: 60)
+                .hidden(state.shouldShowBottomProgress)
+        }
+        .padding(.horizontal, SpaceToken.m)
+        .refreshableScrollView(spaceName: "PokemonList") {
+            await state.refresh()
+        }
+        .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(RootTab.pokemonList.navigationTitle)
         .background(Color(.systemBackgroundSecondary))
     }
@@ -148,14 +147,12 @@ extension PokemonListView {
 
     private func emptyView() -> some View {
         GeometryReader { geometry in
-            ScrollView {
-                CenteringView {
-                    ProgressView()
-                        .frame(width: 64, height: 64)
-                }
-                .frame(width: geometry.size.width, height: geometry.size.height)
+            CenteringView {
+                ProgressView()
+                    .frame(width: 64, height: 64)
             }
-            .refreshable {
+            .frame(width: geometry.size.width, height: geometry.size.height)
+            .refreshableScrollView(spaceName: "PokemonListEmptyState") {
                 await state.refresh()
             }
         }
