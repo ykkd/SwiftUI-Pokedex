@@ -1,4 +1,4 @@
-# - Note:known_move and known_move_type's type is fixed. PokemonDetail's held_item's type is fixed. PokemonDetail's sprite value is removed.
+# - Note: known_move and known_move_type's type is fixed. PokemonDetail's held_item's type is fixed. PokemonDetail's sprite value is removed.
 openapi: 3.1.0
 info:
   title: PokéAPI

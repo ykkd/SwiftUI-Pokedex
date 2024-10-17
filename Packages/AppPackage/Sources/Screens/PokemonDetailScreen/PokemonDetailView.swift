@@ -52,7 +52,18 @@ public struct PokemonDetailView: View {
 extension PokemonDetailView {
 
     @ViewBuilder
-    private func content() -> some View {}
+    private func content() -> some View {
+        LazyVStack {
+            EmptyView()
+        }
+        .padding(.horizontal, SpaceToken.m)
+        .refreshableScrollView(spaceName: "PokemonDetail") {
+            await state.refresh()
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(state.pokemonDetail?.name ?? "")
+        .background(Color(.systemBackgroundSecondary))
+    }
 }
 
 extension PokemonDetailView {
