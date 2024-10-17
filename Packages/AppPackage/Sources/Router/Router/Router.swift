@@ -58,3 +58,16 @@ extension Router {
         }
     }
 }
+
+extension Router {
+
+    public func buildTabView(_ tab: RootTab) -> some View {
+        switch tab {
+        case .pokemonList:
+            rootViewContainer.view(
+                Router(isPresented: .init(.constant(.pokemonList))),
+                .init(withNavigation: true)
+            )
+        }
+    }
+}

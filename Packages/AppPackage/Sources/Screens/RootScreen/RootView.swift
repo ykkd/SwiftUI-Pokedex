@@ -37,14 +37,11 @@ public struct RootView: View {
             withNavigation: input.withNavigation
         ) {
             TabView(selection: $selectedTab) {
-                pokemonListViewContainer.view(
-                    Router(isPresented: .init(.constant(.pokemonList))),
-                    .init(withNavigation: true)
-                )
-                .tag(RootTab.pokemonList)
-                .tabItem {
-                    Image(systemSymbol: .squareGrid2x2Fill)
-                }
+                router.buildTabView(.pokemonList)
+                    .tag(RootTab.pokemonList)
+                    .tabItem {
+                        Image(systemSymbol: .squareGrid2x2Fill)
+                    }
             }
             .tint(Color(.labelPrimary))
         }
