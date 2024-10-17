@@ -39,7 +39,7 @@ public struct PokemonDetailView: View {
             withNavigation: input.withNavigation
         ) {
             content()
-                .when(true) { _ in
+                .when(state.shouldShowEmptyView) { _ in
                     emptyView()
                 }
                 .task {
@@ -51,9 +51,8 @@ public struct PokemonDetailView: View {
 
 extension PokemonDetailView {
 
-    private func content() -> some View {
-        EmptyView()
-    }
+    @ViewBuilder
+    private func content() -> some View {}
 }
 
 extension PokemonDetailView {
@@ -66,7 +65,7 @@ extension PokemonDetailView {
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .refreshableScrollView(spaceName: "PokemonDetailEmptyState") {
-                // TODO: implement
+                await state.refresh()
             }
         }
     }

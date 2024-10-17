@@ -17,8 +17,6 @@ import Logger
 @Observable
 final class PokemonDetailViewState {
 
-    let pokemonNumber: Int
-
     @ObservationIgnored
     @Dependency(\.mainLogger) private var logger
 
@@ -33,6 +31,12 @@ final class PokemonDetailViewState {
 
     private(set) var pokemonDetail: PokemonDetail?
 
+    let pokemonNumber: Int
+
+    var shouldShowEmptyView: Bool {
+        pokemonDetail == nil
+    }
+
     init(pokemonNumber: Int) {
         self.pokemonNumber = pokemonNumber
     }
@@ -46,5 +50,9 @@ final class PokemonDetailViewState {
         } catch {
             // TODO: implement
         }
+    }
+
+    func refresh() async {
+        await getPokemonDetail()
     }
 }

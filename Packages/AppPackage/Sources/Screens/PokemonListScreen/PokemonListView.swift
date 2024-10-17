@@ -37,7 +37,7 @@ public struct PokemonListView: View {
             withNavigation: input.withNavigation
         ) {
             content()
-                .when(state.pokemons.isEmpty) { _ in
+                .when(state.shouldShowEmptyView) { _ in
                     emptyView()
                 }
                 .task {
