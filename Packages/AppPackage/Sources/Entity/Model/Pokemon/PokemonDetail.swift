@@ -46,18 +46,18 @@ extension PokemonDetail {
 
     public struct Information {
 
-        public let types: [Type]
+        public let types: [InfoType]
 
-        public init(types: [Type]) {
+        public init(types: [InfoType]) {
             self.types = types
         }
     }
 }
 
-// MARK: - PokemonDetail.Information.`Type`
+// MARK: - PokemonDetail.Information.InfoType
 extension PokemonDetail.Information {
 
-    public enum `Type` {
+    public enum InfoType {
         case pokemonTypes([PokemonType])
         case height(Float)
         case weight(Float)
