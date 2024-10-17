@@ -54,14 +54,22 @@ extension PokemonDetailView {
     @ViewBuilder
     private func content() -> some View {
         LazyVStack {
-            EmptyView()
+            ForEach(state.sections, id: \.self) { section in
+                switch section {
+                case .mainVisual:
+                    EmptyView()
+                case .description:
+                    EmptyView()
+                case .information:
+                    EmptyView()
+                }
+            }
         }
         .padding(.horizontal, SpaceToken.m)
         .refreshableScrollView(spaceName: "PokemonDetail") {
             await state.refresh()
         }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle(state.pokemonDetail?.name ?? "")
         .background(Color(.systemBackgroundSecondary))
     }
 }

@@ -41,6 +41,10 @@ final class PokemonDetailViewState {
         pokemonDetail == nil
     }
 
+    var sections: [PokemonDetailViewSection] {
+        [.mainVisual, .description, .information]
+    }
+
     init(pokemonNumber: Int) {
         self.pokemonNumber = pokemonNumber
     }
