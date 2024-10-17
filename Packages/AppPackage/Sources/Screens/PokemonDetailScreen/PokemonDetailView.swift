@@ -88,7 +88,9 @@ extension PokemonDetailView {
             .refreshableScrollView(spaceName: "PokemonDetail") {
                 await state.refresh()
             }
-            .navigationBarTitleDisplayMode(.inline)
+            .naviBarLeadingButton(type: input.naviBarLeadingButtonType) {
+                router.dismiss()
+            }
             .background(Color(.systemBackgroundSecondary))
         } else {
             EmptyView()

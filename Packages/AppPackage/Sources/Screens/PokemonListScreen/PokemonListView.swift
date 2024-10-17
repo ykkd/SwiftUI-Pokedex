@@ -165,7 +165,8 @@ extension PokemonListView {
             isPresented: .constant(.root)
         ),
         input: .init(
-            withNavigation: true
+            withNavigation: true,
+            naviBarLeadingButtonType: nil
         )
     )
 }
