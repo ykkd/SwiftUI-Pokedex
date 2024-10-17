@@ -16,14 +16,14 @@ public struct PokemonDetailViewContainer: Sendable {
     public var view: @MainActor @Sendable (
         _ router: BaseRouter,
         _ input: CommonScreenInput,
-        _ pokemon: Pokemon
+        _ pokemonNumber: Int
     ) -> AnyView
 
     public init(
         view: @escaping @MainActor @Sendable (
             _ router: BaseRouter,
             _ input: CommonScreenInput,
-            _ pokemon: Pokemon
+            _ pokemonNumber: Int
         ) -> AnyView
     ) {
         self.view = view

@@ -14,9 +14,9 @@ import SwiftUI
 extension PokemonDetailViewContainer: @retroactive DependencyKey {
 
     public static var liveValue: Self {
-        .init { router, input, pokemon in
+        .init { router, input, pokemonNumber in
             AnyView(
-                PokemonDetailView(router: router as! Router, input: input, pokemon: pokemon)
+                PokemonDetailView(router: router as! Router, input: input, pokemonNumber: pokemonNumber)
             )
         }
     }

@@ -16,7 +16,7 @@ import Logger
 @Observable
 final class PokemonDetailViewState {
 
-    let pokemon: Pokemon
+    let pokemonNumber: Int
 
     @ObservationIgnored
     @Dependency(\.mainLogger) private var logger
@@ -27,7 +27,7 @@ final class PokemonDetailViewState {
         }
     }
 
-    init(pokemon: Pokemon) {
-        self.pokemon = pokemon
+    init(pokemonNumber: Int) {
+        self.pokemonNumber = pokemonNumber
     }
 }

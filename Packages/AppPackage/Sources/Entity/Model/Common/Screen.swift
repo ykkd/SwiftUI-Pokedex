@@ -11,6 +11,7 @@ import Foundation
 public enum Screen: Equatable, Hashable {
     case root
     case pokemonList
+    case pokemonDetail(number: Int)
 }
 
 // MARK: Identifiable

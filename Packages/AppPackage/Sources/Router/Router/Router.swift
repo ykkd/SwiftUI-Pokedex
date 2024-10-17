@@ -16,6 +16,7 @@ public final class Router: BaseRouter {
 
     @Dependency(\.rootViewContainer) private var rootViewContainer
     @Dependency(\.pokemonListViewContainer) private var pokemonListViewContainer
+    @Dependency(\.pokemonDetailViewContainer) private var pokemonDetailViewContainer
 
     override public func view(
         _ screen: Screen,
@@ -42,6 +43,12 @@ extension Router {
             pokemonListViewContainer.view(
                 router(transition: transition),
                 CommonScreenInput(withNavigation: transition.withNavigation)
+            )
+        case let .pokemonDetail(number):
+            pokemonDetailViewContainer.view(
+                router(transition: transition),
+                CommonScreenInput(withNavigation: transition.withNavigation),
+                number
             )
         }
     }

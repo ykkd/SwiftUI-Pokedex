@@ -26,11 +26,11 @@ public struct PokemonDetailView: View {
     public init(
         router: Router,
         input: CommonScreenInput,
-        pokemon: Pokemon
+        pokemonNumber: Int
     ) {
         _router = StateObject(wrappedValue: router)
         self.input = input
-        state = .init(pokemon: pokemon)
+        state = .init(pokemonNumber: pokemonNumber)
     }
 
     public var body: some View {
