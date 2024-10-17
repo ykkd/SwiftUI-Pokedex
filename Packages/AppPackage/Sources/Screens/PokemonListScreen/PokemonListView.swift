@@ -23,12 +23,16 @@ public struct PokemonListView: View {
 
     private let input: CommonScreenInput
 
+    private let trigger: TabDoubleTapTrigger?
+
     public init(
         router: Router,
-        input: CommonScreenInput
+        input: CommonScreenInput,
+        trigger: TabDoubleTapTrigger?
     ) {
         _router = StateObject(wrappedValue: router)
         self.input = input
+        self.trigger = trigger
     }
 
     public var body: some View {
@@ -59,24 +63,32 @@ extension PokemonListView {
         let itemCount = 3
         let columns: [GridItem] = Array(repeating: item, count: itemCount)
 
-        ScrollView(.vertical) {
-            LazyVGrid(columns: columns, spacing: SpaceToken.s) {
-                ForEach(state.pokemons) { pokemon in
-                    itemView(pokemon)
-                        .task {
-                            await state.getNextPageIfNeeded(last: pokemon)
-                        }
+        ScrollViewReader { proxy in
+            ScrollView(.vertical) {
+                LazyVGrid(columns: columns, spacing: SpaceToken.s) {
+                    ForEach(state.pokemons) { pokemon in
+                        itemView(pokemon)
+                            .task {
+                                await state.getNextPageIfNeeded(last: pokemon)
+                            }
+                    }
+                }
+                .overlay(alignment: .bottom) {
+                    ProgressView()
+                        .frame(height: 60)
+                        .hidden(state.shouldShowBottomProgress)
+                }
+                .id("id")
+                .padding(.horizontal, SpaceToken.m)
+            }
+            .onTrigger(of: trigger) {
+                withAnimation {
+                    proxy.scrollTo("id", anchor: .top)
                 }
             }
-            .overlay(alignment: .bottom) {
-                ProgressView()
-                    .frame(height: 60)
-                    .hidden(state.shouldShowBottomProgress)
-            }
-            .padding(.horizontal, SpaceToken.m)
+            .navigationTitle(RootTab.pokemonList.navigationTitle)
+            .background(Color(.systemBackgroundSecondary))
         }
-        .navigationTitle(RootTab.pokemonList.navigationTitle)
-        .background(Color(.systemBackgroundSecondary))
     }
 
     private func itemView(_ pokemon: Pokemon) -> some View {
@@ -146,7 +158,7 @@ extension PokemonListView {
         .frame(maxWidth: .infinity)
         .aspectRatio(AspectToken.square.value, contentMode: .fill)
     }
-    
+
     private func emptyView() -> some View {
         GeometryReader { geometry in
             ScrollView {
@@ -180,6 +192,7 @@ extension PokemonListView {
         ),
         input: .init(
             withNavigation: true
-        )
+        ),
+        trigger: nil
     )
 }

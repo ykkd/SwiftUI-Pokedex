@@ -38,7 +38,7 @@ final class PokemonListViewState {
             logger.log(.debug, message: "isLoading: \(isLoading)")
         }
     }
-    
+
     private(set) var isEmptyViewAnimating = false
 
     var shouldShowBottomProgress: Bool {
@@ -74,7 +74,7 @@ final class PokemonListViewState {
         }
         await getData(limitPerPage, offset: pokemon.number + 1)
     }
-    
+
     func updateIsEmptyViewAnimating(_ value: Bool) {
         isEmptyViewAnimating = value
     }

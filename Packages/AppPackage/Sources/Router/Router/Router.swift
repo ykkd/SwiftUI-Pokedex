@@ -41,7 +41,8 @@ extension Router {
         case .pokemonList:
             pokemonListViewContainer.view(
                 router(transition: transition),
-                CommonScreenInput(withNavigation: transition.withNavigation)
+                CommonScreenInput(withNavigation: transition.withNavigation),
+                nil
             )
         }
     }
@@ -61,12 +62,13 @@ extension Router {
 
 extension Router {
 
-    public func buildTabView(_ tab: RootTab) -> some View {
+    public func buildTabView(_ tab: RootTab, trigger: TabDoubleTapTrigger?) -> AnyView {
         switch tab {
         case .pokemonList:
-            rootViewContainer.view(
+            pokemonListViewContainer.view(
                 Router(isPresented: .init(.constant(.pokemonList))),
-                .init(withNavigation: true)
+                .init(withNavigation: true),
+                trigger
             )
         }
     }

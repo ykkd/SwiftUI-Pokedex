@@ -14,9 +14,13 @@ import SwiftUI
 extension PokemonListViewContainer: @retroactive DependencyKey {
 
     public static var liveValue: Self {
-        .init { router, input in
+        .init { router, input, trigger in
             AnyView(
-                PokemonListView(router: router as! Router, input: input)
+                PokemonListView(
+                    router: router as! Router,
+                    input: input,
+                    trigger: trigger
+                )
             )
         }
     }

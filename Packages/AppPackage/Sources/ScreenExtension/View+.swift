@@ -5,6 +5,7 @@
 //  Created by ykkd on 2024/10/16.
 //
 
+import Entity
 import SwiftUI
 
 extension View {
@@ -29,10 +30,10 @@ extension View {
 extension View {
 
     public func onTrigger(
-        of trigger: Trigger?,
+        of trigger: TabDoubleTapTrigger?,
         perform: @escaping () -> Void
     ) -> some View {
-        onChange(of: trigger?.key) { _ in
+        onChange(of: trigger) { _, _ in
             perform()
         }
     }

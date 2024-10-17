@@ -13,6 +13,7 @@ import SwiftUI
 private import SFSafeSymbols
 private import DesignSystem
 
+// MARK: - RootView
 public struct RootView: View {
 
     @Dependency(\.pokemonListViewContainer) private var pokemonListViewContainer
@@ -20,6 +21,10 @@ public struct RootView: View {
     @StateObject private var router: Router
 
     @State private var selectedTab = RootTab.pokemonList
+
+    @State private var tabDoubleTapTriggers: [RootTab: TabDoubleTapTrigger] = .init(
+        uniqueKeysWithValues: RootTab.allCases.map { ($0, .init()) }
+    )
 
     private let input: CommonScreenInput
 
@@ -37,7 +42,7 @@ public struct RootView: View {
             withNavigation: input.withNavigation
         ) {
             TabView(selection: $selectedTab) {
-                router.buildTabView(.pokemonList)
+                router.buildTabView(.pokemonList, trigger: tabDoubleTapTriggers[.pokemonList])
                     .tag(RootTab.pokemonList)
                     .tabItem {
                         Image(systemSymbol: .squareGrid2x2Fill)
@@ -46,6 +51,13 @@ public struct RootView: View {
             .tint(Color(.labelPrimary))
         }
         .ignoresSafeArea()
+    }
+}
+
+extension RootView {
+
+    private func didDoubleTapTab(for tab: RootTab) {
+        tabDoubleTapTriggers[tab]?.fire()
     }
 }
 
