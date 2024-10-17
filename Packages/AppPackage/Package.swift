@@ -32,6 +32,7 @@ enum Products: String, CaseIterable, PackageAtom {
     case getPokemonListUseCase
     case rootScreen
     case pokemonListScreen
+    case pokemonDetailScreen
     case pokeAPIClientWrapper
     case designSystem
     case screenExtension
@@ -116,6 +117,7 @@ enum Targets: String, CaseIterable, PackageAtom {
     case getPokemonListUseCase
     case rootScreen
     case pokemonListScreen
+    case pokemonDetailScreen
     case pokeAPIClientWrapper
     case designSystem
     case screenExtension
@@ -130,6 +132,7 @@ enum Targets: String, CaseIterable, PackageAtom {
              .getPokemonListUseCase,
              .rootScreen,
              .pokemonListScreen,
+             .pokemonDetailScreen,
              .pokeAPIClientWrapper,
              .designSystem,
              .screenExtension:
@@ -164,7 +167,8 @@ enum Targets: String, CaseIterable, PackageAtom {
         case .getPokemonListUseCase:
             "UseCases/\(capitalizedName)"
         case .rootScreen,
-             .pokemonListScreen:
+             .pokemonListScreen,
+             .pokemonDetailScreen:
             "Screens/\(capitalizedName)"
         case .pokeAPIClientWrapper:
             "Wrappers/\(capitalizedName)"
@@ -211,6 +215,9 @@ enum Targets: String, CaseIterable, PackageAtom {
         case .pokemonListScreen:
             Self.commonDependenciesForScreen + [
                 Targets.getPokemonListUseCase.asDependency,
+            ]
+        case .pokemonDetailScreen:
+            Self.commonDependenciesForScreen + [
             ]
         case .pokeAPIClientWrapper:
             [
