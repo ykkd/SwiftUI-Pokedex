@@ -64,7 +64,7 @@ extension Router {
     public func buildTabView(_ tab: RootTab) -> some View {
         switch tab {
         case .pokemonList:
-            rootViewContainer.view(
+            pokemonListViewContainer.view(
                 Router(isPresented: .init(.constant(.pokemonList))),
                 .init(withNavigation: true)
             )
