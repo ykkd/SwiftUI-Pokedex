@@ -42,6 +42,9 @@ public struct PokemonDetailView: View {
                 .when(true) { _ in
                     emptyView()
                 }
+                .task {
+                    await state.getPokemonDetail()
+                }
         }
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - PokemonDetail
-public struct PokemonDetail {
+public struct PokemonDetail: Sendable {
 
     public let number: Int
 
@@ -44,7 +44,7 @@ public struct PokemonDetail {
 // MARK: PokemonDetail.Information
 extension PokemonDetail {
 
-    public struct Information {
+    public struct Information: Sendable {
 
         public let types: [InfoType]
 
@@ -57,7 +57,7 @@ extension PokemonDetail {
 // MARK: - PokemonDetail.Information.InfoType
 extension PokemonDetail.Information {
 
-    public enum InfoType {
+    public enum InfoType: Sendable {
         case pokemonTypes([PokemonType])
         case height(Float)
         case weight(Float)

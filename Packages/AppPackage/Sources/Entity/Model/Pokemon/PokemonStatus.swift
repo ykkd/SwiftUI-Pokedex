@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - PokemonStatus
-public struct PokemonStatus {
+public struct PokemonStatus: Sendable {
 
     public let type: `Type`
 
@@ -26,7 +26,7 @@ public struct PokemonStatus {
 // MARK: PokemonStatus.`Type`
 extension PokemonStatus {
 
-    public enum `Type`: String {
+    public enum `Type`: String, Sendable {
         case hp
         case attack
         case defense
