@@ -41,7 +41,6 @@ public struct PokemonListView: View {
                     emptyView()
                 }
                 .task {
-                    try? await Task.sleep(for: .seconds(2.0))
                     await state.getInitialData()
                 }
                 .refreshable {
@@ -151,18 +150,8 @@ extension PokemonListView {
         GeometryReader { geometry in
             ScrollView {
                 CenteringView {
-                    Image(.pokeBall)
-                        .resizable()
+                    ProgressView()
                         .frame(width: 64, height: 64)
-                        .rotationEffect(.degrees(state.isEmptyViewAnimating ? 360 : 0))
-                        .animation(
-                            .linear(duration: 0.5).repeatForever(autoreverses: false),
-                            value: state.isEmptyViewAnimating
-                        )
-                        .task {
-                            try? await Task.sleep(for: .seconds(0.2))
-                            state.updateIsEmptyViewAnimating(true)
-                        }
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height)
             }
