@@ -25,3 +25,15 @@ extension View {
         }
     }
 }
+
+extension View {
+
+    public func onTrigger(
+        of trigger: Trigger?,
+        perform: @escaping () -> Void
+    ) -> some View {
+        onChange(of: trigger?.key) { _ in
+            perform()
+        }
+    }
+}
