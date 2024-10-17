@@ -37,6 +37,8 @@ final class PokemonDetailViewState {
 
     let pokemonNumber: Int
 
+    private(set) var isBgAniationStarted: Bool = false
+
     var shouldShowEmptyView: Bool {
         pokemonDetail == nil
     }
@@ -62,5 +64,9 @@ final class PokemonDetailViewState {
 
     func refresh() async {
         await getPokemonDetail()
+    }
+
+    func updateIsBgAniationStarted(_ value: Bool) {
+        isBgAniationStarted = value
     }
 }
