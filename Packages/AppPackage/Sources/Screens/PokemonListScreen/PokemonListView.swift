@@ -79,7 +79,7 @@ extension PokemonListView {
 
     private func itemView(_ pokemon: Pokemon) -> some View {
         Button {
-            // TODO: implement
+            router.push(to: .pokemonDetail(number: pokemon.number))
         } label: {
             VStack(spacing: SpaceToken.s) {
                 pokemonImage(pokemon)
