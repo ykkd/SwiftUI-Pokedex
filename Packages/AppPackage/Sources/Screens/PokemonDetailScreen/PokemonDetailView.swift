@@ -57,7 +57,7 @@ extension PokemonDetailView {
             ForEach(state.sections, id: \.self) { section in
                 switch section {
                 case .mainVisual:
-                    EmptyView()
+                    mainVisual()
                 case .description:
                     EmptyView()
                 case .information:
@@ -71,6 +71,36 @@ extension PokemonDetailView {
         }
         .navigationBarTitleDisplayMode(.inline)
         .background(Color(.systemBackgroundSecondary))
+    }
+}
+
+extension PokemonDetailView {
+
+    @ViewBuilder
+    private func mainVisual() -> some View {
+        if let data = state.pokemonDetail {
+            let size = ScreenSizeCalculator.calculate()
+            ZStack {
+                CenteringView {
+                    Ellipse()
+                        .fill(Color(hex: data.typeHex))
+                        .frame(width: size.width * 0.9, height: size.width * 0.9)
+                        .padding()
+                }
+                CenteringView {
+                    FallbackableAsyncImage(
+                        data.imageUrl,
+                        fallbackUrl: data.subImageUrl) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(AspectToken.square.value, contentMode: .fill)
+                                .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
+                        }
+                }
+            }
+        } else {
+            EmptyView()
+        }
     }
 }
 

@@ -89,7 +89,7 @@ extension PokemonListView {
         }
         .padding(SpaceToken.s)
         .aspectRatio(AspectToken.square.value, contentMode: .fit)
-        .background(Color(.systemBackground))
+        .background(Color(.systemBackgroundPrimary))
         .cornerRadius(RadiusToken.l)
     }
 
@@ -103,9 +103,9 @@ extension PokemonListView {
                     .aspectRatio(AspectToken.square.value, contentMode: .fill)
                     .frame(maxWidth: .infinity)
             } placeholder: {
-                placeholder()
+                placeholder() as! AnyView
             } errorView: { _ in
-                errorView()
+                errorView() as! AnyView
             }
     }
 
