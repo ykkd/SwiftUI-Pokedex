@@ -35,6 +35,7 @@ enum Products: String, CaseIterable, PackageAtom {
     case pokemonDetailScreen
     case pokeAPIClientWrapper
     case designSystem
+    case sharedExtension
     case screenExtension
 
     var targets: [String] {
@@ -120,6 +121,7 @@ enum Targets: String, CaseIterable, PackageAtom {
     case pokemonDetailScreen
     case pokeAPIClientWrapper
     case designSystem
+    case sharedExtension
     case screenExtension
 
     var targetType: TargetType {
@@ -135,6 +137,7 @@ enum Targets: String, CaseIterable, PackageAtom {
              .pokemonDetailScreen,
              .pokeAPIClientWrapper,
              .designSystem,
+             .sharedExtension,
              .screenExtension:
             .production
         }
@@ -158,8 +161,7 @@ enum Targets: String, CaseIterable, PackageAtom {
         case .dependencyContainer,
              .entity,
              .logger,
-             .designSystem,
-             .screenExtension:
+             .designSystem:
             "\(capitalizedName)"
         case .routerCore,
              .router:
@@ -172,55 +174,73 @@ enum Targets: String, CaseIterable, PackageAtom {
             "Screens/\(capitalizedName)"
         case .pokeAPIClientWrapper:
             "Wrappers/\(capitalizedName)"
+        case .sharedExtension,
+             .screenExtension:
+            "Extension/\(capitalizedName)"
         }
     }
 
     var dependencies: [Target.Dependency] {
         switch self {
+        case .sharedExtension:
+            []
         case .entity,
              .screenExtension:
-            []
+            [
+                Targets.sharedExtension.asDependency,
+            ]
         case .designSystem:
             [
+                Targets.sharedExtension.asDependency,
                 Dependencies.refreshable.asDependency(productName: .usePackageName),
             ]
         case .logger:
             [
+                Targets.sharedExtension.asDependency,
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
             ]
         case .dependencyContainer:
             [
+                Targets.sharedExtension.asDependency,
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
                 Targets.entity.asDependency,
                 Targets.routerCore.asDependency,
             ]
         case .routerCore:
             [
+                Targets.sharedExtension.asDependency,
                 Targets.entity.asDependency,
             ]
         case .router:
             [
+                Targets.sharedExtension.asDependency,
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
                 Targets.dependencyContainer.asDependency,
                 Targets.routerCore.asDependency,
             ]
         case .getPokemonListUseCase:
             [
+                Targets.sharedExtension.asDependency,
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
                 Targets.entity.asDependency,
                 Targets.pokeAPIClientWrapper.asDependency,
             ]
         case .rootScreen:
-            Self.commonDependenciesForScreen
+            Self.commonDependenciesForScreen + [
+                Targets.sharedExtension.asDependency,
+            ]
         case .pokemonListScreen:
             Self.commonDependenciesForScreen + [
+                Targets.sharedExtension.asDependency,
                 Targets.getPokemonListUseCase.asDependency,
             ]
         case .pokemonDetailScreen:
             Self.commonDependenciesForScreen + [
+                Targets.sharedExtension.asDependency,
             ]
         case .pokeAPIClientWrapper:
             [
+                Targets.sharedExtension.asDependency,
                 Dependencies.swiftOpenAPIRuntime.asDependency(productName: .specified(name: "OpenAPIRuntime")),
                 Dependencies.swiftOpenAPIUrlSession.asDependency(productName: .specified(name: "OpenAPIURLSession")),
                 Targets.entity.asDependency,
