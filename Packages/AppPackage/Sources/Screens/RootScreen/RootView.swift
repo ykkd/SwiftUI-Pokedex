@@ -5,8 +5,6 @@
 //  Created by ykkd on 2024/10/12.
 //
 
-private import Dependencies
-private import DependencyContainer
 import Entity
 import Router
 import SwiftUI
@@ -14,8 +12,6 @@ private import SFSafeSymbols
 private import DesignSystem
 
 public struct RootView: View {
-
-    @Dependency(\.pokemonListViewContainer) private var pokemonListViewContainer
 
     @StateObject private var router: Router
 
