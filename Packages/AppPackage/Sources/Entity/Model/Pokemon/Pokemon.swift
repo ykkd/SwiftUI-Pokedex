@@ -17,18 +17,20 @@ public struct Pokemon: Sendable, Hashable, Identifiable, Equatable {
 
     public let number: Int
 
-    public let imageUrl: URL
+    public let imageUrl: URL?
+
+    public let subImageUrl: URL?
 
     public init?(
         name: String,
         urlString: String
     ) {
-        guard let number = PokemonNumberGenerator.generate(from: urlString),
-              let imageUrl = PokemonImageURLGenerator.generateImageURL(from: number) else {
+        guard let number = PokemonNumberGenerator.generate(from: urlString) else {
             return nil
         }
         self.name = name
         self.number = number
-        self.imageUrl = imageUrl
+        imageUrl = PokemonImageURLGenerator.generateImageURL(from: number)
+        subImageUrl = PokemonImageURLGenerator.generateSubImageURL(from: number)
     }
 }
