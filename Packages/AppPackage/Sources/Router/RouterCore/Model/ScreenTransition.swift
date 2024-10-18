@@ -5,6 +5,7 @@
 //  Created by ykkd on 2024/10/14.
 //
 
+import Entity
 import Foundation
 
 public enum ScreenTransition {
@@ -21,6 +22,18 @@ public enum ScreenTransition {
         case .sheet,
              .fullScreen:
             true
+        }
+    }
+
+    public var naviBarLeadingButtonType: NaviBarButtonType? {
+        switch self {
+        case .push:
+            .back
+        case .fullScreen:
+            .close
+        case .alert,
+             .sheet:
+            nil
         }
     }
 }

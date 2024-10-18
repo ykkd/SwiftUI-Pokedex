@@ -51,7 +51,8 @@ public struct RootView: View {
             isPresented: .constant(.root)
         ),
         input: .init(
-            withNavigation: true
+            withNavigation: true,
+            naviBarLeadingButtonType: nil
         )
     )
 }

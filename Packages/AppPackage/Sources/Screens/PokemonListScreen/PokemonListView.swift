@@ -37,7 +37,7 @@ public struct PokemonListView: View {
             withNavigation: input.withNavigation
         ) {
             content()
-                .when(state.pokemons.isEmpty) { _ in
+                .when(state.shouldShowEmptyView) { _ in
                     emptyView()
                 }
                 .task {
@@ -79,7 +79,7 @@ extension PokemonListView {
 
     private func itemView(_ pokemon: Pokemon) -> some View {
         Button {
-            // TODO: implement
+            router.push(to: .pokemonDetail(number: pokemon.number))
         } label: {
             VStack(spacing: SpaceToken.s) {
                 pokemonImage(pokemon)
@@ -89,7 +89,7 @@ extension PokemonListView {
         }
         .padding(SpaceToken.s)
         .aspectRatio(AspectToken.square.value, contentMode: .fit)
-        .background(Color(.systemBackground))
+        .background(Color(.systemBackgroundPrimary))
         .cornerRadius(RadiusToken.l)
     }
 
@@ -103,16 +103,16 @@ extension PokemonListView {
                     .aspectRatio(AspectToken.square.value, contentMode: .fill)
                     .frame(maxWidth: .infinity)
             } placeholder: {
-                placeholder()
+                placeholder() as! AnyView
             } errorView: { _ in
-                errorView()
+                errorView() as! AnyView
             }
     }
 
     private func pokemonInformation(_ pokemon: Pokemon) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: SpaceToken.xs) {
-                Text("\(pokemon.name)")
+                Text("\(pokemon.name.initialLetterUppercased())")
                     .fontWithLineHeight(token: .captionTwoSemibold)
                     .foregroundStyle(Color(.labelPrimary))
                     .lineLimit(1)
@@ -165,7 +165,8 @@ extension PokemonListView {
             isPresented: .constant(.root)
         ),
         input: .init(
-            withNavigation: true
+            withNavigation: true,
+            naviBarLeadingButtonType: nil
         )
     )
 }

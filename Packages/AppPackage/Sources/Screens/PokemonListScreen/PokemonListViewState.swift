@@ -39,6 +39,14 @@ final class PokemonListViewState {
         }
     }
 
+    private var limitForRefresh: Int {
+        if pokemons.count != .zero {
+            pokemons.count
+        } else {
+            limitPerPage
+        }
+    }
+
     var shouldShowBottomProgress: Bool {
         guard totalCount != .zero,
               !pokemons.isEmpty else {
@@ -47,12 +55,8 @@ final class PokemonListViewState {
         return pokemons.count == totalCount || !isLoading
     }
 
-    private var limitForRefresh: Int {
-        if pokemons.count != .zero {
-            pokemons.count
-        } else {
-            limitPerPage
-        }
+    var shouldShowEmptyView: Bool {
+        pokemons.isEmpty
     }
 
     init() {}
