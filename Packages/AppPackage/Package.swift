@@ -56,6 +56,7 @@ enum Dependencies: String, CaseIterable, PackageAtom {
     case swiftOpenAPIRuntime = "swift-openapi-runtime"
     case swiftOpenAPIUrlSession = "swift-openapi-urlsession"
     case sfSafeSymbols = "SFSafeSymbols"
+    case refreshable = "Refreshable"
 
     var value: Package.Dependency {
         switch self {
@@ -82,6 +83,10 @@ enum Dependencies: String, CaseIterable, PackageAtom {
             )
         case .sfSafeSymbols:
             .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "5.3.0")
+            )
+        case .refreshable:
+            .package(
+                url: "https://github.com/c-villain/Refreshable.git", .upToNextMajor(from: "0.2.0")
             )
         }
     }
@@ -169,9 +174,12 @@ enum Targets: String, CaseIterable, PackageAtom {
     var dependencies: [Target.Dependency] {
         switch self {
         case .entity,
-             .designSystem,
              .screenExtension:
             []
+        case .designSystem:
+            [
+                Dependencies.refreshable.asDependency(productName: .usePackageName),
+            ]
         case .logger:
             [
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),

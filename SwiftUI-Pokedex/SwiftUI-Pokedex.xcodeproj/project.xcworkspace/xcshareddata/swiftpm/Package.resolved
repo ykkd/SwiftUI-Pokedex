@@ -1,5 +1,5 @@
 {
-  "originHash" : "d4bcdea0b5ab0207966c7c10e941cd3ea096bff27ab2136875ac4658c81a0599",
+  "originHash" : "7e6b30b551c132dc1d144c92fcf4de8926582ffa10ca60ae9fc2c3a58efb4ada",
   "pins" : [
     {
       "identity" : "collectionconcurrencykit",
@@ -35,6 +35,15 @@
       "state" : {
         "revision" : "35dd374038497a8118d89300851861fb40c36209",
         "version" : "3.2.2"
+      }
+    },
+    {
+      "identity" : "refreshable",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/c-villain/Refreshable.git",
+      "state" : {
+        "revision" : "2e62fe4f4aab06ccbbe466cec0618c3e69d4c5f1",
+        "version" : "0.2.0"
       }
     },
     {
