@@ -68,7 +68,7 @@ extension PokemonDetailView {
                             case .status:
                                 status(data: data)
                             case .information:
-                                EmptyView()
+                                information(data: data)
                             }
                         }
                         Spacer()
@@ -232,6 +232,55 @@ extension PokemonDetailView {
 
 extension PokemonDetailView {
 
+    @ViewBuilder
+    private func information(data: PokemonDetail) -> some View {
+        VStack {
+            ForEach(data.information.infoTypes, id: \.self) { type in
+                switch type {
+                case let .pokemonTypes(pokemonType):
+                    informationItemView(symbol: .dropHalffull, title: "Type", description: "\(pokemonType.compactMap(\.name))")
+                case let .height(height):
+                    informationItemView(symbol: .dropHalffull, title: "Type", description: "Test")
+                case let .weight(weight):
+                    informationItemView(symbol: .dropHalffull, title: "Type", description: "Test")
+                case let .firstAbility(ability):
+                    informationItemView(symbol: .dropHalffull, title: "Type", description: "Test")
+                case let .secondAbility(ability):
+                    informationItemView(symbol: .dropHalffull, title: "Type", description: "Test")
+                case let .hiddenAblity(ablity):
+                    informationItemView(symbol: .dropHalffull, title: "Type", description: "Test")
+                }
+            }
+        }
+    }
+
+    private func informationItemView(
+        symbol: SFSymbol,
+        title: String,
+        description: String
+    ) -> some View {
+        HStack {
+            Group {
+                HStack(spacing: SpaceToken.l) {
+                    Image(systemSymbol: symbol)
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .foregroundStyle(Color(.labelPrimary))
+                    Text(title)
+                        .fontWithLineHeight(token: .bodyRegular)
+                        .lineLimit(1)
+                }
+                Spacer()
+                    .frame(minWidth: .infinity)
+                Text(description)
+            }
+            .padding(.horizontal, SpaceToken.l)
+        }
+    }
+}
+
+extension PokemonDetailView {
+
     private func emptyView() -> some View {
         GeometryReader { geometry in
             CenteringView {
@@ -286,6 +335,26 @@ struct MetaBallView: View {
             ) {
                 progress = 1.0
             }
+        }
+    }
+}
+
+// MARK: - PokemonDetail.Information.InfoType + Identifiable
+extension PokemonDetail.Information.InfoType: Identifiable {
+    public var id: String {
+        switch self {
+        case let .pokemonTypes(types):
+            "pokemonTypes-\(types)"
+        case let .height(height):
+            "height-\(height)"
+        case let .weight(weight):
+            "weight-\(weight)"
+        case let .firstAbility(ability):
+            "firstAbility-\(ability)"
+        case let .secondAbility(ability):
+            "secondAbility-\(ability ?? "")"
+        case let .hiddenAblity(ability):
+            "hiddenAbility-\(ability ?? "")"
         }
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 import SharedExtension
 
-public enum PokemonType: String, Sendable {
+public enum PokemonType: String, Sendable, Hashable {
     case normal
     case fighting
     case flying

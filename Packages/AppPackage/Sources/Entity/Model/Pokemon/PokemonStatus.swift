@@ -10,8 +10,8 @@ import Foundation
 // MARK: - PokemonStatus
 public struct PokemonStatus: Sendable, Identifiable, Hashable {
 
-    public var id: UUID {
-        .init()
+    public var id: String {
+        "\(type.rawValue)-\(value)"
     }
 
     public let type: `Type`

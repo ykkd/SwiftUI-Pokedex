@@ -136,12 +136,12 @@ extension PokeAPIClientWrapper {
         }
 
         if let hiddenAbility = json.abilities.first(where: { $0.is_hidden == true }) {
-            types.append(.hiddenAbblity(hiddenAbility.ability.name.initialLetterUppercased()))
+            types.append(.hiddenAblity(hiddenAbility.ability.name.initialLetterUppercased()))
         } else {
-            types.append(.hiddenAbblity(nil))
+            types.append(.hiddenAblity(nil))
         }
 
-        return .init(types: types)
+        return .init(infoTypes: types)
     }
 
     private func generateStatus(

@@ -44,12 +44,12 @@ public struct PokemonDetail: Sendable {
 // MARK: PokemonDetail.Information
 extension PokemonDetail {
 
-    public struct Information: Sendable {
+    public struct Information: Sendable, Hashable {
 
-        public let types: [InfoType]
+        public let infoTypes: [InfoType]
 
-        public init(types: [InfoType]) {
-            self.types = types
+        public init(infoTypes: [InfoType]) {
+            self.infoTypes = infoTypes
         }
     }
 }
@@ -57,12 +57,12 @@ extension PokemonDetail {
 // MARK: - PokemonDetail.Information.InfoType
 extension PokemonDetail.Information {
 
-    public enum InfoType: Sendable {
+    public enum InfoType: Sendable, Hashable {
         case pokemonTypes([PokemonType])
         case height(Float)
         case weight(Float)
         case firstAbility(String)
         case secondAbility(String?)
-        case hiddenAbblity(String?)
+        case hiddenAblity(String?)
     }
 }
