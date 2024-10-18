@@ -7,7 +7,8 @@
 
 import Foundation
 
-public struct PokemonAggregate {
+// MARK: - PokemonAggregate
+public struct PokemonAggregate: Sendable {
 
     public let totalCount: Int
     public let pokemons: [Pokemon]
@@ -15,5 +16,12 @@ public struct PokemonAggregate {
     public init(totalCount: Int, pokemons: [Pokemon]) {
         self.totalCount = totalCount
         self.pokemons = pokemons
+    }
+}
+
+extension PokemonAggregate {
+
+    public static var empty: Self {
+        .init(totalCount: 0, pokemons: [])
     }
 }

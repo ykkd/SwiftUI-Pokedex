@@ -9,4 +9,11 @@ import Foundation
 
 enum RootTab: Int {
     case pokemonList = 0
+
+    var navigationTitle: String {
+        switch self {
+        case .pokemonList:
+            "Pokedex"
+        }
+    }
 }

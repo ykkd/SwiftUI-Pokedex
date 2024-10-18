@@ -1,5 +1,5 @@
 //
-//  PokemonListScreen.swift
+//  PokemonListView.swift
 //  AppPackage
 //
 //  Created by ykkd on 2024/10/15.
@@ -14,6 +14,8 @@ import SwiftUI
 public struct PokemonListView: View {
 
     @StateObject private var router: Router
+
+    @State private var state: PokemonListViewState = .init()
 
     private let input: CommonScreenInput
 
@@ -30,7 +32,12 @@ public struct PokemonListView: View {
             router: router,
             withNavigation: input.withNavigation
         ) {
-            Text("PokemonListView")
+            List(state.pokemons) { pokemon in
+                Text("\(pokemon.name)")
+            }
+        }
+        .task {
+            await state.getData(100, offset: 0)
         }
     }
 }

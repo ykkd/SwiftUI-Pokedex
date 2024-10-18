@@ -180,9 +180,12 @@ enum Targets: String, CaseIterable, PackageAtom {
                 Targets.entity.asDependency,
                 Targets.pokeAPIClientWrapper.asDependency,
             ]
-        case .rootScreen,
-             .pokemonListScreen:
+        case .rootScreen:
             Self.commonDependenciesForScreen
+        case .pokemonListScreen:
+            Self.commonDependenciesForScreen + [
+                Targets.getPokemonListUseCase.asDependency,
+            ]
         case .pokeAPIClientWrapper:
             [
                 Dependencies.swiftOpenAPIRuntime.asDependency(productName: .specified(name: "OpenAPIRuntime")),

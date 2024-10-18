@@ -49,7 +49,7 @@ extension PokeAPIClientWrapper {
 
     public func getPokemonList(limit: Int, offset: Int) async throws(ApplicationError) -> PokemonAggregate {
         do {
-            let response = try await client.pokemon_list(query: .init(limit: 0, offset: 0, q: ""))
+            let response = try await client.pokemon_list(query: .init(limit: limit, offset: offset, q: ""))
             let json = try response.ok.body.json
 
             guard let totalCount = json.count,
