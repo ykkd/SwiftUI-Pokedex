@@ -8,7 +8,7 @@
 import Foundation
 import SharedExtension
 
-public enum PokemonType: String, Sendable, Hashable {
+public enum PokemonType: String, Sendable, Hashable, Identifiable {
     case normal
     case fighting
     case flying
@@ -29,6 +29,10 @@ public enum PokemonType: String, Sendable, Hashable {
     case fairy
     case unknown
     case shadow
+
+    public var id: String {
+        rawValue
+    }
 
     public init?(_ pokemonType: String) {
         if let type = PokemonType(rawValue: pokemonType) {

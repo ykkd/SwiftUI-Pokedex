@@ -57,6 +57,23 @@ extension PokemonStatus {
             }
         }
 
+        public var title: String {
+            switch self {
+            case .hp:
+                "HP"
+            case .attack:
+                "Attack"
+            case .defense:
+                "Defense"
+            case .specialAttack:
+                "SpecialAttack"
+            case .specialDefense:
+                "SpecialDefense"
+            case .speed:
+                "Speed"
+            }
+        }
+
         public var priority: Int {
             switch self {
             case .hp:

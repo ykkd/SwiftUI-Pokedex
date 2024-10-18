@@ -57,12 +57,29 @@ extension PokemonDetail {
 // MARK: - PokemonDetail.Information.InfoType
 extension PokemonDetail.Information {
 
-    public enum InfoType: Sendable, Hashable {
+    public enum InfoType: Sendable, Hashable, Identifiable {
         case pokemonTypes([PokemonType])
         case height(Float)
         case weight(Float)
         case firstAbility(String)
         case secondAbility(String?)
         case hiddenAblity(String?)
+
+        public var id: String {
+            switch self {
+            case let .pokemonTypes(types):
+                "pokemonTypes-\(types)"
+            case let .height(height):
+                "height-\(height)"
+            case let .weight(weight):
+                "weight-\(weight)"
+            case let .firstAbility(ability):
+                "firstAbility-\(ability)"
+            case let .secondAbility(ability):
+                "secondAbility-\(ability ?? "")"
+            case let .hiddenAblity(ability):
+                "hiddenAbility-\(ability ?? "")"
+            }
+        }
     }
 }

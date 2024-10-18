@@ -13,6 +13,7 @@ import SwiftUI
 private import DesignSystem
 private import SFSafeSymbols
 private import ScreenExtension
+private import SharedExtension
 
 // MARK: - PokemonDetailView
 public struct PokemonDetailView: View {
@@ -159,26 +160,11 @@ extension PokemonDetailView {
     }
 }
 
-extension Array {
-
-    func chunked(into size: Int) -> [[Element]] {
-        var chunks: [[Element]] = []
-        var currentIndex = 0
-        while currentIndex < count {
-            let endIndex = Swift.min(currentIndex + size, count)
-            chunks.append(Array(self[currentIndex ..< endIndex]))
-            currentIndex = endIndex
-        }
-        return chunks
-    }
-}
-
 extension PokemonDetailView {
 
     @ViewBuilder
     private func status(data: PokemonDetail) -> some View {
         Grid(horizontalSpacing: SpaceToken.s, verticalSpacing: SpaceToken.s) {
-            // 3列のグリッドを作成
             ForEach(data.status.chunked(into: 3), id: \.self) { rowItems in
                 GridRow {
                     ForEach(rowItems, id: \.self) { item in
@@ -192,7 +178,7 @@ extension PokemonDetailView {
     private func statusItemView(_ status: PokemonStatus) -> some View {
         VStack {
             statusImage(status)
-            Text(status.type.rawValue.initialLetterUppercased())
+            Text(status.type.title)
                 .fontWithLineHeight(token: .captionTwoRegular)
                 .foregroundStyle(Color(.labelPrimary))
                 .lineLimit(2)
@@ -226,7 +212,8 @@ extension PokemonDetailView {
         return Image(systemSymbol: symbolName)
             .resizable()
             .foregroundStyle(Color(.labelPrimary))
-            .frame(width: 24, height: 24)
+            .aspectRatio(contentMode: .fit)
+            .frame(height: 24)
     }
 }
 
@@ -234,48 +221,71 @@ extension PokemonDetailView {
 
     @ViewBuilder
     private func information(data: PokemonDetail) -> some View {
-        VStack {
+        VStack(spacing: SpaceToken.s) {
             ForEach(data.information.infoTypes, id: \.self) { type in
-                switch type {
-                case let .pokemonTypes(pokemonType):
-                    informationItemView(symbol: .dropHalffull, title: "Type", description: "\(pokemonType.compactMap(\.name))")
-                case let .height(height):
-                    informationItemView(symbol: .dropHalffull, title: "Type", description: "Test")
-                case let .weight(weight):
-                    informationItemView(symbol: .dropHalffull, title: "Type", description: "Test")
-                case let .firstAbility(ability):
-                    informationItemView(symbol: .dropHalffull, title: "Type", description: "Test")
-                case let .secondAbility(ability):
-                    informationItemView(symbol: .dropHalffull, title: "Type", description: "Test")
-                case let .hiddenAblity(ablity):
-                    informationItemView(symbol: .dropHalffull, title: "Type", description: "Test")
-                }
+                informationItemView(type)
             }
         }
     }
 
-    private func informationItemView(
-        symbol: SFSymbol,
-        title: String,
-        description: String
-    ) -> some View {
-        HStack {
-            Group {
-                HStack(spacing: SpaceToken.l) {
+    private func informationItemView(_ type: PokemonDetail.Information.InfoType) -> some View {
+        let symbol: SFSymbol
+        let title: String
+        let description: String
+
+        switch type {
+        case let .pokemonTypes(pokemonTypes):
+            symbol = .dropHalffull
+            title = "Type"
+            let joined = pokemonTypes.map(\.text).joined(separator: " ")
+            description = joined
+        case let .height(height):
+            symbol = .personFill
+            title = "Height"
+            description = "\(height)m"
+        case let .weight(weight):
+            symbol = .scalemassFill
+            title = "Weight"
+            description = "\(weight)kg"
+        case let .firstAbility(ability):
+            symbol = .circleLefthalfFilled
+            title = "Ability 1"
+            description = "\(ability)"
+        case let .secondAbility(ability):
+            symbol = .circleRighthalfFilled
+            title = "Ability 2"
+            description = "\(ability ?? "None")"
+        case let .hiddenAblity(ability):
+            symbol = .circleInsetFilled
+            title = "Hidden Ablity"
+            description = "\(ability ?? "None")"
+        }
+
+        return HStack {
+            HStack {
+                CenteringView {
                     Image(systemSymbol: symbol)
                         .resizable()
-                        .frame(width: 24, height: 24)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 24)
                         .foregroundStyle(Color(.labelPrimary))
-                    Text(title)
-                        .fontWithLineHeight(token: .bodyRegular)
-                        .lineLimit(1)
                 }
+                .frame(width: 32)
+                Text(title)
+                    .fontWithLineHeight(token: .subheadlineRegular)
+                    .foregroundStyle(Color(.labelPrimary))
+                    .lineLimit(1)
                 Spacer()
-                    .frame(minWidth: .infinity)
-                Text(description)
             }
-            .padding(.horizontal, SpaceToken.l)
+            Text(description)
+                .fontWithLineHeight(token: .subheadlineRegular)
+                .foregroundStyle(Color(.labelPrimary))
+                .lineLimit(1)
         }
+        .padding(.vertical, SpaceToken.s)
+        .padding(.horizontal, SpaceToken.l)
+        .background(Color(.systemBackgroundPrimary))
+        .cornerRadius(RadiusToken.l)
     }
 }
 
@@ -295,66 +305,10 @@ extension PokemonDetailView {
     }
 }
 
-// MARK: - MetaBallView
-struct MetaBallView: View {
-
-    @State var progress = 0.0
-
-    var body: some View {
-        ZStack {
-            Circle()
-                .fill(.black)
-                .blur(radius: 20.0) // 1
-                .frame(width: 100.0, height: 100.0)
-                .offset(x: progress * 80.0)
-            Circle()
-                .fill(.black)
-                .blur(radius: 20.0) // 1
-                .frame(width: 100.0, height: 100.0)
-                .offset(x: -progress * 80.0)
-        }
-        .frame(width: 300.0, height: 300.0)
-        .overlay(
-            Color(white: 0.5)
-                .blendMode(.colorBurn) // 2
-        )
-        .overlay(
-            Color(white: 1.0)
-                .blendMode(.colorDodge) // 3
-        )
-        .overlay(
-            LinearGradient(colors: [.purple, .red],
-                           startPoint: .leading,
-                           endPoint: .trailing)
-                .blendMode(.plusLighter)
-        )
-        .onAppear {
-            withAnimation(
-                .easeInOut(duration: 1.0)
-                    .repeatForever()
-            ) {
-                progress = 1.0
-            }
-        }
-    }
-}
-
-// MARK: - PokemonDetail.Information.InfoType + Identifiable
-extension PokemonDetail.Information.InfoType: Identifiable {
-    public var id: String {
-        switch self {
-        case let .pokemonTypes(types):
-            "pokemonTypes-\(types)"
-        case let .height(height):
-            "height-\(height)"
-        case let .weight(weight):
-            "weight-\(weight)"
-        case let .firstAbility(ability):
-            "firstAbility-\(ability)"
-        case let .secondAbility(ability):
-            "secondAbility-\(ability ?? "")"
-        case let .hiddenAblity(ability):
-            "hiddenAbility-\(ability ?? "")"
-        }
-    }
+#Preview {
+    PokemonDetailView(
+        router: .init(isPresented: .constant(.pokemonDetail(number: 1))),
+        input: .init(withNavigation: false, naviBarLeadingButtonType: .back),
+        pokemonNumber: 1
+    )
 }
