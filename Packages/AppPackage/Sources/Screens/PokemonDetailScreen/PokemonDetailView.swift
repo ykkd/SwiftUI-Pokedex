@@ -142,9 +142,9 @@ extension PokemonDetailView {
 
     private func description(data: PokemonDetail) -> some View {
         HStack {
-            VStack(alignment: .leading, spacing: SpaceToken.s) {
+            VStack(alignment: .leading, spacing: .zero) {
                 Text(state.numberText)
-                    .fontWithLineHeight(token: .titleTwoBold)
+                    .fontWithLineHeight(token: .headlineSemibold)
                     .foregroundStyle(Color(.labelSecondary))
                     .lineLimit(1)
                 Text(data.name.initialLetterUppercased())
