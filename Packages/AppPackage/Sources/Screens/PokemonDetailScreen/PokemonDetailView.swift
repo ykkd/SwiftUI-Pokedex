@@ -53,45 +53,46 @@ extension PokemonDetailView {
 
     @ViewBuilder
     private func content() -> some View {
-        let size = ScreenSizeCalculator.calculate()
         if let data = state.pokemonDetail {
-            LazyVStack {
-                ZStack {
-                    CenteringView {
-                        Ellipse()
-                            .fill(Color(hex: data.typeHex))
-                            .frame(width: size.width * 1.5, height: size.width * 1.5)
-                            .clipShape(Rectangle().offset(x: 0, y: size.width * 0.25))
-                            .offset(y: -size.width * (state.isBgAniationStarted ? 0.8 : 3.0))
-                            .animation(.spring(), value: state.isBgAniationStarted)
-                            .task {
-                                try? await Task.sleep(for: .seconds(0.1))
-                                state.updateIsBgAniationStarted(true)
+            GeometryReader { geometry in
+                LazyVStack {
+                    ZStack {
+                        CenteringView {
+                            Ellipse()
+                                .fill(Color(hex: data.typeHex))
+                                .frame(width: geometry.size.width * 1.5, height: geometry.size.width * 1.5)
+                                .clipShape(Rectangle().offset(x: 0, y: geometry.size.width * 0.25))
+                                .offset(y: -geometry.size.width * (state.isBgAniationStarted ? 0.8 : 3.0))
+                                .animation(.spring(), value: state.isBgAniationStarted)
+                                .task {
+                                    try? await Task.sleep(for: .seconds(0.1))
+                                    state.updateIsBgAniationStarted(true)
+                                }
+                        }
+                        ForEach(state.sections, id: \.self) { section in
+                            switch section {
+                            case .mainVisual:
+                                VStack {
+                                    mainVisual(size: geometry.size, data: data)
+                                    Spacer()
+                                }
+                            case .description:
+                                EmptyView()
+                            case .information:
+                                EmptyView()
                             }
-                    }
-                    ForEach(state.sections, id: \.self) { section in
-                        switch section {
-                        case .mainVisual:
-                            VStack {
-                                mainVisual()
-                                Spacer()
-                            }
-                        case .description:
-                            EmptyView()
-                        case .information:
-                            EmptyView()
                         }
                     }
                 }
+                .padding(.horizontal, SpaceToken.m)
+                .refreshableScrollView(spaceName: "PokemonDetail") {
+                    await state.refresh()
+                }
+                .naviBarLeadingButton(type: input.naviBarLeadingButtonType) {
+                    router.dismiss()
+                }
+                .background(Color(.systemBackgroundSecondary))
             }
-            .padding(.horizontal, SpaceToken.m)
-            .refreshableScrollView(spaceName: "PokemonDetail") {
-                await state.refresh()
-            }
-            .naviBarLeadingButton(type: input.naviBarLeadingButtonType) {
-                router.dismiss()
-            }
-            .background(Color(.systemBackgroundSecondary))
         } else {
             EmptyView()
         }
@@ -101,21 +102,16 @@ extension PokemonDetailView {
 extension PokemonDetailView {
 
     @ViewBuilder
-    private func mainVisual() -> some View {
-        if let data = state.pokemonDetail {
-            let size = ScreenSizeCalculator.calculate()
-            FallbackableAsyncImage(
-                data.imageUrl,
-                fallbackUrl: data.subImageUrl) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(AspectToken.square.value, contentMode: .fill)
-                        .frame(width: size.width * 0.8, height: size.width * 0.8)
-                        .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
-                }
-        } else {
-            EmptyView()
-        }
+    private func mainVisual(size: CGSize, data: PokemonDetail) -> some View {
+        FallbackableAsyncImage(
+            data.imageUrl,
+            fallbackUrl: data.subImageUrl) { image in
+                image
+                    .resizable()
+                    .aspectRatio(AspectToken.square.value, contentMode: .fill)
+                    .frame(width: size.width * 0.8, height: size.width * 0.8)
+                    .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
+            }
     }
 }
 
