@@ -262,10 +262,12 @@ enum Targets: String, CaseIterable, PackageAtom {
                 Targets.sharedExtension.asDependency,
                 Dependencies.swiftOpenAPIRuntime.asDependency(productName: .specified(name: "OpenAPIRuntime")),
                 Dependencies.swiftOpenAPIUrlSession.asDependency(productName: .specified(name: "OpenAPIURLSession")),
+                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
                 Targets.entity.asDependency,
             ]
         case .swiftDataWrapper:
             [
+                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
                 Targets.sharedExtension.asDependency,
                 Targets.entity.asDependency,
             ]

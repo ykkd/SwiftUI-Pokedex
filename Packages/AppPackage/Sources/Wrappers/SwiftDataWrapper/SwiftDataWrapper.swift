@@ -11,9 +11,11 @@ import SwiftUI
 
 // MARK: - SwiftDataWrapper
 @SwiftDataActor
-public final class SwiftDataWrapper {
+public final class SwiftDataWrapper: Sendable {
 
     @Environment(\.modelContext) private var context
+
+    public init() {}
 }
 
 // MARK: - Write
