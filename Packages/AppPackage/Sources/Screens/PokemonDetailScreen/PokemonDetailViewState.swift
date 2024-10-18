@@ -44,7 +44,7 @@ final class PokemonDetailViewState {
     }
 
     var sections: [PokemonDetailViewSection] {
-        [.mainVisual, .description, .information]
+        [.mainVisual, .description, .status, .information]
     }
 
     var numberText: String {

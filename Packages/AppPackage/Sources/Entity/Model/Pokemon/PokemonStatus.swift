@@ -8,7 +8,11 @@
 import Foundation
 
 // MARK: - PokemonStatus
-public struct PokemonStatus: Sendable {
+public struct PokemonStatus: Sendable, Identifiable, Hashable {
+
+    public var id: UUID {
+        .init()
+    }
 
     public let type: `Type`
 

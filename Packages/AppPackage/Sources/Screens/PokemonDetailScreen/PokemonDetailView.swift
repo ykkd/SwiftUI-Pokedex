@@ -64,6 +64,8 @@ extension PokemonDetailView {
                                 mainVisual(size: geometry.size, data: data)
                             case .description:
                                 description(data: data)
+                            case .status:
+                                status(data: data)
                             case .information:
                                 EmptyView()
                             }
@@ -123,7 +125,6 @@ extension PokemonDetailView {
 
 extension PokemonDetailView {
 
-    @ViewBuilder
     private func mainVisual(size: CGSize, data: PokemonDetail) -> some View {
         FallbackableAsyncImage(
             data.imageUrl,
@@ -139,7 +140,6 @@ extension PokemonDetailView {
 
 extension PokemonDetailView {
 
-    @ViewBuilder
     private func description(data: PokemonDetail) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: SpaceToken.s) {
@@ -154,6 +154,77 @@ extension PokemonDetailView {
             }
             Spacer()
         }
+    }
+}
+
+extension Array {
+
+    func chunked(into size: Int) -> [[Element]] {
+        var chunks: [[Element]] = []
+        var currentIndex = 0
+        while currentIndex < count {
+            let endIndex = Swift.min(currentIndex + size, count)
+            chunks.append(Array(self[currentIndex ..< endIndex]))
+            currentIndex = endIndex
+        }
+        return chunks
+    }
+}
+
+extension PokemonDetailView {
+
+    @ViewBuilder
+    private func status(data: PokemonDetail) -> some View {
+        Grid(horizontalSpacing: SpaceToken.s, verticalSpacing: SpaceToken.s) {
+            // 3列のグリッドを作成
+            ForEach(data.status.chunked(into: 3), id: \.self) { rowItems in
+                GridRow {
+                    ForEach(rowItems, id: \.self) { item in
+                        statusItemView(item)
+                    }
+                }
+            }
+        }
+    }
+
+    private func statusItemView(_ status: PokemonStatus) -> some View {
+        VStack {
+            statusImage(status)
+            Text(status.type.rawValue.initialLetterUppercased())
+                .fontWithLineHeight(token: .captionTwoRegular)
+                .foregroundStyle(Color(.labelPrimary))
+                .lineLimit(2)
+            Text("\(status.value)")
+                .fontWithLineHeight(token: .bodySemibold)
+                .foregroundStyle(Color(.labelPrimary))
+                .lineLimit(1)
+        }
+        .padding(SpaceToken.m)
+        .frame(maxWidth: .infinity)
+        .background(Color(.systemBackgroundPrimary))
+        .cornerRadius(RadiusToken.l)
+    }
+
+    private func statusImage(_ status: PokemonStatus) -> some View {
+        let symbolName: SFSymbol = switch status.type {
+        case .attack:
+            .flameFill
+        case .defense:
+            .shieldFill
+        case .hp:
+            .heartFill
+        case .specialAttack:
+            .firewallFill
+        case .specialDefense:
+            .boltShield
+        case .speed:
+            .figureRun
+        }
+
+        return Image(systemSymbol: symbolName)
+            .resizable()
+            .foregroundStyle(Color(.labelPrimary))
+            .frame(width: 24, height: 24)
     }
 }
 

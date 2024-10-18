@@ -10,6 +10,7 @@ import SwiftUI
 enum PokemonDetailViewSection: Identifiable, Hashable {
     case mainVisual
     case description
+    case status
     case information
 
     var id: UUID {
