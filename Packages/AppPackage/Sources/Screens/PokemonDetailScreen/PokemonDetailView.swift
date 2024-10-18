@@ -139,7 +139,7 @@ extension PokemonDetailView {
                     .fontWithLineHeight(token: .titleTwoBold)
                     .foregroundStyle(Color(.labelSecondary))
                     .lineLimit(1)
-                Text(data.name)
+                Text(data.name.initialLetterUppercased())
                     .fontWithLineHeight(token: .titleOneBold)
                     .foregroundStyle(Color(.labelPrimary))
                     .lineLimit(1)

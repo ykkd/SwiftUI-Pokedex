@@ -112,7 +112,7 @@ extension PokemonListView {
     private func pokemonInformation(_ pokemon: Pokemon) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: SpaceToken.xs) {
-                Text("\(pokemon.name)")
+                Text("\(pokemon.name.initialLetterUppercased())")
                     .fontWithLineHeight(token: .captionTwoSemibold)
                     .foregroundStyle(Color(.labelPrimary))
                     .lineLimit(1)
