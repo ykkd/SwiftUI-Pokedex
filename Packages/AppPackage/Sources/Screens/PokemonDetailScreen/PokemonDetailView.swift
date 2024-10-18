@@ -56,15 +56,33 @@ extension PokemonDetailView {
         if let data = state.pokemonDetail {
             GeometryReader { geometry in
                 ZStack {
-                    Ellipse()
-                        .fill(Color(hex: data.typeHex))
-                        .frame(width: geometry.size.width * 2.0, height: geometry.size.width * 2.0)
-                        .offset(y: -geometry.size.width * (state.isBgAniationStarted ? 1.25 : 2.0))
-                        .animation(.spring(), value: state.isBgAniationStarted)
-                        .task {
-                            try? await Task.sleep(for: .seconds(0.1))
-                            state.updateIsBgAniationStarted(true)
-                        }
+                    Path { path in
+                        let width = geometry.size.width
+                        let height = geometry.size.height
+                        let eclipseHeight = width * 0.8
+
+                        // 長方形を作成
+                        path.move(to: CGPoint(x: 0, y: 0))
+                        path.addLine(to: CGPoint(x: width, y: 0))
+                        path.addLine(to: CGPoint(x: width, y: height))
+                        path.addLine(to: CGPoint(x: 0, y: height))
+                        path.addLine(to: CGPoint(x: 0, y: 0))
+
+                        // 楕円形を作成し、半円部分が長方形下部方向にはみだす位置に配置
+                        path.addEllipse(in: CGRect(
+                            x: 0,
+                            y: height - (eclipseHeight * 0.5),
+                            width: width,
+                            height: eclipseHeight
+                        ))
+                    }
+                    .fill(Color(hex: data.typeHex))
+                    .offset(y: -geometry.size.height * (state.isBgAniationStarted ? 0.75 : 2.0))
+                    .animation(.spring(), value: state.isBgAniationStarted)
+                    .task {
+                        try? await Task.sleep(for: .seconds(0.1))
+                        state.updateIsBgAniationStarted(true)
+                    }
                     VStack {
                         ForEach(state.sections, id: \.self) { section in
                             switch section {
