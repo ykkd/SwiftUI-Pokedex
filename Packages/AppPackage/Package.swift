@@ -33,6 +33,7 @@ enum Products: String, CaseIterable, PackageAtom {
     case rootScreen
     case pokemonListScreen
     case pokeAPIClientWrapper
+    case designSystem
 
     var targets: [String] {
         Targets.targets(for: self)
@@ -106,6 +107,7 @@ enum Targets: String, CaseIterable, PackageAtom {
     case rootScreen
     case pokemonListScreen
     case pokeAPIClientWrapper
+    case designSystem
 
     var targetType: TargetType {
         switch self {
@@ -117,7 +119,8 @@ enum Targets: String, CaseIterable, PackageAtom {
              .getPokemonListUseCase,
              .rootScreen,
              .pokemonListScreen,
-             .pokeAPIClientWrapper:
+             .pokeAPIClientWrapper,
+             .designSystem:
             .production
         }
     }
@@ -135,7 +138,8 @@ enum Targets: String, CaseIterable, PackageAtom {
         switch self {
         case .dependencyContainer,
              .entity,
-             .logger:
+             .logger,
+             .designSystem:
             "\(capitalizedName)"
         case .routerCore,
              .router:
@@ -152,7 +156,8 @@ enum Targets: String, CaseIterable, PackageAtom {
 
     var dependencies: [Target.Dependency] {
         switch self {
-        case .entity:
+        case .entity,
+             .designSystem:
             []
         case .logger:
             [
