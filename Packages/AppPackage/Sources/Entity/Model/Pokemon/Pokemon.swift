@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Pokemon: Sendable, Hashable, Identifiable {
+public struct Pokemon: Sendable, Hashable, Identifiable, Equatable {
 
     public var id: Int {
         number

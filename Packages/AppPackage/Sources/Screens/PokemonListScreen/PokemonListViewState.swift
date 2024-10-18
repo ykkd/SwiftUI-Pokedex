@@ -10,7 +10,9 @@ import GetPokemonListUseCase
 import Observation
 private import Dependencies
 import Entity
+import Logger
 
+// MARK: - PokemonListViewState
 @MainActor
 @Observable
 final class PokemonListViewState {
@@ -18,14 +20,65 @@ final class PokemonListViewState {
     @ObservationIgnored
     @Dependency(\.getPokemonListUseCase) private var getPokemonListUseCase
 
+    @ObservationIgnored
+    @Dependency(\.mainLogger) private var logger
+
+    private let limitPerPage: Int = 50
+
     private(set) var totalCount: Int = .zero
 
-    private(set) var pokemons: [Pokemon] = []
+    private(set) var pokemons: [Pokemon] = [] {
+        didSet {
+            logger.log(.debug, message: "number of pokemons: \(pokemons.count)")
+        }
+    }
+
+    private(set) var isLoading: Bool = false {
+        didSet {
+            logger.log(.debug, message: "isLoading: \(isLoading)")
+        }
+    }
+
+    var shouldShowBottomProgress: Bool {
+        guard totalCount != .zero else {
+            return false
+        }
+        return pokemons.count == totalCount || !isLoading
+    }
+
+    private var limitForRefresh: Int {
+        if pokemons.count != .zero {
+            pokemons.count
+        } else {
+            limitPerPage
+        }
+    }
 
     init() {}
 
-    func getData(_ limit: Int, offset: Int) async {
+    func getInitialData() async {
+        await getData(limitPerPage, offset: .zero)
+    }
+
+    func refresh() async {
+        await getInitialData()
+    }
+
+    func getNextPageIfNeeded(last pokemon: Pokemon) async {
+        guard pokemons.last == pokemon,
+              totalCount != pokemons.count else {
+            return
+        }
+        await getData(limitPerPage, offset: pokemon.number + 1)
+    }
+}
+
+extension PokemonListViewState {
+
+    private func getData(_ limit: Int, offset: Int) async {
+        defer { isLoading = false }
         do {
+            isLoading = true
             let data = try await getPokemonListUseCase.execute(limit, offset: offset)
             totalCount = data.totalCount
             // 新しいポケモンを追加

@@ -12,7 +12,9 @@ import Router
 import SwiftUI
 private import DesignSystem
 private import SFSafeSymbols
+private import ScreenExtension
 
+// MARK: - PokemonListView
 public struct PokemonListView: View {
 
     @StateObject private var router: Router
@@ -34,78 +36,100 @@ public struct PokemonListView: View {
             router: router,
             withNavigation: input.withNavigation
         ) {
-            let item = GridItem(spacing: SpaceToken.s)
-            let itemCount = 3
-            let columns: [GridItem] = Array(repeating: item, count: itemCount)
-
-            ScrollView(.vertical) {
-                LazyVGrid(columns: columns, spacing: SpaceToken.s) {
-                    ForEach(state.pokemons) { pokemon in
-                        VStack(spacing: SpaceToken.s) {
-                            AsyncImage(url: pokemon.imageUrl) { phase in
-                                if let image = phase.image {
-                                    image
-                                        .resizable()
-                                        .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
-                                        .aspectRatio(AspectToken.square.value, contentMode: .fill)
-                                        .frame(maxWidth: .infinity)
-                                } else if phase.error != nil {
-                                    VStack {
-                                        Spacer()
-                                        HStack {
-                                            Spacer()
-                                            Image(systemSymbol: .xmarkOctagonFill)
-                                                .resizable()
-                                                .frame(width: 16, height: 16)
-                                            Spacer()
-                                        }
-                                        Spacer()
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .aspectRatio(AspectToken.square.value, contentMode: .fill)
-                                } else {
-                                    VStack {
-                                        Spacer()
-                                        HStack {
-                                            Spacer()
-                                            Image(.pokeBall)
-                                                .resizable()
-                                            Spacer()
-                                        }
-                                        Spacer()
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .aspectRatio(AspectToken.square.value, contentMode: .fill)
-                                }
-                            }
-                            Divider()
-                            HStack {
-                                VStack(alignment: .leading, spacing: SpaceToken.xs) {
-                                    Text("\(pokemon.name)")
-                                        .fontWithLineHeight(token: .captionTwoSemibold)
-                                        .foregroundStyle(Color(.labelPrimary))
-                                        .lineLimit(1)
-                                    Text("No.\(pokemon.number)")
-                                        .fontWithLineHeight(token: .captionTwoRegular)
-                                        .foregroundStyle(Color(.labelSecondary))
-                                        .lineLimit(1)
-                                }
-                                Spacer()
-                            }
-                        }
-                        .padding(SpaceToken.s)
-                        .aspectRatio(AspectToken.square.value, contentMode: .fit)
-                        .background(Color(.systemBackground))
-                        .cornerRadius(RadiusToken.l)
-                    }
+            content()
+                .task {
+                    await state.getInitialData()
                 }
-                .padding(.horizontal, SpaceToken.m)
-            }
-            .navigationTitle(RootTab.pokemonList.navigationTitle)
-            .background(Color(.systemBackgroundSecondary))
+                .refreshable {
+                    await state.refresh()
+                }
         }
-        .task {
-            await state.getData(100, offset: 0)
+    }
+}
+
+extension PokemonListView {
+
+    @ViewBuilder
+    private func content() -> some View {
+        let item = GridItem(spacing: SpaceToken.s)
+        let itemCount = 3
+        let columns: [GridItem] = Array(repeating: item, count: itemCount)
+
+        ScrollView(.vertical) {
+            LazyVGrid(columns: columns, spacing: SpaceToken.s) {
+                ForEach(state.pokemons) { pokemon in
+                    itemView(pokemon)
+                        .task {
+                            await state.getNextPageIfNeeded(last: pokemon)
+                        }
+                }
+            }
+            .overlay(alignment: .bottom) {
+                ProgressView()
+                    .frame(height: 60)
+                    .hidden(state.shouldShowBottomProgress)
+            }
+            .padding(.horizontal, SpaceToken.m)
+        }
+        .navigationTitle(RootTab.pokemonList.navigationTitle)
+        .background(Color(.systemBackgroundSecondary))
+    }
+
+    @ViewBuilder
+    private func itemView(_ pokemon: Pokemon) -> some View {
+        VStack(spacing: SpaceToken.s) {
+            pokemonImage(pokemon.imageUrl)
+            Divider()
+            pokemonInformation(pokemon)
+        }
+        .padding(SpaceToken.s)
+        .aspectRatio(AspectToken.square.value, contentMode: .fit)
+        .background(Color(.systemBackground))
+        .cornerRadius(RadiusToken.l)
+    }
+
+    @ViewBuilder
+    private func pokemonImage(_ imageUrl: URL) -> some View {
+        AsyncImage(url: imageUrl) { phase in
+            if let image = phase.image {
+                image
+                    .resizable()
+                    .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
+                    .aspectRatio(AspectToken.square.value, contentMode: .fill)
+                    .frame(maxWidth: .infinity)
+            } else if phase.error != nil {
+                CenteringView {
+                    Image(systemSymbol: .xmarkOctagonFill)
+                        .resizable()
+                        .frame(width: 16, height: 16)
+                }
+                .frame(maxWidth: .infinity)
+                .aspectRatio(AspectToken.square.value, contentMode: .fill)
+            } else {
+                CenteringView {
+                    Image(.pokeBall)
+                        .resizable()
+                }
+                .frame(maxWidth: .infinity)
+                .aspectRatio(AspectToken.square.value, contentMode: .fill)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func pokemonInformation(_ pokemon: Pokemon) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: SpaceToken.xs) {
+                Text("\(pokemon.name)")
+                    .fontWithLineHeight(token: .captionTwoSemibold)
+                    .foregroundStyle(Color(.labelPrimary))
+                    .lineLimit(1)
+                Text("No.\(pokemon.number)")
+                    .fontWithLineHeight(token: .captionTwoRegular)
+                    .foregroundStyle(Color(.labelSecondary))
+                    .lineLimit(1)
+            }
+            Spacer()
         }
     }
 }

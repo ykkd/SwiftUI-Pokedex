@@ -34,6 +34,7 @@ enum Products: String, CaseIterable, PackageAtom {
     case pokemonListScreen
     case pokeAPIClientWrapper
     case designSystem
+    case screenExtension
 
     var targets: [String] {
         Targets.targets(for: self)
@@ -112,6 +113,7 @@ enum Targets: String, CaseIterable, PackageAtom {
     case pokemonListScreen
     case pokeAPIClientWrapper
     case designSystem
+    case screenExtension
 
     var targetType: TargetType {
         switch self {
@@ -124,7 +126,8 @@ enum Targets: String, CaseIterable, PackageAtom {
              .rootScreen,
              .pokemonListScreen,
              .pokeAPIClientWrapper,
-             .designSystem:
+             .designSystem,
+             .screenExtension:
             .production
         }
     }
@@ -137,6 +140,8 @@ enum Targets: String, CaseIterable, PackageAtom {
             Targets.dependencyContainer.asDependency,
             Targets.designSystem.asDependency,
             Dependencies.sfSafeSymbols.asDependency(productName: .usePackageName),
+            Targets.screenExtension.asDependency,
+            Targets.logger.asDependency,
         ]
     }
 
@@ -145,7 +150,8 @@ enum Targets: String, CaseIterable, PackageAtom {
         case .dependencyContainer,
              .entity,
              .logger,
-             .designSystem:
+             .designSystem,
+             .screenExtension:
             "\(capitalizedName)"
         case .routerCore,
              .router:
@@ -163,7 +169,8 @@ enum Targets: String, CaseIterable, PackageAtom {
     var dependencies: [Target.Dependency] {
         switch self {
         case .entity,
-             .designSystem:
+             .designSystem,
+             .screenExtension:
             []
         case .logger:
             [
