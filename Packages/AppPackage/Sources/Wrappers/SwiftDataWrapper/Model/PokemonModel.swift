@@ -6,10 +6,10 @@
 //
 
 import Foundation
-private import SwiftData
+import SwiftData
 
 @Model
-final class PokemonModel {
+final class PokemonModel: Hashable {
     var number: Int
 
     var name: String
