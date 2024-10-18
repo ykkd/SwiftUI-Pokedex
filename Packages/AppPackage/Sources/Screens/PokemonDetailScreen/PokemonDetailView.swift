@@ -56,33 +56,7 @@ extension PokemonDetailView {
         if let data = state.pokemonDetail {
             GeometryReader { geometry in
                 ZStack {
-                    Path { path in
-                        let width = geometry.size.width
-                        let height = geometry.size.height
-                        let eclipseHeight = width * 0.8
-
-                        // 長方形を作成
-                        path.move(to: CGPoint(x: 0, y: 0))
-                        path.addLine(to: CGPoint(x: width, y: 0))
-                        path.addLine(to: CGPoint(x: width, y: height))
-                        path.addLine(to: CGPoint(x: 0, y: height))
-                        path.addLine(to: CGPoint(x: 0, y: 0))
-
-                        // 楕円形を作成し、半円部分が長方形下部方向にはみだす位置に配置
-                        path.addEllipse(in: CGRect(
-                            x: 0,
-                            y: height - (eclipseHeight * 0.5),
-                            width: width,
-                            height: eclipseHeight
-                        ))
-                    }
-                    .fill(Color(hex: data.typeHex))
-                    .offset(y: -geometry.size.height * (state.isBgAniationStarted ? 0.75 : 2.0))
-                    .animation(.spring(), value: state.isBgAniationStarted)
-                    .task {
-                        try? await Task.sleep(for: .seconds(0.1))
-                        state.updateIsBgAniationStarted(true)
-                    }
+                    backgroundShape(geometry.size, shapeColor: Color(hex: data.typeHex))
                     VStack {
                         ForEach(state.sections, id: \.self) { section in
                             switch section {
@@ -109,6 +83,40 @@ extension PokemonDetailView {
             }
         } else {
             EmptyView()
+        }
+    }
+}
+
+extension PokemonDetailView {
+
+    @ViewBuilder
+    private func backgroundShape(_ size: CGSize, shapeColor: Color) -> some View {
+        Path { path in
+            let width = size.width
+            let height = size.height
+            let eclipseHeight = width * 0.8
+
+            // 長方形を作成
+            path.move(to: CGPoint(x: 0, y: 0))
+            path.addLine(to: CGPoint(x: width, y: 0))
+            path.addLine(to: CGPoint(x: width, y: height))
+            path.addLine(to: CGPoint(x: 0, y: height))
+            path.addLine(to: CGPoint(x: 0, y: 0))
+
+            // 楕円形を作成し、半円部分が長方形下部方向にはみだす位置に配置
+            path.addEllipse(in: CGRect(
+                x: 0,
+                y: height - (eclipseHeight * 0.5),
+                width: width,
+                height: eclipseHeight
+            ))
+        }
+        .fill(shapeColor)
+        .offset(y: -size.height * (state.isBgAniationStarted ? 0.75 : 2.0))
+        .animation(.spring(), value: state.isBgAniationStarted)
+        .task {
+            try? await Task.sleep(for: .seconds(0.1))
+            state.updateIsBgAniationStarted(true)
         }
     }
 }
