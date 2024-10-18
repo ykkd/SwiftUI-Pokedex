@@ -46,6 +46,7 @@ public struct PokemonDetailView: View {
                     await state.getPokemonDetail()
                 }
         }
+        .ignoresSafeArea(edges: [.top])
     }
 }
 
@@ -73,6 +74,7 @@ extension PokemonDetailView {
                         Spacer()
                     }
                     .padding(.horizontal, SpaceToken.m)
+                    .padding(.top, 64)
                 }
                 .refreshableScrollView(spaceName: "PokemonDetail") {
                     await state.refresh()
