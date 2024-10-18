@@ -7,10 +7,10 @@
 
 import Foundation
 
-enum RootTab: Int {
+public enum RootTab: Int {
     case pokemonList = 0
 
-    var navigationTitle: String {
+    public var navigationTitle: String {
         switch self {
         case .pokemonList:
             "Pokedex"

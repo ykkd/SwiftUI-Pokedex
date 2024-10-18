@@ -54,6 +54,7 @@ enum Dependencies: String, CaseIterable, PackageAtom {
     case swiftOpenAPIGenerater = "swift-openapi-generator"
     case swiftOpenAPIRuntime = "swift-openapi-runtime"
     case swiftOpenAPIUrlSession = "swift-openapi-urlsession"
+    case sfSafeSymbols = "SFSafeSymbols"
 
     var value: Package.Dependency {
         switch self {
@@ -77,6 +78,9 @@ enum Dependencies: String, CaseIterable, PackageAtom {
         case .swiftOpenAPIUrlSession:
             .package(
                 url: "https://github.com/apple/swift-openapi-urlsession", .upToNextMajor(from: "1.0.0")
+            )
+        case .sfSafeSymbols:
+            .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "5.3.0")
             )
         }
     }
@@ -131,6 +135,8 @@ enum Targets: String, CaseIterable, PackageAtom {
             Targets.entity.asDependency,
             Targets.router.asDependency,
             Targets.dependencyContainer.asDependency,
+            Targets.designSystem.asDependency,
+            Dependencies.sfSafeSymbols.asDependency(productName: .usePackageName),
         ]
     }
 

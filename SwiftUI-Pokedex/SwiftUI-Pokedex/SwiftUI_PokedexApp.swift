@@ -20,7 +20,7 @@ struct SwiftUI_PokedexApp: App {
         WindowGroup {
             rootViewContainer.view(
                 Router(isPresented: .init(.constant(.root))),
-                CommonScreenInput(withNavigation: true)
+                CommonScreenInput(withNavigation: false)
             )
         }
     }
