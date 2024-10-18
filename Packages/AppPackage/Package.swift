@@ -36,6 +36,7 @@ enum Products: String, CaseIterable, PackageAtom {
     case pokemonDetailScreen
     case favoritePokemonListScreen
     case pokeAPIClientWrapper
+    case swiftDataWrapper
     case designSystem
     case sharedExtension
     case screenExtension
@@ -124,6 +125,7 @@ enum Targets: String, CaseIterable, PackageAtom {
     case pokemonDetailScreen
     case favoritePokemonListScreen
     case pokeAPIClientWrapper
+    case swiftDataWrapper
     case designSystem
     case sharedExtension
     case screenExtension
@@ -144,7 +146,8 @@ enum Targets: String, CaseIterable, PackageAtom {
              .pokeAPIClientWrapper,
              .designSystem,
              .sharedExtension,
-             .screenExtension:
+             .screenExtension,
+             .swiftDataWrapper:
             .production
         }
     }
@@ -180,7 +183,8 @@ enum Targets: String, CaseIterable, PackageAtom {
              .pokemonDetailScreen,
              .favoritePokemonListScreen:
             "Screens/\(capitalizedName)"
-        case .pokeAPIClientWrapper:
+        case .pokeAPIClientWrapper,
+             .swiftDataWrapper:
             "Wrappers/\(capitalizedName)"
         case .sharedExtension,
              .screenExtension:
@@ -258,6 +262,11 @@ enum Targets: String, CaseIterable, PackageAtom {
                 Targets.sharedExtension.asDependency,
                 Dependencies.swiftOpenAPIRuntime.asDependency(productName: .specified(name: "OpenAPIRuntime")),
                 Dependencies.swiftOpenAPIUrlSession.asDependency(productName: .specified(name: "OpenAPIURLSession")),
+                Targets.entity.asDependency,
+            ]
+        case .swiftDataWrapper:
+            [
+                Targets.sharedExtension.asDependency,
                 Targets.entity.asDependency,
             ]
         }
