@@ -146,7 +146,7 @@ extension PokemonListView {
         .frame(maxWidth: .infinity)
         .aspectRatio(AspectToken.square.value, contentMode: .fill)
     }
-    
+
     private func emptyView() -> some View {
         GeometryReader { geometry in
             ScrollView {
@@ -157,7 +157,7 @@ extension PokemonListView {
                         .rotationEffect(.degrees(state.isEmptyViewAnimating ? 360 : 0))
                         .animation(
                             .linear(duration: 0.5).repeatForever(autoreverses: false),
-                            value: state.isLoading
+                            value: state.isEmptyViewAnimating
                         )
                         .task {
                             try? await Task.sleep(for: .seconds(0.2))
