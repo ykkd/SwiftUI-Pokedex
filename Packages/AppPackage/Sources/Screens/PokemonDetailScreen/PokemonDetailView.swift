@@ -55,42 +55,38 @@ extension PokemonDetailView {
     private func content() -> some View {
         if let data = state.pokemonDetail {
             GeometryReader { geometry in
-                LazyVStack {
-                    ZStack {
-                        CenteringView {
-                            Ellipse()
-                                .fill(Color(hex: data.typeHex))
-                                .frame(width: geometry.size.width * 1.5, height: geometry.size.width * 1.5)
-                                .clipShape(Rectangle().offset(x: 0, y: geometry.size.width * 0.25))
-                                .offset(y: -geometry.size.width * (state.isBgAniationStarted ? 0.8 : 3.0))
-                                .animation(.spring(), value: state.isBgAniationStarted)
-                                .task {
-                                    try? await Task.sleep(for: .seconds(0.1))
-                                    state.updateIsBgAniationStarted(true)
-                                }
+                ZStack {
+                    Ellipse()
+                        .fill(Color(hex: data.typeHex))
+                        .frame(width: geometry.size.width * 2.0, height: geometry.size.width * 2.0)
+                        .offset(y: -geometry.size.width * (state.isBgAniationStarted ? 1.25 : 2.0))
+                        .animation(.spring(), value: state.isBgAniationStarted)
+                        .task {
+                            try? await Task.sleep(for: .seconds(0.1))
+                            state.updateIsBgAniationStarted(true)
                         }
+                    VStack {
                         ForEach(state.sections, id: \.self) { section in
                             switch section {
                             case .mainVisual:
-                                VStack {
-                                    mainVisual(size: geometry.size, data: data)
-                                    Spacer()
-                                }
+                                mainVisual(size: geometry.size, data: data)
                             case .description:
-                                EmptyView()
+                                description(data: data)
                             case .information:
                                 EmptyView()
                             }
                         }
+                        Spacer()
                     }
+                    .padding(.horizontal, SpaceToken.m)
                 }
-                .padding(.horizontal, SpaceToken.m)
                 .refreshableScrollView(spaceName: "PokemonDetail") {
                     await state.refresh()
                 }
                 .naviBarLeadingButton(type: input.naviBarLeadingButtonType) {
                     router.dismiss()
                 }
+                .frame(width: geometry.size.width, height: geometry.size.height)
                 .background(Color(.systemBackgroundSecondary))
             }
         } else {
@@ -112,6 +108,26 @@ extension PokemonDetailView {
                     .frame(width: size.width * 0.8, height: size.width * 0.8)
                     .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
             }
+    }
+}
+
+extension PokemonDetailView {
+
+    @ViewBuilder
+    private func description(data: PokemonDetail) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: SpaceToken.s) {
+                Text(state.numberText)
+                    .fontWithLineHeight(token: .titleTwoBold)
+                    .foregroundStyle(Color(.labelSecondary))
+                    .lineLimit(1)
+                Text(data.name)
+                    .fontWithLineHeight(token: .titleOneBold)
+                    .foregroundStyle(Color(.labelPrimary))
+                    .lineLimit(1)
+            }
+            Spacer()
+        }
     }
 }
 

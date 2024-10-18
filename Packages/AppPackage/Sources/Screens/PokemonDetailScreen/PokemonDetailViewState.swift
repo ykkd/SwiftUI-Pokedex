@@ -47,6 +47,10 @@ final class PokemonDetailViewState {
         [.mainVisual, .description, .information]
     }
 
+    var numberText: String {
+        "No.\(pokemonNumber)"
+    }
+
     init(pokemonNumber: Int) {
         self.pokemonNumber = pokemonNumber
     }
