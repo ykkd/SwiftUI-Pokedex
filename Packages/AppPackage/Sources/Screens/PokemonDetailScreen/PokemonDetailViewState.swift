@@ -10,6 +10,7 @@ import Observation
 private import Dependencies
 import Entity
 private import GetPokemonDetailUseCase
+private import SaveFavoritePokemonUseCase
 import Logger
 
 // MARK: - PokemonDetailViewState
@@ -22,6 +23,9 @@ final class PokemonDetailViewState {
 
     @ObservationIgnored
     @Dependency(\.getPokemonDetailUseCase) private var getPokemonDetailUseCase
+
+    @ObservationIgnored
+    @Dependency(\.saveFavoritePokemonUseCase) private var saveFavoritePokemonUseCase
 
     private(set) var isLoading: Bool = false {
         didSet {
