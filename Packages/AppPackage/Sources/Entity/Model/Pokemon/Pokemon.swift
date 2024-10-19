@@ -21,6 +21,18 @@ public struct Pokemon: Sendable, Hashable, Identifiable, Equatable {
 
     public let subImageUrl: URL?
 
+    public init(
+        name: String,
+        number: Int,
+        imageUrl: URL?,
+        subImageUrl: URL?
+    ) {
+        self.name = name
+        self.number = number
+        self.imageUrl = imageUrl
+        self.subImageUrl = subImageUrl
+    }
+
     public init?(
         name: String,
         urlString: String
