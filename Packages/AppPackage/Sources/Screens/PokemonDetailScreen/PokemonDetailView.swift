@@ -156,6 +156,11 @@ extension PokemonDetailView {
                     .lineLimit(1)
             }
             Spacer()
+            FavoriteButton(isFavorited: state.isFavorited) { isFavorited in
+                Task {
+                    await state.updateIsFavorited(isFavorited)
+                }
+            }
         }
     }
 }

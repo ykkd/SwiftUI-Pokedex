@@ -9,7 +9,10 @@ import SwiftUI
 
 public struct FavoriteButton: View {
     @State private var isFavorited: Bool
-    @State private var animationScale: CGFloat
+
+    private var animationScale: CGFloat {
+        isFavorited ? 1.2 : 1.0
+    }
 
     private var foregoundColor: Color {
         isFavorited ? heartColor : bgColor
@@ -26,11 +29,9 @@ public struct FavoriteButton: View {
 
     public init(
         isFavorited: Bool = false,
-        animationScale: CGFloat = 1.0,
         action: ((Bool) -> Void)?
     ) {
         self.isFavorited = isFavorited
-        self.animationScale = animationScale
         self.action = action
     }
 
@@ -38,7 +39,6 @@ public struct FavoriteButton: View {
         Button {
             withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
                 isFavorited.toggle()
-                animationScale = isFavorited ? 1.3 : 1.0
                 action?(isFavorited)
             }
         } label: {
@@ -48,7 +48,6 @@ public struct FavoriteButton: View {
                     .frame(width: 60, height: 60)
                 Image(systemSymbol: isFavorited ? .heartFill : .heart)
                     .resizable()
-                    .scaledToFit()
                     .frame(width: 24, height: 24)
                     .foregroundColor(foregoundColor)
                     .scaleEffect(animationScale)
