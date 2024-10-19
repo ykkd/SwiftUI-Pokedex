@@ -10,7 +10,8 @@ import SwiftData
 
 @Model
 final class PokemonModel: Hashable {
-    var number: Int
+
+    @Attribute(.unique) var number: Int
 
     var name: String
 

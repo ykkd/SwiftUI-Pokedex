@@ -55,7 +55,7 @@ extension SwiftDataWrapper {
     public func readAllPokemon() async throws(ApplicationError) -> [FavorablePokemon] {
         do {
             let context = ModelContext(container)
-            let models = try context.fetch(FetchDescriptor<PokemonModel>())
+            let models = try context.fetch(FetchDescriptor<PokemonModel>(sortBy: [SortDescriptor(\.number)]))
             return models.map(convert)
         } catch {
             throw ApplicationError.database(.read(error))
