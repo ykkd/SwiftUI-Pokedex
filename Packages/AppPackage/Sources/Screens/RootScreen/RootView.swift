@@ -38,6 +38,11 @@ public struct RootView: View {
                     .tabItem {
                         Image(systemSymbol: .squareGrid2x2Fill)
                     }
+                router.buildTabView(.favoritePokemonList)
+                    .tag(RootTab.favoritePokemonList)
+                    .tabItem {
+                        Image(systemSymbol: .heartFill)
+                    }
             }
             .tint(Color(.labelPrimary))
         }
