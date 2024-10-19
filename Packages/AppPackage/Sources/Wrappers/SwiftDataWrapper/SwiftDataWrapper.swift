@@ -13,9 +13,16 @@ import SwiftUI
 @SwiftDataActor
 public final class SwiftDataWrapper: Sendable {
 
-    @Environment(\.modelContext) private var context
+    private let container: ModelContainer
 
-    public init() {}
+    public init(useInMemoryStore: Bool = false) {
+        do {
+            let config = ModelConfiguration(for: PokemonModel.self, isStoredInMemoryOnly: useInMemoryStore)
+            container = try ModelContainer(for: PokemonModel.self, configurations: config)
+        } catch {
+            fatalError("ModelContainer initialization failed")
+        }
+    }
 }
 
 // MARK: - Write
@@ -32,6 +39,7 @@ extension SwiftDataWrapper {
             isFavorite: data.isFavorite
         )
 
+        let context = ModelContext(container)
         context.insert(data)
         do {
             try context.save()
@@ -46,6 +54,7 @@ extension SwiftDataWrapper {
 
     public func readAllPokemon() async throws(ApplicationError) -> [FavorablePokemon] {
         do {
+            let context = ModelContext(container)
             let models = try context.fetch(FetchDescriptor<PokemonModel>())
             return models.map(convert)
         } catch {
@@ -55,6 +64,7 @@ extension SwiftDataWrapper {
 
     public func readPokemon(_ number: Int) async throws(ApplicationError) -> FavorablePokemon? {
         do {
+            let context = ModelContext(container)
             let fetchDescriptor = FetchDescriptor<PokemonModel>(
                 predicate: #Predicate { $0.number == number }
             )
