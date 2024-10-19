@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum NaviBarButtonType {
+public enum ToolbarButtonType {
     case back
     case close
 }

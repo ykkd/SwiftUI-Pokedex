@@ -25,7 +25,7 @@ public enum ScreenTransition {
         }
     }
 
-    public var naviBarLeadingButtonType: NaviBarButtonType? {
+    public var naviBarLeadingButtonType: ToolbarButtonType? {
         switch self {
         case .push:
             .back

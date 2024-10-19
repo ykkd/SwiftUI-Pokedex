@@ -80,7 +80,7 @@ extension PokemonDetailView {
                 .refreshableScrollView(spaceName: "PokemonDetail") {
                     await state.refresh()
                 }
-                .naviBarLeadingButton(type: input.naviBarLeadingButtonType) {
+                .toolBarButton(placement: .topBarLeading, type: input.naviBarLeadingButtonType) {
                     router.dismiss()
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height)
