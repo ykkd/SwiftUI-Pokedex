@@ -31,6 +31,9 @@ enum Products: String, CaseIterable, PackageAtom {
     case router
     case getPokemonListUseCase
     case getPokemonDetailUseCase
+    case getFavoritePokemonUseCase
+    case getAllFavoritePokemonUseCase
+    case saveFavoritePokemonUseCase
     case rootScreen
     case pokemonListScreen
     case pokemonDetailScreen
@@ -120,6 +123,9 @@ enum Targets: String, CaseIterable, PackageAtom {
     case router
     case getPokemonListUseCase
     case getPokemonDetailUseCase
+    case getFavoritePokemonUseCase
+    case getAllFavoritePokemonUseCase
+    case saveFavoritePokemonUseCase
     case rootScreen
     case pokemonListScreen
     case pokemonDetailScreen
@@ -139,6 +145,9 @@ enum Targets: String, CaseIterable, PackageAtom {
              .router,
              .getPokemonListUseCase,
              .getPokemonDetailUseCase,
+             .getFavoritePokemonUseCase,
+             .getAllFavoritePokemonUseCase,
+             .saveFavoritePokemonUseCase,
              .rootScreen,
              .pokemonListScreen,
              .pokemonDetailScreen,
@@ -176,7 +185,10 @@ enum Targets: String, CaseIterable, PackageAtom {
              .router:
             "Router/\(capitalizedName)"
         case .getPokemonListUseCase,
-             .getPokemonDetailUseCase:
+             .getPokemonDetailUseCase,
+             .getFavoritePokemonUseCase,
+             .getAllFavoritePokemonUseCase,
+             .saveFavoritePokemonUseCase:
             "UseCases/\(capitalizedName)"
         case .rootScreen,
              .pokemonListScreen,
@@ -237,6 +249,15 @@ enum Targets: String, CaseIterable, PackageAtom {
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
                 Targets.entity.asDependency,
                 Targets.pokeAPIClientWrapper.asDependency,
+            ]
+        case .getFavoritePokemonUseCase,
+             .getAllFavoritePokemonUseCase,
+             .saveFavoritePokemonUseCase:
+            [
+                Targets.sharedExtension.asDependency,
+                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
+                Targets.entity.asDependency,
+                Targets.swiftDataWrapper.asDependency,
             ]
         case .rootScreen:
             Self.commonDependenciesForScreen + [
