@@ -9,7 +9,7 @@ import Foundation
 import Observation
 private import Dependencies
 import Entity
-import GetPokemonDetailUseCase
+private import GetPokemonDetailUseCase
 import Logger
 
 // MARK: - PokemonDetailViewState
