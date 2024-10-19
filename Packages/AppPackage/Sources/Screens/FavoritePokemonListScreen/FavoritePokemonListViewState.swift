@@ -46,7 +46,13 @@ final class FavoritePokemonListViewState {
         do {
             isLoading = true
             let favorablePokemons = try await getAllFavoritePokemonUseCase.execute()
-            pokemons = favorablePokemons.map(\.pokemon)
+
+            var favoritedPokemons: [Pokemon] = []
+
+            for data in favorablePokemons where await data.getIsFavorite() {
+                favoritedPokemons.append(data.pokemon)
+            }
+            pokemons = favoritedPokemons
         } catch {
             // TODO: implement
         }

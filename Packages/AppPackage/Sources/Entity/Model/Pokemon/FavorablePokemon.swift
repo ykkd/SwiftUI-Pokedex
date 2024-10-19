@@ -21,4 +21,8 @@ public actor FavorablePokemon {
     public func updateIsFavorite(_ value: Bool) {
         isFavorite = value
     }
+
+    public func getIsFavorite() async -> Bool {
+        isFavorite
+    }
 }
