@@ -36,7 +36,7 @@ final class FavoritePokemonListViewState {
     }
 
     var shouldShowEmptyView: Bool {
-        pokemons.isEmpty
+        pokemons.isEmpty && !isLoading
     }
 
     init() {}

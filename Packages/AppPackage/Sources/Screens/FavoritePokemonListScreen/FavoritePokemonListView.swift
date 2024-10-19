@@ -40,6 +40,11 @@ public struct FavoritePokemonListView: View {
                 .when(state.shouldShowEmptyView) { _ in
                     emptyView()
                 }
+                .overlay {
+                    ProgressView()
+                        .frame(width: 64, height: 64)
+                        .hidden(!state.isLoading)
+                }
                 .task {
                     await state.getData()
                 }
@@ -62,10 +67,11 @@ extension FavoritePokemonListView {
         }
         .padding(.horizontal, SpaceToken.m)
         .refreshableScrollView(spaceName: "FavoritePokemonList") {
+            try? await Task.sleep(for: .seconds(1.0))
             await state.refresh()
         }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle(RootTab.pokemonList.navigationTitle)
+        .navigationTitle(RootTab.favoritePokemonList.navigationTitle)
         .background(Color(.systemBackgroundSecondary))
     }
 
@@ -140,11 +146,13 @@ extension FavoritePokemonListView {
     private func emptyView() -> some View {
         GeometryReader { geometry in
             CenteringView {
-                ProgressView()
-                    .frame(width: 64, height: 64)
+                Text("No Favorites")
+                    .fontWithLineHeight(token: .bodyRegular)
+                    .foregroundStyle(Color(.labelSecondary))
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .refreshableScrollView(spaceName: "FavoritePokemonListEmptyState") {
+                try? await Task.sleep(for: .seconds(1.0))
                 await state.refresh()
             }
         }
