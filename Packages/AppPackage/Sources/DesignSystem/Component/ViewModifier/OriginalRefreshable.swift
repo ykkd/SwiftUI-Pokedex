@@ -9,11 +9,11 @@ private import Refreshable
 import SwiftUI
 
 // MARK: - RefreshableScrollView
-public struct RefreshableScrollView: ViewModifier {
-    public let spaceName: String
-    public let onRefresh: () async -> Void
+struct RefreshableScrollView: ViewModifier {
+    let spaceName: String
+    let onRefresh: () async -> Void
 
-    public func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         ScrollView {
             RefreshControl(coordinateSpace: .named(spaceName)) {
                 Task {

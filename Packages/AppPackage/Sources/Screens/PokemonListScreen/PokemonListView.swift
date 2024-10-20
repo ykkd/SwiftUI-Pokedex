@@ -57,10 +57,15 @@ extension PokemonListView {
 
         LazyVGrid(columns: columns, spacing: SpaceToken.s) {
             ForEach(state.pokemons) { pokemon in
-                itemView(pokemon)
-                    .task {
-                        await getNextPageIfNeeded(last: pokemon)
-                    }
+                ScaleAnimationView(
+                    scaleFrom: 0.1,
+                    scaleTo: 1.0,
+                    animation: .easeInOut,
+                    content: itemView(pokemon)
+                )
+                .task {
+                    await getNextPageIfNeeded(last: pokemon)
+                }
             }
         }
         .overlay(alignment: .bottom) {

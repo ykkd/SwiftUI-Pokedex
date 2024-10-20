@@ -8,11 +8,11 @@
 import SwiftUI
 
 // MARK: - FontWithLineHeight
-public struct FontWithLineHeight: ViewModifier {
-    public let font: UIFont
-    public let lineHeight: CGFloat
+struct FontWithLineHeight: ViewModifier {
+    let font: UIFont
+    let lineHeight: CGFloat
 
-    public func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         content
             .font(Font(font))
             .lineSpacing(lineHeight - font.lineHeight)
