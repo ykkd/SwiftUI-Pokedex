@@ -85,43 +85,35 @@ final class PokemonDetailViewState {
         self.pokemonNumber = pokemonNumber
     }
 
-    func getPokemonDetail() async {
+    func getPokemonDetail() async throws(ApplicationError) {
         defer { isLoading = false }
-        do {
-            isLoading = true
-            try await getIsFavorited()
-            try await updatePokemonDetail()
-        } catch {
-            // TODO: implement
-        }
+        isLoading = true
+        try await getIsFavorited()
+        try await updatePokemonDetail()
     }
 
-    func refresh() async {
-        await getPokemonDetail()
+    func refresh() async throws(ApplicationError) {
+        try await getPokemonDetail()
     }
 
     func updateIsBgAniationStarted(_ value: Bool) {
         isBgAniationStarted = value
     }
 
-    func updateIsFavorited(_ value: Bool) async {
-        do {
-            try await saveIsFavorited(value)
-        } catch {
-            // TODO: implement
-        }
+    func updateIsFavorited(_ value: Bool) async throws(ApplicationError) {
+        try await saveIsFavorited(value)
     }
 }
 
 // MARK: - Private
 extension PokemonDetailViewState {
 
-    private func updatePokemonDetail() async throws {
+    private func updatePokemonDetail() async throws(ApplicationError) {
         let data = try await getPokemonDetailUseCase.execute(pokemonNumber)
         pokemonDetail = data
     }
 
-    private func getIsFavorited() async throws {
+    private func getIsFavorited() async throws(ApplicationError) {
         if let data = try await getFavoritePokemonUseCase.execute(pokemonNumber) {
             isFavorited = await data.isFavorite
         } else {
@@ -129,7 +121,7 @@ extension PokemonDetailViewState {
         }
     }
 
-    private func saveIsFavorited(_ isFavorite: Bool) async throws {
+    private func saveIsFavorited(_ isFavorite: Bool) async throws(ApplicationError) {
         isFavorited = isFavorite
         guard let favorable else {
             return

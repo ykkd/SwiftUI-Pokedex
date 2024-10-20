@@ -41,7 +41,7 @@ public struct PokemonListView: View {
                     emptyView()
                 }
                 .task {
-                    await state.getInitialData()
+                    await getInitialData()
                 }
         }
     }
@@ -59,7 +59,7 @@ extension PokemonListView {
             ForEach(state.pokemons) { pokemon in
                 itemView(pokemon)
                     .task {
-                        await state.getNextPageIfNeeded(last: pokemon)
+                        await getNextPageIfNeeded(last: pokemon)
                     }
             }
         }
@@ -70,7 +70,7 @@ extension PokemonListView {
         }
         .padding(.horizontal, SpaceToken.m)
         .refreshableScrollView(spaceName: "PokemonList") {
-            await state.refresh()
+            await refresh()
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(RootTab.pokemonList.navigationTitle)
@@ -153,8 +153,67 @@ extension PokemonListView {
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .refreshableScrollView(spaceName: "PokemonListEmptyState") {
-                await state.refresh()
+                await refresh()
             }
+        }
+    }
+}
+
+// MARK: - Error handling
+extension PokemonListView {
+
+    private func getInitialData() async {
+        do {
+            try await state.getInitialData()
+        } catch {
+            router.presentAlertView(
+                error: error,
+                buttons: [
+                    .ok(action: nil),
+                    .retry {
+                        Task {
+                            await getInitialData()
+                        }
+                    },
+                ]
+            )
+        }
+    }
+
+    private func refresh() async {
+        do {
+            try? await Task.sleep(for: .seconds(1.0))
+            try await state.refresh()
+        } catch {
+            router.presentAlertView(
+                error: error,
+                buttons: [
+                    .ok(action: nil),
+                    .retry {
+                        Task {
+                            await refresh()
+                        }
+                    },
+                ]
+            )
+        }
+    }
+
+    private func getNextPageIfNeeded(last: Pokemon) async {
+        do {
+            try await state.getNextPageIfNeeded(last: last)
+        } catch {
+            router.presentAlertView(
+                error: error,
+                buttons: [
+                    .ok(action: nil),
+                    .retry {
+                        Task {
+                            await getNextPageIfNeeded(last: last)
+                        }
+                    },
+                ]
+            )
         }
     }
 }
