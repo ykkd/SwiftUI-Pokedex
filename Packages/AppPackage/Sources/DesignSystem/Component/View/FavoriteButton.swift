@@ -9,18 +9,19 @@ private import SFSafeSymbols
 import SwiftUI
 
 public struct FavoriteButton: View {
-    @State private var isFavorited: Bool
+
+    @Binding private var isFavorite: Bool
 
     private var animationScale: CGFloat {
-        isFavorited ? 1.2 : 1.0
+        isFavorite ? 1.2 : 1.0
     }
 
     private var foregoundColor: Color {
-        isFavorited ? heartColor : bgColor
+        isFavorite ? heartColor : bgColor
     }
 
     private var fillColor: Color {
-        (isFavorited ? heartColor : bgColor).opacity(0.2)
+        (isFavorite ? heartColor : bgColor).opacity(0.2)
     }
 
     private let heartColor = Color(.systemRed)
@@ -29,25 +30,24 @@ public struct FavoriteButton: View {
     private let action: ((Bool) -> Void)?
 
     public init(
-        isFavorited: Bool = false,
+        isFavorite: Binding<Bool>,
         action: ((Bool) -> Void)?
     ) {
-        self.isFavorited = isFavorited
+        _isFavorite = isFavorite
         self.action = action
     }
 
     public var body: some View {
         Button {
             withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
-                isFavorited.toggle()
-                action?(isFavorited)
+                action?(!isFavorite)
             }
         } label: {
             ZStack {
                 Circle()
                     .fill(fillColor)
                     .frame(width: 60, height: 60)
-                Image(systemSymbol: isFavorited ? .heartFill : .heart)
+                Image(systemSymbol: isFavorite ? .heartFill : .heart)
                     .resizable()
                     .frame(width: 24, height: 24)
                     .foregroundColor(foregoundColor)

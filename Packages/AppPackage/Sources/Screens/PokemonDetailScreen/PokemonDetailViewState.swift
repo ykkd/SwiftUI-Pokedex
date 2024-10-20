@@ -49,22 +49,6 @@ final class PokemonDetailViewState {
         }
     }
 
-    private var favorable: FavorablePokemon? {
-        if let pokemonDetail {
-            .init(pokemon:
-                .init(
-                    name: pokemonDetail.name,
-                    number: pokemonDetail.number,
-                    imageUrl: pokemonDetail.imageUrl,
-                    subImageUrl: pokemonDetail.subImageUrl
-                ),
-                isFavorite: isFavorited
-            )
-        } else {
-            nil
-        }
-    }
-
     let pokemonNumber: Int
 
     private(set) var isBgAniationStarted: Bool = false
@@ -122,10 +106,26 @@ extension PokemonDetailViewState {
     }
 
     private func saveIsFavorited(_ isFavorite: Bool) async throws(ApplicationError) {
-        isFavorited = isFavorite
-        guard let favorable else {
+        guard let favorable = generateFavorablePokemon(isFavorite) else {
             return
         }
         try await saveFavoritePokemonUseCase.execute(favorable)
+        isFavorited = isFavorite
+    }
+
+    private func generateFavorablePokemon(_ isFavorite: Bool) -> FavorablePokemon? {
+        if let pokemonDetail {
+            .init(pokemon:
+                .init(
+                    name: pokemonDetail.name,
+                    number: pokemonDetail.number,
+                    imageUrl: pokemonDetail.imageUrl,
+                    subImageUrl: pokemonDetail.subImageUrl
+                ),
+                isFavorite: isFavorite
+            )
+        } else {
+            nil
+        }
     }
 }
