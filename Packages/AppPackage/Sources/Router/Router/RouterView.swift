@@ -30,7 +30,7 @@ public struct RouterView<Content: View>: View {
 
     public var body: some View {
         content(withNavigation)
-            .navigationBarBackButtonHidden(true)
+            .toolbarRole(.editor)
     }
 
     @ViewBuilder

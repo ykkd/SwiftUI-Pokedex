@@ -5,6 +5,7 @@
 //  Created by ykkd on 2024/10/20.
 //
 
+private import SFSafeSymbols
 import SwiftUI
 
 public struct FavoriteButton: View {
