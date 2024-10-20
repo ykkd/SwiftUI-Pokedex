@@ -5,18 +5,23 @@
 //  Created by ykkd on 2024/10/20.
 //
 
+import AlertScreen
 import Dependencies
 import DependencyContainer
-import RootScreen
 import Router
 import SwiftUI
 
 extension AlertViewContainer: @retroactive DependencyKey {
 
     public static var liveValue: Self {
-        .init { router, input in
+        .init { router, input, error, buttons in
             AnyView(
-                RootView(router: router as! Router, input: input)
+                AlertView(
+                    router: router as! Router,
+                    input: input,
+                    error: error,
+                    buttons: buttons
+                )
             )
         }
     }

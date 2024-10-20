@@ -44,13 +44,15 @@ extension Router {
                     naviBarLeadingButtonType: transition.naviBarLeadingButtonType
                 )
             )
-        case .alert:
+        case let .alert(error, buttons):
             alertViewContainer.view(
                 router(transition: transition),
                 CommonScreenInput(
                     withNavigation: transition.withNavigation,
                     naviBarLeadingButtonType: transition.naviBarLeadingButtonType
-                )
+                ),
+                error,
+                buttons
             )
         case .pokemonList:
             pokemonListViewContainer.view(

@@ -15,13 +15,17 @@ public struct AlertViewContainer: Sendable {
 
     public var view: @MainActor @Sendable (
         _ router: BaseRouter,
-        _ input: CommonScreenInput
+        _ input: CommonScreenInput,
+        _ error: ApplicationError,
+        _ buttons: [AlertButtonType]
     ) -> AnyView
 
     public init(
         view: @escaping @MainActor @Sendable (
             _ router: BaseRouter,
-            _ input: CommonScreenInput
+            _ input: CommonScreenInput,
+            _ error: ApplicationError,
+            _ buttons: [AlertButtonType]
         ) -> AnyView
     ) {
         self.view = view

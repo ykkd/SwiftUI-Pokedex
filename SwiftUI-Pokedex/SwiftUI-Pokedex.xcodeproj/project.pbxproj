@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F01D97642CC13D0F003CA165 /* PokemonDetailScreen in Frameworks */ = {isa = PBXBuildFile; productRef = F01D97632CC13D0F003CA165 /* PokemonDetailScreen */; };
 		F06D04F92CC2CE2C003803A4 /* FavoritePokemonListScreen in Frameworks */ = {isa = PBXBuildFile; productRef = F06D04F82CC2CE2C003803A4 /* FavoritePokemonListScreen */; };
+		F06D05352CC55886003803A4 /* AlertScreen in Frameworks */ = {isa = PBXBuildFile; productRef = F06D05342CC55886003803A4 /* AlertScreen */; };
 		F07F53BF2CBAF8DE005455D2 /* DependencyContainer in Frameworks */ = {isa = PBXBuildFile; productRef = F07F53BE2CBAF8DE005455D2 /* DependencyContainer */; };
 		F07F53C22CBAF92C005455D2 /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = F07F53C12CBAF92C005455D2 /* Dependencies */; };
 		F07F53F32CBCF4AE005455D2 /* Router in Frameworks */ = {isa = PBXBuildFile; productRef = F07F53F22CBCF4AE005455D2 /* Router */; };
@@ -94,6 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F06D05352CC55886003803A4 /* AlertScreen in Frameworks */,
 				F07F53F52CBCF53A005455D2 /* Entity in Frameworks */,
 				F07F53C22CBAF92C005455D2 /* Dependencies in Frameworks */,
 				F07F54482CBD76C2005455D2 /* PokemonListScreen in Frameworks */,
@@ -189,6 +191,7 @@
 				F07F54472CBD76C2005455D2 /* PokemonListScreen */,
 				F01D97632CC13D0F003CA165 /* PokemonDetailScreen */,
 				F06D04F82CC2CE2C003803A4 /* FavoritePokemonListScreen */,
+				F06D05342CC55886003803A4 /* AlertScreen */,
 			);
 			productName = "SwiftUI-Pokedex";
 			productReference = F0D5CC1A2CBA67790018F437 /* SwiftUI-Pokedex.app */;
@@ -711,6 +714,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F0F3381F2CBAF40200C53E97 /* XCLocalSwiftPackageReference "../Packages/AppPackage" */;
 			productName = FavoritePokemonListScreen;
+		};
+		F06D05342CC55886003803A4 /* AlertScreen */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F0F3381F2CBAF40200C53E97 /* XCLocalSwiftPackageReference "../Packages/AppPackage" */;
+			productName = AlertScreen;
 		};
 		F07F53BE2CBAF8DE005455D2 /* DependencyContainer */ = {
 			isa = XCSwiftPackageProductDependency;
