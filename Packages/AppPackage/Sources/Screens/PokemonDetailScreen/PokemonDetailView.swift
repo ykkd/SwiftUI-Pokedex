@@ -63,7 +63,9 @@ extension PokemonDetailView {
                         ForEach(state.sections, id: \.self) { section in
                             switch section {
                             case .mainVisual:
-                                mainVisual(size: geometry.size, data: data)
+                                let length = geometry.size.width - (SpaceToken.m * 2)
+                                let size = CGSize(width: length, height: length)
+                                mainVisual(size: size, data: data)
                             case .description:
                                 description(data: data)
                             case .status:
@@ -128,13 +130,15 @@ extension PokemonDetailView {
     private func mainVisual(size: CGSize, data: PokemonDetail) -> some View {
         FallbackableAsyncImage(
             data.imageUrl,
-            fallbackUrl: data.subImageUrl) { image in
-                image
-                    .resizable()
-                    .aspectRatio(AspectToken.square.value, contentMode: .fill)
-                    .frame(width: size.width * 0.8, height: size.width * 0.8)
-                    .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
-            }
+            fallbackUrl: data.subImageUrl
+        ) { image in
+            image
+                .resizable()
+                .aspectRatio(AspectToken.square.value, contentMode: .fill)
+//                .frame(width: size.width * 0.8, height: size.width * 0.8)
+                .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
+        }
+        .frame(width: size.width, height: size.width)
     }
 }
 
