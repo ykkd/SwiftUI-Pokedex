@@ -60,20 +60,12 @@ extension PokemonDetailView {
                 ZStack {
                     backgroundShape(geometry.size, shapeColor: Color(hex: data.typeHex))
                     VStack {
-                        ForEach(state.sections, id: \.self) { section in
-                            switch section {
-                            case .mainVisual:
-                                let length = geometry.size.width - (SpaceToken.m * 2)
-                                let size = CGSize(width: length, height: length)
-                                mainVisual(size: size, data: data)
-                            case .description:
-                                description(data: data)
-                            case .status:
-                                status(data: data)
-                            case .information:
-                                information(data: data)
-                            }
-                        }
+                        let length = geometry.size.width - (SpaceToken.m * 2)
+                        let size = CGSize(width: length, height: length)
+                        mainVisual(size: size, data: data)
+                        description(data: data)
+                        status(data: data)
+                        information(data: data)
                         Spacer()
                     }
                     .padding(.horizontal, SpaceToken.m)
@@ -135,7 +127,6 @@ extension PokemonDetailView {
             image
                 .resizable()
                 .aspectRatio(AspectToken.square.value, contentMode: .fill)
-//                .frame(width: size.width * 0.8, height: size.width * 0.8)
                 .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
         }
         .frame(width: size.width, height: size.width)
@@ -200,7 +191,7 @@ extension PokemonDetailView {
                 .foregroundStyle(Color(.labelPrimary))
                 .lineLimit(1)
         }
-        .padding(SpaceToken.s)
+        .padding(SpaceToken.m)
         .frame(maxWidth: .infinity)
         .background(Color(.systemBackgroundPrimary))
         .cornerRadius(RadiusToken.l)

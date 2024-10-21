@@ -57,10 +57,6 @@ final class PokemonDetailViewState {
         pokemonDetail == nil
     }
 
-    var sections: [PokemonDetailViewSection] {
-        [.mainVisual, .description, .status, .information]
-    }
-
     var numberText: String {
         "No.\(pokemonNumber)"
     }
