@@ -169,6 +169,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F0D5CC3F2CBA677B0018F437 /* Build configuration list for PBXNativeTarget "SwiftUI-Pokedex" */;
 			buildPhases = (
+				F08BA92C2CC6C8BA008515C6 /* Run License-Plist */,
 				F0D5CC162CBA67790018F437 /* Sources */,
 				F0D5CC172CBA67790018F437 /* Frameworks */,
 				F0D5CC182CBA67790018F437 /* Resources */,
@@ -315,6 +316,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F08BA92C2CC6C8BA008515C6 /* Run License-Plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run License-Plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/bin/sh ${PROJECT_DIR}/../scripts/license-plist/license-plist.sh\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F0D5CC162CBA67790018F437 /* Sources */ = {

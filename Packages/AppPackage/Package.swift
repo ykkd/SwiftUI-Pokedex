@@ -231,6 +231,7 @@ enum Targets: String, CaseIterable, PackageAtom {
         case .designSystem:
             [
                 Targets.sharedExtension.asDependency,
+                Targets.screenExtension.asDependency,
                 Dependencies.refreshable.asDependency(productName: .usePackageName),
             ]
         case .logger:
