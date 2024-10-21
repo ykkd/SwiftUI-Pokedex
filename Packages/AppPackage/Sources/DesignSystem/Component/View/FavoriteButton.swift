@@ -46,13 +46,13 @@ public struct FavoriteButton: View {
             ZStack {
                 Circle()
                     .fill(fillColor)
-                    .frame(width: 60, height: 60)
                 Image(systemSymbol: isFavorite ? .heartFill : .heart)
                     .resizable()
-                    .frame(width: 24, height: 24)
+                    .padding(.all, SpaceToken.m)
                     .foregroundColor(foregoundColor)
                     .scaleEffect(animationScale)
             }
+            .frame(width: 60, height: 60)
         }
         .buttonStyle(PlainButtonStyle())
         .sensoryFeedback(.success, trigger: isFavorite)

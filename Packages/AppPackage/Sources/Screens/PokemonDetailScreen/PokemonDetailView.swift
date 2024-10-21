@@ -11,7 +11,7 @@ import Entity
 import Router
 import SwiftUI
 private import DesignSystem
-private import SFSafeSymbols
+import SFSafeSymbols
 private import ScreenExtension
 private import SharedExtension
 
@@ -41,7 +41,7 @@ public struct PokemonDetailView: View {
         ) {
             content()
                 .when(state.shouldShowEmptyView) { _ in
-                    emptyView()
+                    emptyStateView()
                 }
                 .task {
                     await getPokemonDetail()
@@ -60,18 +60,12 @@ extension PokemonDetailView {
                 ZStack {
                     backgroundShape(geometry.size, shapeColor: Color(hex: data.typeHex))
                     VStack {
-                        ForEach(state.sections, id: \.self) { section in
-                            switch section {
-                            case .mainVisual:
-                                mainVisual(size: geometry.size, data: data)
-                            case .description:
-                                description(data: data)
-                            case .status:
-                                status(data: data)
-                            case .information:
-                                information(data: data)
-                            }
-                        }
+                        let length = geometry.size.width - (SpaceToken.m * 2)
+                        let size = CGSize(width: length, height: length)
+                        mainVisual(size: size, data: data)
+                        description(data: data)
+                        status(data: data)
+                        information(data: data)
                         Spacer()
                     }
                     .padding(.horizontal, SpaceToken.m)
@@ -128,13 +122,14 @@ extension PokemonDetailView {
     private func mainVisual(size: CGSize, data: PokemonDetail) -> some View {
         FallbackableAsyncImage(
             data.imageUrl,
-            fallbackUrl: data.subImageUrl) { image in
-                image
-                    .resizable()
-                    .aspectRatio(AspectToken.square.value, contentMode: .fill)
-                    .frame(width: size.width * 0.8, height: size.width * 0.8)
-                    .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
-            }
+            fallbackUrl: data.subImageUrl
+        ) { image in
+            image
+                .resizable()
+                .aspectRatio(AspectToken.square.value, contentMode: .fill)
+                .shadow(color: Color(.shadow), radius: RadiusToken.s, x: -4, y: 4)
+        }
+        .frame(width: size.width, height: size.width)
     }
 }
 
@@ -156,13 +151,13 @@ extension PokemonDetailView {
             FavoriteButton(
                 isFavorite: Binding(
                     get: {
-                        state.isFavorited
+                        state.isFavorite
                     },
                     set: { _ in }
                 )
-            ) { isFavorited in
+            ) { isFavorite in
                 Task {
-                    await updateIsFavorited(isFavorited)
+                    await updateIsFavorite(isFavorite)
                 }
             }
         }
@@ -196,29 +191,14 @@ extension PokemonDetailView {
                 .foregroundStyle(Color(.labelPrimary))
                 .lineLimit(1)
         }
-        .padding(SpaceToken.m)
+        .padding(SpaceToken.s)
         .frame(maxWidth: .infinity)
         .background(Color(.systemBackgroundPrimary))
         .cornerRadius(RadiusToken.l)
     }
 
     private func statusImage(_ status: PokemonStatus) -> some View {
-        let symbolName: SFSymbol = switch status.type {
-        case .attack:
-            .flameFill
-        case .defense:
-            .shieldFill
-        case .hp:
-            .heartFill
-        case .specialAttack:
-            .firewallFill
-        case .specialDefense:
-            .boltShield
-        case .speed:
-            .figureRun
-        }
-
-        return Image(systemSymbol: symbolName)
+        Image(systemSymbol: ViewLogic.getSymbolForStatusImage(status))
             .resizable()
             .foregroundStyle(Color(.labelPrimary))
             .aspectRatio(contentMode: .fit)
@@ -237,56 +217,27 @@ extension PokemonDetailView {
         }
     }
 
+    @ViewBuilder
     private func informationItemView(_ type: PokemonDetail.Information.InfoType) -> some View {
-        let symbol: SFSymbol
-        let title: String
-        let description: String
+        let input = ViewLogic.generateInformationItemViewInput(type)
 
-        switch type {
-        case let .pokemonTypes(pokemonTypes):
-            symbol = .dropHalffull
-            title = "Type"
-            let joined = pokemonTypes.map(\.text).joined(separator: " ")
-            description = joined
-        case let .height(height):
-            symbol = .personFill
-            title = "Height"
-            description = "\(height)m"
-        case let .weight(weight):
-            symbol = .scalemassFill
-            title = "Weight"
-            description = "\(weight)kg"
-        case let .firstAbility(ability):
-            symbol = .circleLefthalfFilled
-            title = "Ability 1"
-            description = "\(ability)"
-        case let .secondAbility(ability):
-            symbol = .circleRighthalfFilled
-            title = "Ability 2"
-            description = "\(ability ?? "None")"
-        case let .hiddenAblity(ability):
-            symbol = .circleInsetFilled
-            title = "Hidden Ablity"
-            description = "\(ability ?? "None")"
-        }
-
-        return HStack {
+        HStack {
             HStack {
                 CenteringView {
-                    Image(systemSymbol: symbol)
+                    Image(systemSymbol: input.symbol)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(height: 24)
                         .foregroundStyle(Color(.labelPrimary))
                 }
                 .frame(width: 32)
-                Text(title)
+                Text(input.title)
                     .fontWithLineHeight(token: .subheadlineRegular)
                     .foregroundStyle(Color(.labelPrimary))
                     .lineLimit(1)
                 Spacer()
             }
-            Text(description)
+            Text(input.description)
                 .fontWithLineHeight(token: .subheadlineRegular)
                 .foregroundStyle(Color(.labelPrimary))
                 .lineLimit(1)
@@ -300,7 +251,7 @@ extension PokemonDetailView {
 
 extension PokemonDetailView {
 
-    private func emptyView() -> some View {
+    private func emptyStateView() -> some View {
         GeometryReader { geometry in
             CenteringView {
                 ProgressView()
@@ -354,9 +305,9 @@ extension PokemonDetailView {
         }
     }
 
-    private func updateIsFavorited(_ value: Bool) async {
+    private func updateIsFavorite(_ value: Bool) async {
         do {
-            try await state.updateIsFavorited(value)
+            try await state.updateIsFavorite(value)
         } catch {
             router.presentAlertView(
                 error: error,

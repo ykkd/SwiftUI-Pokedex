@@ -43,9 +43,9 @@ final class PokemonDetailViewState {
         }
     }
 
-    private(set) var isFavorited: Bool = false {
+    private(set) var isFavorite: Bool = false {
         didSet {
-            logger.log(.debug, message: "isFavorited: \(oldValue) to \(isFavorited)")
+            logger.log(.debug, message: "isFavorited: \(oldValue) to \(isFavorite)")
         }
     }
 
@@ -55,10 +55,6 @@ final class PokemonDetailViewState {
 
     var shouldShowEmptyView: Bool {
         pokemonDetail == nil
-    }
-
-    var sections: [PokemonDetailViewSection] {
-        [.mainVisual, .description, .status, .information]
     }
 
     var numberText: String {
@@ -72,7 +68,7 @@ final class PokemonDetailViewState {
     func getPokemonDetail() async throws(ApplicationError) {
         defer { isLoading = false }
         isLoading = true
-        try await getIsFavorited()
+        try await getIsFavorite()
         try await updatePokemonDetail()
     }
 
@@ -84,8 +80,8 @@ final class PokemonDetailViewState {
         isBgAniationStarted = value
     }
 
-    func updateIsFavorited(_ value: Bool) async throws(ApplicationError) {
-        try await saveIsFavorited(value)
+    func updateIsFavorite(_ value: Bool) async throws(ApplicationError) {
+        try await saveIsFavorite(value)
     }
 }
 
@@ -97,35 +93,19 @@ extension PokemonDetailViewState {
         pokemonDetail = data
     }
 
-    private func getIsFavorited() async throws(ApplicationError) {
+    private func getIsFavorite() async throws(ApplicationError) {
         if let data = try await getFavoritePokemonUseCase.execute(pokemonNumber) {
-            isFavorited = await data.isFavorite
+            isFavorite = await data.isFavorite
         } else {
-            isFavorited = false
+            isFavorite = false
         }
     }
 
-    private func saveIsFavorited(_ isFavorite: Bool) async throws(ApplicationError) {
-        guard let favorable = generateFavorablePokemon(isFavorite) else {
+    private func saveIsFavorite(_ value: Bool) async throws(ApplicationError) {
+        guard let favorable = ViewLogic.generateFavorablePokemon(pokemonDetail, isFavorite: value) else {
             return
         }
         try await saveFavoritePokemonUseCase.execute(favorable)
-        isFavorited = isFavorite
-    }
-
-    private func generateFavorablePokemon(_ isFavorite: Bool) -> FavorablePokemon? {
-        if let pokemonDetail {
-            .init(pokemon:
-                .init(
-                    name: pokemonDetail.name,
-                    number: pokemonDetail.number,
-                    imageUrl: pokemonDetail.imageUrl,
-                    subImageUrl: pokemonDetail.subImageUrl
-                ),
-                isFavorite: isFavorite
-            )
-        } else {
-            nil
-        }
+        isFavorite = value
     }
 }
