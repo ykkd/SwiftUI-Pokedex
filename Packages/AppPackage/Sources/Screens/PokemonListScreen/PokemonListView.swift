@@ -41,15 +41,11 @@ public struct PokemonListView: View {
             withNavigation: input.withNavigation
         ) {
             content()
-                .when(state.pokemons.isEmpty) { _ in
-                    emptyView()
+                .when(state.shouldShowEmptyView) { _ in
+                    emptyStateView()
                 }
                 .task {
-                    try? await Task.sleep(for: .seconds(2.0))
-                    await state.getInitialData()
-                }
-                .refreshable {
-                    await state.refresh()
+                    await getInitialData()
                 }
         }
     }
@@ -63,37 +59,31 @@ extension PokemonListView {
         let itemCount = 3
         let columns: [GridItem] = Array(repeating: item, count: itemCount)
 
-        ScrollViewReader { proxy in
-            ScrollView(.vertical) {
-                LazyVGrid(columns: columns, spacing: SpaceToken.s) {
-                    ForEach(state.pokemons) { pokemon in
-                        itemView(pokemon)
-                            .task {
-                                await state.getNextPageIfNeeded(last: pokemon)
-                            }
+        LazyVGrid(columns: columns, spacing: SpaceToken.s) {
+            ForEach(state.pokemons) { pokemon in
+                itemView(pokemon)
+                    .task {
+                        await getNextPageIfNeeded(last: pokemon)
                     }
-                }
-                .overlay(alignment: .bottom) {
-                    ProgressView()
-                        .frame(height: 60)
-                        .hidden(state.shouldShowBottomProgress)
-                }
-                .id("id")
-                .padding(.horizontal, SpaceToken.m)
             }
-            .onTrigger(of: trigger) {
-                withAnimation {
-                    proxy.scrollTo("id", anchor: .top)
-                }
-            }
-            .navigationTitle(RootTab.pokemonList.navigationTitle)
-            .background(Color(.systemBackgroundSecondary))
         }
+        .overlay(alignment: .bottom) {
+            ProgressView()
+                .frame(height: 60)
+                .hidden(state.shouldShowBottomProgress)
+        }
+        .padding(.horizontal, SpaceToken.m)
+        .refreshableScrollView(spaceName: "PokemonList") {
+            await refresh()
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(RootTab.pokemonList.navigationTitle)
+        .background(Color(.systemBackgroundSecondary))
     }
 
     private func itemView(_ pokemon: Pokemon) -> some View {
         Button {
-            // TODO: implement
+            router.push(to: .pokemonDetail(number: pokemon.number))
         } label: {
             VStack(spacing: SpaceToken.s) {
                 pokemonImage(pokemon)
@@ -103,7 +93,7 @@ extension PokemonListView {
         }
         .padding(SpaceToken.s)
         .aspectRatio(AspectToken.square.value, contentMode: .fit)
-        .background(Color(.systemBackground))
+        .background(Color(.systemBackgroundPrimary))
         .cornerRadius(RadiusToken.l)
     }
 
@@ -117,16 +107,16 @@ extension PokemonListView {
                     .aspectRatio(AspectToken.square.value, contentMode: .fill)
                     .frame(maxWidth: .infinity)
             } placeholder: {
-                placeholder()
+                placeholder() as! AnyView
             } errorView: { _ in
-                errorView()
+                errorView() as! AnyView
             }
     }
 
     private func pokemonInformation(_ pokemon: Pokemon) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: SpaceToken.xs) {
-                Text("\(pokemon.name)")
+                Text("\(pokemon.name.initialLetterUppercased())")
                     .fontWithLineHeight(token: .captionTwoSemibold)
                     .foregroundStyle(Color(.labelPrimary))
                     .lineLimit(1)
@@ -159,28 +149,75 @@ extension PokemonListView {
         .aspectRatio(AspectToken.square.value, contentMode: .fill)
     }
 
-    private func emptyView() -> some View {
+    private func emptyStateView() -> some View {
         GeometryReader { geometry in
-            ScrollView {
-                CenteringView {
-                    Image(.pokeBall)
-                        .resizable()
-                        .frame(width: 64, height: 64)
-                        .rotationEffect(.degrees(state.isEmptyViewAnimating ? 360 : 0))
-                        .animation(
-                            .linear(duration: 0.5).repeatForever(autoreverses: false),
-                            value: state.isLoading
-                        )
-                        .task {
-                            try? await Task.sleep(for: .seconds(0.2))
-                            state.updateIsEmptyViewAnimating(true)
+            CenteringView {
+                ProgressView()
+                    .frame(width: 64, height: 64)
+            }
+            .frame(width: geometry.size.width, height: geometry.size.height)
+            .refreshableScrollView(spaceName: "PokemonListEmptyState") {
+                await refresh()
+            }
+        }
+    }
+}
+
+// MARK: - Error handling
+extension PokemonListView {
+
+    private func getInitialData() async {
+        do {
+            try await state.getInitialData()
+        } catch {
+            router.presentAlertView(
+                error: error,
+                buttons: [
+                    .ok(action: nil),
+                    .retry {
+                        Task {
+                            await getInitialData()
                         }
-                }
-                .frame(width: geometry.size.width, height: geometry.size.height)
-            }
-            .refreshable {
-                await state.refresh()
-            }
+                    },
+                ]
+            )
+        }
+    }
+
+    private func refresh() async {
+        do {
+            try? await Task.sleep(for: .seconds(1.0))
+            try await state.refresh()
+        } catch {
+            router.presentAlertView(
+                error: error,
+                buttons: [
+                    .ok(action: nil),
+                    .retry {
+                        Task {
+                            await refresh()
+                        }
+                    },
+                ]
+            )
+        }
+    }
+
+    private func getNextPageIfNeeded(last: Pokemon) async {
+        do {
+            try await state.getNextPageIfNeeded(last: last)
+        } catch {
+            router.presentAlertView(
+                error: error,
+                buttons: [
+                    .ok(action: nil),
+                    .retry {
+                        Task {
+                            await getNextPageIfNeeded(last: last)
+                        }
+                    },
+                ]
+            )
         }
     }
 }
@@ -191,7 +228,8 @@ extension PokemonListView {
             isPresented: .constant(.root)
         ),
         input: .init(
-            withNavigation: true
+            withNavigation: true,
+            naviBarLeadingButtonType: nil
         ),
         trigger: nil
     )

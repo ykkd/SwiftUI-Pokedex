@@ -8,11 +8,11 @@
 import SwiftUI
 
 // MARK: - FallbackableAsyncImage
-public struct FallbackableAsyncImage<C: View, P: View, E: View>: View {
+public struct FallbackableAsyncImage<C: View>: View {
 
     public let content: (Image) -> C
-    public let placeholder: (() -> P)?
-    public let errorView: ((any Error) -> E)?
+    public let placeholder: (() -> AnyView)?
+    public let errorView: ((any Error) -> AnyView)?
 
     private let primaryUrl: URL?
     private let fallbackUrl: URL?
@@ -23,8 +23,8 @@ public struct FallbackableAsyncImage<C: View, P: View, E: View>: View {
         _ primaryUrl: URL?,
         fallbackUrl: URL?,
         content: @escaping (Image) -> C,
-        placeholder: @escaping () -> P,
-        errorView: @escaping (any Error) -> E
+        placeholder: (() -> AnyView)? = nil,
+        errorView: ((any Error) -> AnyView)? = nil
     ) {
         self.primaryUrl = primaryUrl
         self.fallbackUrl = fallbackUrl

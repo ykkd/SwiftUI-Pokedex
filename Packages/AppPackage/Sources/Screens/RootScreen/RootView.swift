@@ -5,8 +5,6 @@
 //  Created by ykkd on 2024/10/12.
 //
 
-private import Dependencies
-private import DependencyContainer
 import Entity
 import Router
 import SwiftUI
@@ -15,8 +13,6 @@ private import DesignSystem
 
 // MARK: - RootView
 public struct RootView: View {
-
-    @Dependency(\.pokemonListViewContainer) private var pokemonListViewContainer
 
     @StateObject private var router: Router
 
@@ -47,6 +43,11 @@ public struct RootView: View {
                     .tabItem {
                         Image(systemSymbol: .squareGrid2x2Fill)
                     }
+                router.buildTabView(.favoritePokemonList, trigger: tabDoubleTapTriggers[.favoritePokemonList])
+                    .tag(RootTab.favoritePokemonList)
+                    .tabItem {
+                        Image(systemSymbol: .heartFill)
+                    }
             }
             .tint(Color(.labelPrimary))
         }
@@ -67,7 +68,8 @@ extension RootView {
             isPresented: .constant(.root)
         ),
         input: .init(
-            withNavigation: true
+            withNavigation: true,
+            naviBarLeadingButtonType: nil
         )
     )
 }

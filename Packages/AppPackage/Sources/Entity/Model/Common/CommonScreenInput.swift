@@ -11,7 +11,13 @@ public struct CommonScreenInput {
 
     public let withNavigation: Bool
 
-    public init(withNavigation: Bool) {
+    public let naviBarLeadingButtonType: ToolbarButtonType?
+
+    public init(
+        withNavigation: Bool,
+        naviBarLeadingButtonType: ToolbarButtonType?
+    ) {
         self.withNavigation = withNavigation
+        self.naviBarLeadingButtonType = naviBarLeadingButtonType
     }
 }

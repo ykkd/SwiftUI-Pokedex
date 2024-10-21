@@ -15,7 +15,10 @@ import SwiftUI
 public final class Router: BaseRouter {
 
     @Dependency(\.rootViewContainer) private var rootViewContainer
+    @Dependency(\.alertViewContainer) private var alertViewContainer
     @Dependency(\.pokemonListViewContainer) private var pokemonListViewContainer
+    @Dependency(\.pokemonDetailViewContainer) private var pokemonDetailViewContainer
+    @Dependency(\.favoritePokemonListViewContainer) private var favoritePokemonListViewContainer
 
     override public func view(
         _ screen: Screen,
@@ -28,7 +31,7 @@ public final class Router: BaseRouter {
 extension Router {
 
     @ViewBuilder
-    private func buildView(
+    private func buildView( // swiftlint:disable:this function_body_length
         screen: Screen,
         transition: ScreenTransition
     ) -> some View {
@@ -36,13 +39,46 @@ extension Router {
         case .root:
             rootViewContainer.view(
                 router(transition: transition),
-                CommonScreenInput(withNavigation: transition.withNavigation)
+                CommonScreenInput(
+                    withNavigation: transition.withNavigation,
+                    naviBarLeadingButtonType: transition.naviBarLeadingButtonType
+                )
+            )
+        case let .alert(error, buttons):
+            alertViewContainer.view(
+                router(transition: transition),
+                CommonScreenInput(
+                    withNavigation: transition.withNavigation,
+                    naviBarLeadingButtonType: transition.naviBarLeadingButtonType
+                ),
+                error,
+                buttons
             )
         case .pokemonList:
             pokemonListViewContainer.view(
                 router(transition: transition),
-                CommonScreenInput(withNavigation: transition.withNavigation),
+                CommonScreenInput(
+                    withNavigation: transition.withNavigation,
+                    naviBarLeadingButtonType: transition.naviBarLeadingButtonType
+                ),
                 nil
+            )
+        case let .pokemonDetail(number):
+            pokemonDetailViewContainer.view(
+                router(transition: transition),
+                CommonScreenInput(
+                    withNavigation: transition.withNavigation,
+                    naviBarLeadingButtonType: transition.naviBarLeadingButtonType
+                ),
+                number
+            )
+        case .favoritePokemonList:
+            favoritePokemonListViewContainer.view(
+                router(transition: transition),
+                CommonScreenInput(
+                    withNavigation: transition.withNavigation,
+                    naviBarLeadingButtonType: transition.naviBarLeadingButtonType
+                )
             )
         }
     }
@@ -67,8 +103,19 @@ extension Router {
         case .pokemonList:
             pokemonListViewContainer.view(
                 Router(isPresented: .init(.constant(.pokemonList))),
-                .init(withNavigation: true),
+                CommonScreenInput(
+                    withNavigation: true,
+                    naviBarLeadingButtonType: nil
+                ),
                 trigger
+            )
+        case .favoritePokemonList:
+            favoritePokemonListViewContainer.view(
+                Router(isPresented: .init(.constant(.favoritePokemonList))),
+                CommonScreenInput(
+                    withNavigation: true,
+                    naviBarLeadingButtonType: nil
+                )
             )
         }
     }

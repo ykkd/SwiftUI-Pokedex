@@ -20,7 +20,14 @@ let otherSwiftFlagsForDebug = [
 
 let swiftSettings: [PackageDescription.SwiftSetting] = [
     .unsafeFlags(otherSwiftFlagsForDebug, .when(configuration: .debug)),
+    .existentialAny,
+    .internalImportsByDefault,
 ]
+
+extension SwiftSetting {
+    static let existentialAny: Self = .enableUpcomingFeature("ExistentialAny") // SE-0335, Swift 5.6,  SwiftPM 5.8+
+    static let internalImportsByDefault: Self = .enableUpcomingFeature("InternalImportsByDefault") // SE-0409, Swift 6.0,  SwiftPM 6.0+
+}
 
 // MARK: - Products
 enum Products: String, CaseIterable, PackageAtom {
@@ -30,10 +37,19 @@ enum Products: String, CaseIterable, PackageAtom {
     case routerCore
     case router
     case getPokemonListUseCase
+    case getPokemonDetailUseCase
+    case getFavoritePokemonUseCase
+    case getAllFavoritePokemonUseCase
+    case saveFavoritePokemonUseCase
     case rootScreen
+    case alertScreen
     case pokemonListScreen
+    case pokemonDetailScreen
+    case favoritePokemonListScreen
     case pokeAPIClientWrapper
+    case swiftDataWrapper
     case designSystem
+    case sharedExtension
     case screenExtension
 
     var targets: [String] {
@@ -56,6 +72,7 @@ enum Dependencies: String, CaseIterable, PackageAtom {
     case swiftOpenAPIRuntime = "swift-openapi-runtime"
     case swiftOpenAPIUrlSession = "swift-openapi-urlsession"
     case sfSafeSymbols = "SFSafeSymbols"
+    case refreshable = "Refreshable"
 
     var value: Package.Dependency {
         switch self {
@@ -83,6 +100,10 @@ enum Dependencies: String, CaseIterable, PackageAtom {
         case .sfSafeSymbols:
             .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "5.3.0")
             )
+        case .refreshable:
+            .package(
+                url: "https://github.com/c-villain/Refreshable.git", .upToNextMajor(from: "0.2.0")
+            )
         }
     }
 
@@ -109,10 +130,19 @@ enum Targets: String, CaseIterable, PackageAtom {
     case routerCore
     case router
     case getPokemonListUseCase
+    case getPokemonDetailUseCase
+    case getFavoritePokemonUseCase
+    case getAllFavoritePokemonUseCase
+    case saveFavoritePokemonUseCase
     case rootScreen
+    case alertScreen
     case pokemonListScreen
+    case pokemonDetailScreen
+    case favoritePokemonListScreen
     case pokeAPIClientWrapper
+    case swiftDataWrapper
     case designSystem
+    case sharedExtension
     case screenExtension
 
     var targetType: TargetType {
@@ -123,11 +153,20 @@ enum Targets: String, CaseIterable, PackageAtom {
              .routerCore,
              .router,
              .getPokemonListUseCase,
+             .getPokemonDetailUseCase,
+             .getFavoritePokemonUseCase,
+             .getAllFavoritePokemonUseCase,
+             .saveFavoritePokemonUseCase,
              .rootScreen,
+             .alertScreen,
              .pokemonListScreen,
+             .pokemonDetailScreen,
+             .favoritePokemonListScreen,
              .pokeAPIClientWrapper,
              .designSystem,
-             .screenExtension:
+             .sharedExtension,
+             .screenExtension,
+             .swiftDataWrapper:
             .production
         }
     }
@@ -150,64 +189,125 @@ enum Targets: String, CaseIterable, PackageAtom {
         case .dependencyContainer,
              .entity,
              .logger,
-             .designSystem,
-             .screenExtension:
+             .designSystem:
             "\(capitalizedName)"
         case .routerCore,
              .router:
             "Router/\(capitalizedName)"
-        case .getPokemonListUseCase:
+        case .getPokemonListUseCase,
+             .getPokemonDetailUseCase,
+             .getFavoritePokemonUseCase,
+             .getAllFavoritePokemonUseCase,
+             .saveFavoritePokemonUseCase:
             "UseCases/\(capitalizedName)"
         case .rootScreen,
-             .pokemonListScreen:
+             .alertScreen,
+             .pokemonListScreen,
+             .pokemonDetailScreen,
+             .favoritePokemonListScreen:
             "Screens/\(capitalizedName)"
-        case .pokeAPIClientWrapper:
+        case .pokeAPIClientWrapper,
+             .swiftDataWrapper:
             "Wrappers/\(capitalizedName)"
+        case .sharedExtension,
+             .screenExtension:
+            "Extension/\(capitalizedName)"
         }
     }
 
     var dependencies: [Target.Dependency] {
         switch self {
-        case .entity,
-             .designSystem,
-             .screenExtension:
+        case .sharedExtension:
             []
+        case .entity:
+            [
+                Targets.sharedExtension.asDependency,
+            ]
+        case .screenExtension:
+            [
+                Targets.sharedExtension.asDependency,
+                Targets.entity.asDependency,
+            ]
+        case .designSystem:
+            [
+                Targets.sharedExtension.asDependency,
+                Dependencies.refreshable.asDependency(productName: .usePackageName),
+            ]
         case .logger:
             [
+                Targets.sharedExtension.asDependency,
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
             ]
         case .dependencyContainer:
             [
+                Targets.sharedExtension.asDependency,
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
                 Targets.entity.asDependency,
                 Targets.routerCore.asDependency,
             ]
         case .routerCore:
             [
+                Targets.sharedExtension.asDependency,
                 Targets.entity.asDependency,
             ]
         case .router:
             [
+                Targets.sharedExtension.asDependency,
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
                 Targets.dependencyContainer.asDependency,
                 Targets.routerCore.asDependency,
             ]
-        case .getPokemonListUseCase:
+        case .getPokemonListUseCase,
+             .getPokemonDetailUseCase:
             [
+                Targets.sharedExtension.asDependency,
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
                 Targets.entity.asDependency,
                 Targets.pokeAPIClientWrapper.asDependency,
             ]
-        case .rootScreen:
-            Self.commonDependenciesForScreen
+        case .getFavoritePokemonUseCase,
+             .getAllFavoritePokemonUseCase,
+             .saveFavoritePokemonUseCase:
+            [
+                Targets.sharedExtension.asDependency,
+                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
+                Targets.entity.asDependency,
+                Targets.swiftDataWrapper.asDependency,
+            ]
+        case .rootScreen,
+             .alertScreen:
+            Self.commonDependenciesForScreen + [
+                Targets.sharedExtension.asDependency,
+            ]
         case .pokemonListScreen:
             Self.commonDependenciesForScreen + [
+                Targets.sharedExtension.asDependency,
                 Targets.getPokemonListUseCase.asDependency,
+            ]
+        case .pokemonDetailScreen:
+            Self.commonDependenciesForScreen + [
+                Targets.getPokemonDetailUseCase.asDependency,
+                Targets.sharedExtension.asDependency,
+                Targets.saveFavoritePokemonUseCase.asDependency,
+                Targets.getFavoritePokemonUseCase.asDependency,
+            ]
+        case .favoritePokemonListScreen:
+            Self.commonDependenciesForScreen + [
+                Targets.sharedExtension.asDependency,
+                Targets.getAllFavoritePokemonUseCase.asDependency,
             ]
         case .pokeAPIClientWrapper:
             [
+                Targets.sharedExtension.asDependency,
                 Dependencies.swiftOpenAPIRuntime.asDependency(productName: .specified(name: "OpenAPIRuntime")),
                 Dependencies.swiftOpenAPIUrlSession.asDependency(productName: .specified(name: "OpenAPIURLSession")),
+                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
+                Targets.entity.asDependency,
+            ]
+        case .swiftDataWrapper:
+            [
+                Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
+                Targets.sharedExtension.asDependency,
                 Targets.entity.asDependency,
             ]
         }
