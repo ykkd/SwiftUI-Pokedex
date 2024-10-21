@@ -40,7 +40,6 @@ public struct RefreshableScrollView: ViewModifier {
                 content
             }
             .onTrigger(of: trigger) {
-                print("isCurrent: \(isCurrent)")
                 if let isCurrent,
                    isCurrent.wrappedValue {
                     withAnimation {
