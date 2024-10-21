@@ -200,7 +200,7 @@ extension PokemonDetailView {
                 .foregroundStyle(Color(.labelPrimary))
                 .lineLimit(1)
         }
-        .padding(SpaceToken.m)
+        .padding(SpaceToken.s)
         .frame(maxWidth: .infinity)
         .background(Color(.systemBackgroundPrimary))
         .cornerRadius(RadiusToken.l)
