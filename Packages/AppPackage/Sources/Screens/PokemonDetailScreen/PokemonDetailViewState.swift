@@ -9,7 +9,9 @@ import Foundation
 import Observation
 private import Dependencies
 import Entity
-import GetPokemonDetailUseCase
+private import GetPokemonDetailUseCase
+private import GetFavoritePokemonUseCase
+private import SaveFavoritePokemonUseCase
 import Logger
 
 // MARK: - PokemonDetailViewState
@@ -23,6 +25,12 @@ final class PokemonDetailViewState {
     @ObservationIgnored
     @Dependency(\.getPokemonDetailUseCase) private var getPokemonDetailUseCase
 
+    @ObservationIgnored
+    @Dependency(\.getFavoritePokemonUseCase) private var getFavoritePokemonUseCase
+
+    @ObservationIgnored
+    @Dependency(\.saveFavoritePokemonUseCase) private var saveFavoritePokemonUseCase
+
     private(set) var isLoading: Bool = false {
         didSet {
             logger.log(.debug, message: "isLoading: \(isLoading)")
@@ -32,6 +40,28 @@ final class PokemonDetailViewState {
     private(set) var pokemonDetail: PokemonDetail? {
         didSet {
             logger.log(.debug, message: "pokemonDetail: \(pokemonDetail)")
+        }
+    }
+
+    private(set) var isFavorited: Bool = false {
+        didSet {
+            logger.log(.debug, message: "isFavorited: \(oldValue) to \(isFavorited)")
+        }
+    }
+
+    private var favorable: FavorablePokemon? {
+        if let pokemonDetail {
+            .init(pokemon:
+                .init(
+                    name: pokemonDetail.name,
+                    number: pokemonDetail.number,
+                    imageUrl: pokemonDetail.imageUrl,
+                    subImageUrl: pokemonDetail.subImageUrl
+                ),
+                isFavorite: isFavorited
+            )
+        } else {
+            nil
         }
     }
 
@@ -59,8 +89,8 @@ final class PokemonDetailViewState {
         defer { isLoading = false }
         do {
             isLoading = true
-            let data = try await getPokemonDetailUseCase.execute(pokemonNumber)
-            pokemonDetail = data
+            try await getIsFavorited()
+            try await updatePokemonDetail()
         } catch {
             // TODO: implement
         }
@@ -72,5 +102,38 @@ final class PokemonDetailViewState {
 
     func updateIsBgAniationStarted(_ value: Bool) {
         isBgAniationStarted = value
+    }
+
+    func updateIsFavorited(_ value: Bool) async {
+        do {
+            try await saveIsFavorited(value)
+        } catch {
+            // TODO: implement
+        }
+    }
+}
+
+// MARK: - Private
+extension PokemonDetailViewState {
+
+    private func updatePokemonDetail() async throws {
+        let data = try await getPokemonDetailUseCase.execute(pokemonNumber)
+        pokemonDetail = data
+    }
+
+    private func getIsFavorited() async throws {
+        if let data = try await getFavoritePokemonUseCase.execute(pokemonNumber) {
+            isFavorited = await data.isFavorite
+        } else {
+            isFavorited = false
+        }
+    }
+
+    private func saveIsFavorited(_ isFavorite: Bool) async throws {
+        isFavorited = isFavorite
+        guard let favorable else {
+            return
+        }
+        try await saveFavoritePokemonUseCase.execute(favorable)
     }
 }

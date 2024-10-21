@@ -9,7 +9,7 @@ import Foundation
 
 public actor FavorablePokemon {
 
-    public let pokemon: Pokemon
+    public nonisolated let pokemon: Pokemon
 
     public private(set) var isFavorite: Bool
 
@@ -20,5 +20,9 @@ public actor FavorablePokemon {
 
     public func updateIsFavorite(_ value: Bool) {
         isFavorite = value
+    }
+
+    public func getIsFavorite() async -> Bool {
+        isFavorite
     }
 }

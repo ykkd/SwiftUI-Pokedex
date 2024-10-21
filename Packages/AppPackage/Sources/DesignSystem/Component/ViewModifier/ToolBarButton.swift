@@ -1,5 +1,5 @@
 //
-//  NaviBarButtonType.swift
+//  ToolBarButton.swift
 //  AppPackage
 //
 //  Created by ykkd on 2024/10/18.
@@ -9,9 +9,10 @@ import Entity
 import SFSafeSymbols
 import SwiftUI
 
-// MARK: - NaviBarLeadingButton
-public struct NaviBarLeadingButton: ViewModifier {
-    public let type: NaviBarButtonType?
+// MARK: - ToolBarButton
+public struct ToolBarButton: ViewModifier {
+    public let placement: ToolbarItemPlacement
+    public let type: ToolbarButtonType?
     public let action: (() -> Void)?
 
     @ViewBuilder
@@ -42,10 +43,15 @@ public struct NaviBarLeadingButton: ViewModifier {
 
 extension View {
 
-    public func naviBarLeadingButton(type: NaviBarButtonType?, action: (() -> Void)?) -> some View {
+    public func toolBarButton(
+        placement: ToolbarItemPlacement,
+        type: ToolbarButtonType?,
+        action: (() -> Void)?
+    ) -> some View {
         ModifiedContent(
             content: self,
-            modifier: NaviBarLeadingButton(
+            modifier: ToolBarButton(
+                placement: placement,
                 type: type,
                 action: action
             )

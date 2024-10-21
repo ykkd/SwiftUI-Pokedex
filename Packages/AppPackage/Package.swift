@@ -272,11 +272,13 @@ enum Targets: String, CaseIterable, PackageAtom {
             Self.commonDependenciesForScreen + [
                 Targets.getPokemonDetailUseCase.asDependency,
                 Targets.sharedExtension.asDependency,
+                Targets.saveFavoritePokemonUseCase.asDependency,
+                Targets.getFavoritePokemonUseCase.asDependency,
             ]
         case .favoritePokemonListScreen:
             Self.commonDependenciesForScreen + [
                 Targets.sharedExtension.asDependency,
-                Targets.getPokemonListUseCase.asDependency,
+                Targets.getAllFavoritePokemonUseCase.asDependency,
             ]
         case .pokeAPIClientWrapper:
             [

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import GetPokemonListUseCase
+private import GetAllFavoritePokemonUseCase
 import Observation
 private import Dependencies
 import Entity
@@ -18,7 +18,7 @@ import Logger
 final class FavoritePokemonListViewState {
 
     @ObservationIgnored
-    @Dependency(\.getPokemonListUseCase) private var getPokemonListUseCase
+    @Dependency(\.getAllFavoritePokemonUseCase) private var getAllFavoritePokemonUseCase
 
     @ObservationIgnored
     @Dependency(\.mainLogger) private var logger
@@ -36,12 +36,29 @@ final class FavoritePokemonListViewState {
     }
 
     var shouldShowEmptyView: Bool {
-        pokemons.isEmpty
+        pokemons.isEmpty && !isLoading
     }
 
     init() {}
 
-    func getData() async {}
+    func getData() async {
+        defer { isLoading = false }
+        do {
+            isLoading = true
+            let favorablePokemons = try await getAllFavoritePokemonUseCase.execute()
 
-    func refresh() async {}
+            var favoritedPokemons: [Pokemon] = []
+
+            for data in favorablePokemons where await data.getIsFavorite() {
+                favoritedPokemons.append(data.pokemon)
+            }
+            pokemons = favoritedPokemons
+        } catch {
+            // TODO: implement
+        }
+    }
+
+    func refresh() async {
+        await getData()
+    }
 }
