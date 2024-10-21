@@ -73,7 +73,11 @@ extension PokemonListView {
                 .hidden(state.shouldShowBottomProgress)
         }
         .padding(.horizontal, SpaceToken.m)
-        .refreshableScrollView(spaceName: "PokemonList", trigger: trigger) {
+        .refreshableScrollView(
+            spaceName: "PokemonList",
+            trigger: trigger,
+            isCurrent: router.isRootScreenVisible
+        ) {
             await refresh()
         }
         .navigationBarTitleDisplayMode(.inline)

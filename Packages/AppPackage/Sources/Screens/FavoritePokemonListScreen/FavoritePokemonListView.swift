@@ -23,12 +23,16 @@ public struct FavoritePokemonListView: View {
 
     private let input: CommonScreenInput
 
+    private let trigger: TabDoubleTapTrigger?
+
     public init(
         router: Router,
-        input: CommonScreenInput
+        input: CommonScreenInput,
+        trigger: TabDoubleTapTrigger?
     ) {
         _router = StateObject(wrappedValue: router)
         self.input = input
+        self.trigger = trigger
     }
 
     public var body: some View {
@@ -66,7 +70,11 @@ extension FavoritePokemonListView {
             }
         }
         .padding(.horizontal, SpaceToken.m)
-        .refreshableScrollView(spaceName: "FavoritePokemonList") {
+        .refreshableScrollView(
+            spaceName: "FavoritePokemonList",
+            trigger: trigger,
+            isCurrent: router.isRootScreenVisible
+        ) {
             await refresh()
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -150,7 +158,11 @@ extension FavoritePokemonListView {
                     .foregroundStyle(Color(.labelSecondary))
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
-            .refreshableScrollView(spaceName: "FavoritePokemonListEmptyState") {
+            .refreshableScrollView(
+                spaceName: "FavoritePokemonListEmptyState",
+                trigger: trigger,
+                isCurrent: router.isRootScreenVisible
+            ) {
                 await refresh()
             }
         }
@@ -206,6 +218,7 @@ extension FavoritePokemonListView {
         input: .init(
             withNavigation: true,
             naviBarLeadingButtonType: nil
-        )
+        ),
+        trigger: nil
     )
 }

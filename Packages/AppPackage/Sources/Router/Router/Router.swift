@@ -78,7 +78,8 @@ extension Router {
                 CommonScreenInput(
                     withNavigation: transition.withNavigation,
                     naviBarLeadingButtonType: transition.naviBarLeadingButtonType
-                )
+                ),
+                nil
             )
         }
     }
@@ -115,7 +116,8 @@ extension Router {
                 CommonScreenInput(
                     withNavigation: true,
                     naviBarLeadingButtonType: nil
-                )
+                ),
+                trigger
             )
         }
     }
