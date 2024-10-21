@@ -55,5 +55,6 @@ public struct FavoriteButton: View {
             }
         }
         .buttonStyle(PlainButtonStyle())
+        .sensoryFeedback(.success, trigger: isFavorite)
     }
 }
