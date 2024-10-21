@@ -5,8 +5,8 @@
 //  Created by ykkd on 2024/10/13.
 //
 
-import Dependencies
-import DependencyContainer
+public import Dependencies
+public import DependencyContainer
 import RootScreen
 import Router
 import SwiftUI

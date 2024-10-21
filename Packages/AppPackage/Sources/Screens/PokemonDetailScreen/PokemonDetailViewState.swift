@@ -39,7 +39,7 @@ final class PokemonDetailViewState {
 
     private(set) var pokemonDetail: PokemonDetail? {
         didSet {
-            logger.log(.debug, message: "pokemonDetail: \(pokemonDetail)")
+            logger.log(.debug, message: "pokemonDetail: \(String(describing: pokemonDetail))")
         }
     }
 

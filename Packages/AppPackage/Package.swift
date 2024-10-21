@@ -20,7 +20,14 @@ let otherSwiftFlagsForDebug = [
 
 let swiftSettings: [PackageDescription.SwiftSetting] = [
     .unsafeFlags(otherSwiftFlagsForDebug, .when(configuration: .debug)),
+    .existentialAny,
+    .internalImportsByDefault,
 ]
+
+extension SwiftSetting {
+    static let existentialAny: Self = .enableUpcomingFeature("ExistentialAny") // SE-0335, Swift 5.6,  SwiftPM 5.8+
+    static let internalImportsByDefault: Self = .enableUpcomingFeature("InternalImportsByDefault") // SE-0409, Swift 6.0,  SwiftPM 6.0+
+}
 
 // MARK: - Products
 enum Products: String, CaseIterable, PackageAtom {

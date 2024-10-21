@@ -5,8 +5,8 @@
 //  Created by ykkd on 2024/10/19.
 //
 
-import Dependencies
-import DependencyContainer
+public import Dependencies
+public import DependencyContainer
 import FavoritePokemonListScreen
 import Router
 import SwiftUI
