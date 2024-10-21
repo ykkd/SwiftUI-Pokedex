@@ -41,7 +41,7 @@ public struct PokemonDetailView: View {
         ) {
             content()
                 .when(state.shouldShowEmptyView) { _ in
-                    emptyView()
+                    emptyStateView()
                 }
                 .task {
                     await getPokemonDetail()
@@ -295,7 +295,7 @@ extension PokemonDetailView {
 
 extension PokemonDetailView {
 
-    private func emptyView() -> some View {
+    private func emptyStateView() -> some View {
         GeometryReader { geometry in
             CenteringView {
                 ProgressView()

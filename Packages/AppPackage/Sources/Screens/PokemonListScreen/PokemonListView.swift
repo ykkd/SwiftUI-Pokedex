@@ -38,7 +38,7 @@ public struct PokemonListView: View {
         ) {
             content()
                 .when(state.shouldShowEmptyView) { _ in
-                    emptyView()
+                    emptyStateView()
                 }
                 .task {
                     await getInitialData()
@@ -145,7 +145,7 @@ extension PokemonListView {
         .aspectRatio(AspectToken.square.value, contentMode: .fill)
     }
 
-    private func emptyView() -> some View {
+    private func emptyStateView() -> some View {
         GeometryReader { geometry in
             CenteringView {
                 ProgressView()
