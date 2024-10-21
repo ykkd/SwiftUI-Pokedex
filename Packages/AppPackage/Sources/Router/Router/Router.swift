@@ -15,6 +15,7 @@ import SwiftUI
 public final class Router: BaseRouter {
 
     @Dependency(\.rootViewContainer) private var rootViewContainer
+    @Dependency(\.alertViewContainer) private var alertViewContainer
     @Dependency(\.pokemonListViewContainer) private var pokemonListViewContainer
     @Dependency(\.pokemonDetailViewContainer) private var pokemonDetailViewContainer
     @Dependency(\.favoritePokemonListViewContainer) private var favoritePokemonListViewContainer
@@ -30,7 +31,7 @@ public final class Router: BaseRouter {
 extension Router {
 
     @ViewBuilder
-    private func buildView(
+    private func buildView( // swiftlint:disable:this function_body_length
         screen: Screen,
         transition: ScreenTransition
     ) -> some View {
@@ -42,6 +43,16 @@ extension Router {
                     withNavigation: transition.withNavigation,
                     naviBarLeadingButtonType: transition.naviBarLeadingButtonType
                 )
+            )
+        case let .alert(error, buttons):
+            alertViewContainer.view(
+                router(transition: transition),
+                CommonScreenInput(
+                    withNavigation: transition.withNavigation,
+                    naviBarLeadingButtonType: transition.naviBarLeadingButtonType
+                ),
+                error,
+                buttons
             )
         case .pokemonList:
             pokemonListViewContainer.view(

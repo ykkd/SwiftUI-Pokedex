@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - PokemonDetail
+@DebugDescription
 public struct PokemonDetail: Sendable {
 
     public let number: Int
@@ -38,6 +39,22 @@ public struct PokemonDetail: Sendable {
         self.typeHex = typeHex
         self.information = information
         self.status = status
+    }
+}
+
+// MARK: - DebugDescription
+extension PokemonDetail {
+
+    public var debugDescription: String {
+        """
+        name: \(name)
+        number: \(number)
+        imageUrl: \(String(describing: imageUrl ?? nil))
+        subImageUrl: \(String(describing: subImageUrl ?? nil))
+        typeHex: \(typeHex)
+        information: \(information.infoTypes.map(\.id))
+        status: \(status.map(\.id))
+        """
     }
 }
 
