@@ -151,13 +151,13 @@ extension PokemonDetailView {
             FavoriteButton(
                 isFavorite: Binding(
                     get: {
-                        state.isFavorited
+                        state.isFavorite
                     },
                     set: { _ in }
                 )
-            ) { isFavorited in
+            ) { isFavorite in
                 Task {
-                    await updateIsFavorited(isFavorited)
+                    await updateIsFavorite(isFavorite)
                 }
             }
         }
@@ -349,9 +349,9 @@ extension PokemonDetailView {
         }
     }
 
-    private func updateIsFavorited(_ value: Bool) async {
+    private func updateIsFavorite(_ value: Bool) async {
         do {
-            try await state.updateIsFavorited(value)
+            try await state.updateIsFavorite(value)
         } catch {
             router.presentAlertView(
                 error: error,
