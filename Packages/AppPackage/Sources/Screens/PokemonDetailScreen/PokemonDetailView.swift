@@ -11,7 +11,7 @@ import Entity
 import Router
 import SwiftUI
 private import DesignSystem
-private import SFSafeSymbols
+import SFSafeSymbols
 private import ScreenExtension
 private import SharedExtension
 
@@ -198,22 +198,7 @@ extension PokemonDetailView {
     }
 
     private func statusImage(_ status: PokemonStatus) -> some View {
-        let symbolName: SFSymbol = switch status.type {
-        case .attack:
-            .flameFill
-        case .defense:
-            .shieldFill
-        case .hp:
-            .heartFill
-        case .specialAttack:
-            .firewallFill
-        case .specialDefense:
-            .boltShield
-        case .speed:
-            .figureRun
-        }
-
-        return Image(systemSymbol: symbolName)
+        Image(systemSymbol: ViewLogic.getSymbolForStatusImage(status))
             .resizable()
             .foregroundStyle(Color(.labelPrimary))
             .aspectRatio(contentMode: .fit)
@@ -232,56 +217,27 @@ extension PokemonDetailView {
         }
     }
 
+    @ViewBuilder
     private func informationItemView(_ type: PokemonDetail.Information.InfoType) -> some View {
-        let symbol: SFSymbol
-        let title: String
-        let description: String
+        let input = ViewLogic.generateInformationItemViewInput(type)
 
-        switch type {
-        case let .pokemonTypes(pokemonTypes):
-            symbol = .dropHalffull
-            title = "Type"
-            let joined = pokemonTypes.map(\.text).joined(separator: " ")
-            description = joined
-        case let .height(height):
-            symbol = .personFill
-            title = "Height"
-            description = "\(height)m"
-        case let .weight(weight):
-            symbol = .scalemassFill
-            title = "Weight"
-            description = "\(weight)kg"
-        case let .firstAbility(ability):
-            symbol = .circleLefthalfFilled
-            title = "Ability 1"
-            description = "\(ability)"
-        case let .secondAbility(ability):
-            symbol = .circleRighthalfFilled
-            title = "Ability 2"
-            description = "\(ability ?? "None")"
-        case let .hiddenAblity(ability):
-            symbol = .circleInsetFilled
-            title = "Hidden Ablity"
-            description = "\(ability ?? "None")"
-        }
-
-        return HStack {
+        HStack {
             HStack {
                 CenteringView {
-                    Image(systemSymbol: symbol)
+                    Image(systemSymbol: input.symbol)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(height: 24)
                         .foregroundStyle(Color(.labelPrimary))
                 }
                 .frame(width: 32)
-                Text(title)
+                Text(input.title)
                     .fontWithLineHeight(token: .subheadlineRegular)
                     .foregroundStyle(Color(.labelPrimary))
                     .lineLimit(1)
                 Spacer()
             }
-            Text(description)
+            Text(input.description)
                 .fontWithLineHeight(token: .subheadlineRegular)
                 .foregroundStyle(Color(.labelPrimary))
                 .lineLimit(1)

@@ -102,26 +102,10 @@ extension PokemonDetailViewState {
     }
 
     private func saveIsFavorite(_ value: Bool) async throws(ApplicationError) {
-        guard let favorable = generateFavorablePokemon(value) else {
+        guard let favorable = ViewLogic.generateFavorablePokemon(pokemonDetail, isFavorite: value) else {
             return
         }
         try await saveFavoritePokemonUseCase.execute(favorable)
         isFavorite = value
-    }
-
-    private func generateFavorablePokemon(_ isFavorite: Bool) -> FavorablePokemon? {
-        if let pokemonDetail {
-            .init(pokemon:
-                .init(
-                    name: pokemonDetail.name,
-                    number: pokemonDetail.number,
-                    imageUrl: pokemonDetail.imageUrl,
-                    subImageUrl: pokemonDetail.subImageUrl
-                ),
-                isFavorite: isFavorite
-            )
-        } else {
-            nil
-        }
     }
 }
