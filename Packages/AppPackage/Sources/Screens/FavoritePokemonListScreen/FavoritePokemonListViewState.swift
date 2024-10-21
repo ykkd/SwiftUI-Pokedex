@@ -41,24 +41,20 @@ final class FavoritePokemonListViewState {
 
     init() {}
 
-    func getData() async {
+    func getData() async throws(ApplicationError) {
         defer { isLoading = false }
-        do {
-            isLoading = true
-            let favorablePokemons = try await getAllFavoritePokemonUseCase.execute()
+        isLoading = true
+        let favorablePokemons = try await getAllFavoritePokemonUseCase.execute()
 
-            var favoritedPokemons: [Pokemon] = []
+        var favoritedPokemons: [Pokemon] = []
 
-            for data in favorablePokemons where await data.getIsFavorite() {
-                favoritedPokemons.append(data.pokemon)
-            }
-            pokemons = favoritedPokemons
-        } catch {
-            // TODO: implement
+        for data in favorablePokemons where await data.getIsFavorite() {
+            favoritedPokemons.append(data.pokemon)
         }
+        pokemons = favoritedPokemons
     }
 
-    func refresh() async {
-        await getData()
+    func refresh() async throws(ApplicationError) {
+        try await getData()
     }
 }

@@ -46,7 +46,7 @@ public struct FavoritePokemonListView: View {
                         .hidden(!state.isLoading)
                 }
                 .task {
-                    await state.getData()
+                    await getData()
                 }
         }
     }
@@ -67,8 +67,7 @@ extension FavoritePokemonListView {
         }
         .padding(.horizontal, SpaceToken.m)
         .refreshableScrollView(spaceName: "FavoritePokemonList") {
-            try? await Task.sleep(for: .seconds(1.0))
-            await state.refresh()
+            await refresh()
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(RootTab.favoritePokemonList.navigationTitle)
@@ -152,9 +151,49 @@ extension FavoritePokemonListView {
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .refreshableScrollView(spaceName: "FavoritePokemonListEmptyState") {
-                try? await Task.sleep(for: .seconds(1.0))
-                await state.refresh()
+                await refresh()
             }
+        }
+    }
+}
+
+// MARK: - Error handling
+extension FavoritePokemonListView {
+
+    private func getData() async {
+        do {
+            try await state.getData()
+        } catch {
+            router.presentAlertView(
+                error: error,
+                buttons: [
+                    .ok(action: nil),
+                    .retry {
+                        Task {
+                            await getData()
+                        }
+                    },
+                ]
+            )
+        }
+    }
+
+    private func refresh() async {
+        do {
+            try? await Task.sleep(for: .seconds(1.0))
+            try await state.refresh()
+        } catch {
+            router.presentAlertView(
+                error: error,
+                buttons: [
+                    .ok(action: nil),
+                    .retry {
+                        Task {
+                            await refresh()
+                        }
+                    },
+                ]
+            )
         }
     }
 }

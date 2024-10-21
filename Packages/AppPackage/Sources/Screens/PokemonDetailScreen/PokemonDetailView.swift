@@ -44,7 +44,7 @@ public struct PokemonDetailView: View {
                     emptyView()
                 }
                 .task {
-                    await state.getPokemonDetail()
+                    await getPokemonDetail()
                 }
         }
         .ignoresSafeArea(edges: [.top])
@@ -78,7 +78,7 @@ extension PokemonDetailView {
                     .padding(.top, 64)
                 }
                 .refreshableScrollView(spaceName: "PokemonDetail") {
-                    await state.refresh()
+                    await refresh()
                 }
                 .toolBarButton(placement: .topBarLeading, type: input.naviBarLeadingButtonType) {
                     router.dismiss()
@@ -158,7 +158,7 @@ extension PokemonDetailView {
             Spacer()
             FavoriteButton(isFavorited: state.isFavorited) { isFavorited in
                 Task {
-                    await state.updateIsFavorited(isFavorited)
+                    await updateIsFavorited(isFavorited)
                 }
             }
         }
@@ -304,8 +304,62 @@ extension PokemonDetailView {
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .refreshableScrollView(spaceName: "PokemonDetailEmptyState") {
-                await state.refresh()
+                await refresh()
             }
+        }
+    }
+}
+
+// MARK: - Error handling
+extension PokemonDetailView {
+
+    private func getPokemonDetail() async {
+        do {
+            try await state.getPokemonDetail()
+        } catch {
+            router.presentAlertView(
+                error: error,
+                buttons: [
+                    .ok(action: nil),
+                    .retry {
+                        Task {
+                            await getPokemonDetail()
+                        }
+                    },
+                ]
+            )
+        }
+    }
+
+    private func refresh() async {
+        do {
+            try? await Task.sleep(for: .seconds(1.0))
+            try await state.refresh()
+        } catch {
+            router.presentAlertView(
+                error: error,
+                buttons: [
+                    .ok(action: nil),
+                    .retry {
+                        Task {
+                            await refresh()
+                        }
+                    },
+                ]
+            )
+        }
+    }
+
+    private func updateIsFavorited(_ value: Bool) async {
+        do {
+            try await state.updateIsFavorited(value)
+        } catch {
+            router.presentAlertView(
+                error: error,
+                buttons: [
+                    .ok(action: nil),
+                ]
+            )
         }
     }
 }
