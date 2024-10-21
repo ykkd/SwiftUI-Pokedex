@@ -15,13 +15,15 @@ public struct FavoritePokemonListViewContainer: Sendable {
 
     public var view: @MainActor @Sendable (
         _ router: BaseRouter,
-        _ input: CommonScreenInput
+        _ input: CommonScreenInput,
+        _ trigger: TabDoubleTapTrigger?
     ) -> AnyView
 
     public init(
         view: @escaping @MainActor @Sendable (
             _ router: BaseRouter,
-            _ input: CommonScreenInput
+            _ input: CommonScreenInput,
+            _ trigger: TabDoubleTapTrigger?
         ) -> AnyView
     ) {
         self.view = view

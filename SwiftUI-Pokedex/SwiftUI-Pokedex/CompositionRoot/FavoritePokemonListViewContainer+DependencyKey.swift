@@ -14,9 +14,9 @@ import SwiftUI
 extension FavoritePokemonListViewContainer: @retroactive DependencyKey {
 
     public static var liveValue: Self {
-        .init { router, input in
+        .init { router, input, trigger in
             AnyView(
-                FavoritePokemonListView(router: router as! Router, input: input)
+                FavoritePokemonListView(router: router as! Router, input: input, trigger: trigger)
             )
         }
     }

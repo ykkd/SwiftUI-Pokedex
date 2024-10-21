@@ -5,6 +5,7 @@
 //  Created by ykkd on 2024/10/16.
 //
 
+import Entity
 import SwiftUI
 
 extension View {
@@ -22,6 +23,18 @@ extension View {
             transform(self)
         } else {
             self
+        }
+    }
+}
+
+extension View {
+
+    public func onTrigger(
+        of trigger: TabDoubleTapTrigger?,
+        perform: @escaping () -> Void
+    ) -> some View {
+        onChange(of: trigger) { _, _ in
+            perform()
         }
     }
 }

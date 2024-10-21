@@ -98,6 +98,13 @@ extension BaseRouter {
     public var isPresented: Binding<Screen?> {
         state.isPresented
     }
+
+    public var isRootScreenVisible: Binding<Bool> {
+        Binding(
+            get: { !self.state.isPresenting && self.state.navigationPath.isEmpty },
+            set: { _ in }
+        )
+    }
 }
 
 extension BaseRouter {

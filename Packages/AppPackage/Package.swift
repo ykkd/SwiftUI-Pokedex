@@ -219,10 +219,14 @@ enum Targets: String, CaseIterable, PackageAtom {
         switch self {
         case .sharedExtension:
             []
-        case .entity,
-             .screenExtension:
+        case .entity:
             [
                 Targets.sharedExtension.asDependency,
+            ]
+        case .screenExtension:
+            [
+                Targets.sharedExtension.asDependency,
+                Targets.entity.asDependency,
             ]
         case .designSystem:
             [

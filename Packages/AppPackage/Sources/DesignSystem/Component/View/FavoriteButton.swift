@@ -24,6 +24,10 @@ public struct FavoriteButton: View {
         (isFavorite ? heartColor : bgColor).opacity(0.2)
     }
 
+    private var symbol: SFSymbol {
+        isFavorite ? .heartFill : .heart
+    }
+
     private let heartColor = Color(.systemRed)
     private let bgColor = Color(.systemGray)
 
@@ -46,7 +50,7 @@ public struct FavoriteButton: View {
             ZStack {
                 Circle()
                     .fill(fillColor)
-                Image(systemSymbol: isFavorite ? .heartFill : .heart)
+                Image(systemSymbol: symbol)
                     .resizable()
                     .padding(.all, SpaceToken.m)
                     .foregroundColor(foregoundColor)

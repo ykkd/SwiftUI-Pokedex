@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum RootTab: Int {
+public enum RootTab: Int, CaseIterable {
     case pokemonList = 0
     case favoritePokemonList
 

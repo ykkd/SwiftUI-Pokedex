@@ -60,7 +60,8 @@ extension Router {
                 CommonScreenInput(
                     withNavigation: transition.withNavigation,
                     naviBarLeadingButtonType: transition.naviBarLeadingButtonType
-                )
+                ),
+                nil
             )
         case let .pokemonDetail(number):
             pokemonDetailViewContainer.view(
@@ -77,7 +78,8 @@ extension Router {
                 CommonScreenInput(
                     withNavigation: transition.withNavigation,
                     naviBarLeadingButtonType: transition.naviBarLeadingButtonType
-                )
+                ),
+                nil
             )
         }
     }
@@ -97,7 +99,7 @@ extension Router {
 
 extension Router {
 
-    public func buildTabView(_ tab: RootTab) -> some View {
+    public func buildTabView(_ tab: RootTab, trigger: TabDoubleTapTrigger?) -> AnyView {
         switch tab {
         case .pokemonList:
             pokemonListViewContainer.view(
@@ -105,7 +107,8 @@ extension Router {
                 CommonScreenInput(
                     withNavigation: true,
                     naviBarLeadingButtonType: nil
-                )
+                ),
+                trigger
             )
         case .favoritePokemonList:
             favoritePokemonListViewContainer.view(
@@ -113,7 +116,8 @@ extension Router {
                 CommonScreenInput(
                     withNavigation: true,
                     naviBarLeadingButtonType: nil
-                )
+                ),
+                trigger
             )
         }
     }

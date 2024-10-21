@@ -23,12 +23,16 @@ public struct PokemonListView: View {
 
     private let input: CommonScreenInput
 
+    private let trigger: TabDoubleTapTrigger?
+
     public init(
         router: Router,
-        input: CommonScreenInput
+        input: CommonScreenInput,
+        trigger: TabDoubleTapTrigger?
     ) {
         _router = StateObject(wrappedValue: router)
         self.input = input
+        self.trigger = trigger
     }
 
     public var body: some View {
@@ -69,7 +73,11 @@ extension PokemonListView {
                 .hidden(state.shouldShowBottomProgress)
         }
         .padding(.horizontal, SpaceToken.m)
-        .refreshableScrollView(spaceName: "PokemonList") {
+        .refreshableScrollView(
+            spaceName: "PokemonList",
+            trigger: trigger,
+            isCurrent: router.isRootScreenVisible
+        ) {
             await refresh()
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -226,6 +234,7 @@ extension PokemonListView {
         input: .init(
             withNavigation: true,
             naviBarLeadingButtonType: nil
-        )
+        ),
+        trigger: nil
     )
 }
