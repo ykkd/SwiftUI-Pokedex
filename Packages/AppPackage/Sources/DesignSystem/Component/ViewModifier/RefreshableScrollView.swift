@@ -6,37 +6,53 @@
 //
 
 private import Refreshable
+import Entity
+import ScreenExtension
 import SwiftUI
 
 // MARK: - RefreshableScrollView
 public struct RefreshableScrollView: ViewModifier {
     public let spaceName: String
+    public let trigger: TabDoubleTapTrigger?
     public let onRefresh: () async -> Void
 
     @State private var executeHaptics: Bool = false
 
+    private var scrollViewId: String {
+        "ScrollView-\(spaceName)"
+    }
+
     public func body(content: Content) -> some View {
-        ScrollView {
-            RefreshControl(coordinateSpace: .named(spaceName)) {
-                Task {
-                    executeHaptics.toggle()
-                    await onRefresh()
+        ScrollViewReader { proxy in
+            ScrollView {
+                RefreshControl(coordinateSpace: .named(spaceName)) {
+                    Task {
+                        executeHaptics.toggle()
+                        await onRefresh()
+                    }
+                }
+                .id(scrollViewId)
+                content
+            }
+            .onTrigger(of: trigger) {
+                withAnimation {
+                    proxy.scrollTo(scrollViewId, anchor: .top)
                 }
             }
-            content
+            .coordinateSpace(name: spaceName)
+            .sensoryFeedback(.impact, trigger: executeHaptics)
         }
-        .coordinateSpace(name: spaceName)
-        .sensoryFeedback(.impact, trigger: executeHaptics)
     }
 }
 
 extension View {
 
-    public func refreshableScrollView(spaceName: String, action: @escaping () async -> Void) -> some View {
+    public func refreshableScrollView(spaceName: String, trigger: TabDoubleTapTrigger? = nil, action: @escaping () async -> Void) -> some View {
         ModifiedContent(
             content: self,
             modifier: RefreshableScrollView(
                 spaceName: spaceName,
+                trigger: trigger,
                 onRefresh: action
             )
         )

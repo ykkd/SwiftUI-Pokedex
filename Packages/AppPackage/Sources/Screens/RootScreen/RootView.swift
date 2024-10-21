@@ -24,6 +24,18 @@ public struct RootView: View {
 
     private let input: CommonScreenInput
 
+    private var selectedTabBinding: Binding<RootTab> {
+        Binding(
+            get: { selectedTab },
+            set: {
+                if $0 == selectedTab {
+                    tabDoubleTapTriggers[selectedTab]?.fire()
+                }
+                selectedTab = $0
+            }
+        )
+    }
+
     public init(
         router: Router,
         input: CommonScreenInput
@@ -37,7 +49,7 @@ public struct RootView: View {
             router: router,
             withNavigation: input.withNavigation
         ) {
-            TabView(selection: $selectedTab) {
+            TabView(selection: selectedTabBinding) {
                 router.buildTabView(.pokemonList, trigger: tabDoubleTapTriggers[.pokemonList])
                     .tag(RootTab.pokemonList)
                     .tabItem {
