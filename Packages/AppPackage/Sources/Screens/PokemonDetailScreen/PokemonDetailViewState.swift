@@ -54,7 +54,7 @@ final class PokemonDetailViewState {
     private(set) var isBgAniationStarted: Bool = false
 
     var shouldShowEmptyView: Bool {
-        pokemonDetail == nil
+        pokemonDetail == nil && !isLoading
     }
 
     var numberText: String {

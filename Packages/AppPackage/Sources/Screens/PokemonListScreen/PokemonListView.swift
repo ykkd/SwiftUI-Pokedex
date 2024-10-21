@@ -38,7 +38,12 @@ public struct PokemonListView: View {
         ) {
             content()
                 .when(state.shouldShowEmptyView) { _ in
-                    emptyView()
+                    emptyStateView()
+                }
+                .overlay {
+                    ProgressView()
+                        .frame(width: 64, height: 64)
+                        .hidden(!state.isLoading)
                 }
                 .task {
                     await getInitialData()
@@ -145,11 +150,12 @@ extension PokemonListView {
         .aspectRatio(AspectToken.square.value, contentMode: .fill)
     }
 
-    private func emptyView() -> some View {
+    private func emptyStateView() -> some View {
         GeometryReader { geometry in
             CenteringView {
-                ProgressView()
-                    .frame(width: 64, height: 64)
+                Text("No Data")
+                    .fontWithLineHeight(token: .bodyRegular)
+                    .foregroundStyle(Color(.labelSecondary))
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .refreshableScrollView(spaceName: "PokemonListEmptyState") {
