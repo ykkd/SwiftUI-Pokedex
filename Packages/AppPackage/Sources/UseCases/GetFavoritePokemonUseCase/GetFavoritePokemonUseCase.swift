@@ -13,10 +13,10 @@ private import SwiftDataWrapper
 // MARK: - GetFavoritePokemonUseCase
 public struct GetFavoritePokemonUseCase: Sendable {
 
-    @Dependency(\.swiftDataWrapperContainer) private var swiftDataWrapperContainer
+    @Dependency(\.pokemonSwiftDataWrapperContainer) private var pokemonSwiftDataWrapperContainer
 
     public func execute(_ number: Int) async throws(ApplicationError) -> FavorablePokemon? {
-        try await swiftDataWrapperContainer.container().readPokemon(number)
+        try await pokemonSwiftDataWrapperContainer.container().readPokemon(number)
     }
 }
 

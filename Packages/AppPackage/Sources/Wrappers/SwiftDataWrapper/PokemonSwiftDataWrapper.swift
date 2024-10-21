@@ -1,5 +1,5 @@
 //
-//  SwiftDataWrapper.swift
+//  PokemonSwiftDataWrapper.swift
 //  AppPackage
 //
 //  Created by ykkd on 2024/10/19.
@@ -9,9 +9,9 @@ import Entity
 import SwiftData
 import SwiftUI
 
-// MARK: - SwiftDataWrapper
+// MARK: - PokemonSwiftDataWrapper
 @SwiftDataActor
-public final class SwiftDataWrapper: Sendable {
+public final class PokemonSwiftDataWrapper: Sendable {
 
     private let container: ModelContainer
 
@@ -26,7 +26,7 @@ public final class SwiftDataWrapper: Sendable {
 }
 
 // MARK: - Write
-extension SwiftDataWrapper {
+extension PokemonSwiftDataWrapper {
 
     public func writePokemon(
         _ data: FavorablePokemon
@@ -50,7 +50,7 @@ extension SwiftDataWrapper {
 }
 
 // MARK: - Read
-extension SwiftDataWrapper {
+extension PokemonSwiftDataWrapper {
 
     public func readAllPokemon() async throws(ApplicationError) -> [FavorablePokemon] {
         do {
@@ -77,7 +77,7 @@ extension SwiftDataWrapper {
 }
 
 // MARK: - Private
-extension SwiftDataWrapper {
+extension PokemonSwiftDataWrapper {
 
     private func convert(_ model: PokemonModel) -> FavorablePokemon {
         FavorablePokemon(
