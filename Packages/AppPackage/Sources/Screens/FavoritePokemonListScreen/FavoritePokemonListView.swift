@@ -38,7 +38,7 @@ public struct FavoritePokemonListView: View {
         ) {
             content()
                 .when(state.shouldShowEmptyView) { _ in
-                    emptyStateView()
+                    emptyView()
                 }
                 .overlay {
                     ProgressView()
@@ -142,7 +142,7 @@ extension FavoritePokemonListView {
         .aspectRatio(AspectToken.square.value, contentMode: .fill)
     }
 
-    private func emptyStateView() -> some View {
+    private func emptyView() -> some View {
         GeometryReader { geometry in
             CenteringView {
                 Text("No Favorites")

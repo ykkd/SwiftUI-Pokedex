@@ -43,11 +43,6 @@ public struct PokemonDetailView: View {
                 .when(state.shouldShowEmptyView) { _ in
                     emptyView()
                 }
-                .overlay {
-                    ProgressView()
-                        .frame(width: 64, height: 64)
-                        .hidden(!state.isLoading)
-                }
                 .task {
                     await getPokemonDetail()
                 }
@@ -303,9 +298,8 @@ extension PokemonDetailView {
     private func emptyView() -> some View {
         GeometryReader { geometry in
             CenteringView {
-                Text("No Data")
-                    .fontWithLineHeight(token: .bodyRegular)
-                    .foregroundStyle(Color(.labelSecondary))
+                ProgressView()
+                    .frame(width: 64, height: 64)
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .refreshableScrollView(spaceName: "PokemonDetailEmptyState") {

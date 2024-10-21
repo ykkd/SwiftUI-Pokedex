@@ -56,7 +56,7 @@ final class PokemonListViewState {
     }
 
     var shouldShowEmptyView: Bool {
-        pokemons.isEmpty && !isLoading
+        pokemons.isEmpty
     }
 
     init() {}
