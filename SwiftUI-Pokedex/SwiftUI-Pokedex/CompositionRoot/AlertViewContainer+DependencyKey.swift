@@ -6,8 +6,8 @@
 //
 
 import AlertScreen
-import Dependencies
-import DependencyContainer
+public import Dependencies
+public import DependencyContainer
 import Router
 import SwiftUI
 

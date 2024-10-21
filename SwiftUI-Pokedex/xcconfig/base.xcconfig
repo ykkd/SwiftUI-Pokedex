@@ -1,2 +1,4 @@
 SWIFT_VERSION = 6.0
 OTHER_SWIFT_FLAGS = -Xfrontend -warn-long-function-bodies=100 -Xfrontend -warn-long-expression-type-checking=100
+SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = YES
+SWIFT_UPCOMING_FEATURE_INTERNAL_IMPORTS_BY_DEFAULT = YES
