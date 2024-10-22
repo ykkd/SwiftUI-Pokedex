@@ -7,22 +7,43 @@
 
 import Foundation
 
-public actor FavorablePokemon {
+public struct FavorablePokemon: Identifiable, Sendable {
 
-    public nonisolated let pokemon: Pokemon
-
-    public private(set) var isFavorite: Bool
-
-    public init(pokemon: Pokemon, isFavorite: Bool) {
-        self.pokemon = pokemon
-        self.isFavorite = isFavorite
+    public var id: Int {
+        number
     }
 
-    public func updateIsFavorite(_ value: Bool) {
-        isFavorite = value
+    public let name: String
+
+    public let number: Int
+
+    public let imageUrl: URL?
+
+    public let subImageUrl: URL?
+
+    public let isFavoriteContainer: AsyncLockedValue<Bool>
+
+    public var isFavorite: Bool {
+        get async {
+            await isFavoriteContainer.get()
+        }
     }
 
-    public func getIsFavorite() async -> Bool {
-        isFavorite
+    public init(
+        name: String,
+        number: Int,
+        imageUrl: URL?,
+        subImageUrl: URL?,
+        isFavorite: Bool
+    ) {
+        self.name = name
+        self.number = number
+        self.imageUrl = imageUrl
+        self.subImageUrl = subImageUrl
+        isFavoriteContainer = .init(initialValue: isFavorite)
+    }
+
+    public func updateIsFavorite(_ value: Bool) async {
+        await isFavoriteContainer.set(value)
     }
 }
