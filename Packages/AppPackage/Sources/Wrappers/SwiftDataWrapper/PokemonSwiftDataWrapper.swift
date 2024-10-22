@@ -32,10 +32,10 @@ extension PokemonSwiftDataWrapper {
         _ data: FavorablePokemon
     ) async throws(ApplicationError) {
         let data = await PokemonModel(
-            number: data.pokemon.number,
-            name: data.pokemon.name,
-            imageUrl: data.pokemon.imageUrl,
-            subImageUrl: data.pokemon.subImageUrl,
+            number: data.number,
+            name: data.name,
+            imageUrl: data.imageUrl,
+            subImageUrl: data.subImageUrl,
             isFavorite: data.isFavorite
         )
 
@@ -52,22 +52,25 @@ extension PokemonSwiftDataWrapper {
 // MARK: - Read
 extension PokemonSwiftDataWrapper {
 
-    public func readAllPokemon() async throws(ApplicationError) -> [FavorablePokemon] {
+    public func readAllFavoritePokemon() async throws(ApplicationError) -> [FavorablePokemon] {
         do {
             let context = ModelContext(container)
-            let models = try context.fetch(FetchDescriptor<PokemonModel>(sortBy: [SortDescriptor(\.number)]))
+            let predicate = #Predicate<PokemonModel> { $0.isFavorite }
+            let models = try context.fetch(FetchDescriptor<PokemonModel>(
+                predicate: predicate,
+                sortBy: [SortDescriptor(\.number)])
+            )
             return models.map(convert)
         } catch {
             throw ApplicationError.database(.read(error))
         }
     }
 
-    public func readPokemon(_ number: Int) async throws(ApplicationError) -> FavorablePokemon? {
+    public func readFavoritePokemon(_ number: Int) async throws(ApplicationError) -> FavorablePokemon? {
         do {
             let context = ModelContext(container)
-            let fetchDescriptor = FetchDescriptor<PokemonModel>(
-                predicate: #Predicate { $0.number == number }
-            )
+            let predicate = #Predicate<PokemonModel> { $0.isFavorite && $0.number == number }
+            let fetchDescriptor = FetchDescriptor<PokemonModel>(predicate: predicate)
             let models = try context.fetch(fetchDescriptor)
             return models.first.map(convert)
         } catch {
@@ -80,13 +83,11 @@ extension PokemonSwiftDataWrapper {
 extension PokemonSwiftDataWrapper {
 
     private func convert(_ model: PokemonModel) -> FavorablePokemon {
-        FavorablePokemon(
-            pokemon: .init(
-                name: model.name,
-                number: model.number,
-                imageUrl: model.imageUrl,
-                subImageUrl: model.subImageUrl
-            ),
+        .init(
+            name: model.name,
+            number: model.number,
+            imageUrl: model.imageUrl,
+            subImageUrl: model.subImageUrl,
             isFavorite: model.isFavorite
         )
     }
