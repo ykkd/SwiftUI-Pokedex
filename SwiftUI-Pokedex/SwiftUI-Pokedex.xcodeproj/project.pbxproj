@@ -172,6 +172,7 @@
 				F0D5CC162CBA67790018F437 /* Sources */,
 				F0D5CC172CBA67790018F437 /* Frameworks */,
 				F0D5CC182CBA67790018F437 /* Resources */,
+				F08BA92C2CC6C8BA008515C6 /* Run License-Plist */,
 			);
 			buildRules = (
 			);
@@ -315,6 +316,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F08BA92C2CC6C8BA008515C6 /* Run License-Plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run License-Plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/bin/sh ${PROJECT_DIR}/../scripts/license-plist/license-plist.sh\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F0D5CC162CBA67790018F437 /* Sources */ = {
@@ -484,6 +506,7 @@
 				DEVELOPMENT_TEAM = D8T642JQFU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "SwiftUI-Pokedex/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Pokedex;
@@ -529,6 +552,7 @@
 				DEVELOPMENT_TEAM = D8T642JQFU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "SwiftUI-Pokedex/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Pokedex;
