@@ -46,12 +46,14 @@ final class FavoritePokemonListViewState {
         isLoading = true
         let favorablePokemons = try await getAllFavoritePokemonUseCase.execute()
 
-        var favoritedPokemons: [Pokemon] = []
-
-        for data in favorablePokemons where await data.getIsFavorite() {
-            favoritedPokemons.append(data.pokemon)
+        pokemons = favorablePokemons.map {
+            .init(
+                name: $0.name,
+                number: $0.number,
+                imageUrl: $0.imageUrl,
+                subImageUrl: $0.subImageUrl
+            )
         }
-        pokemons = favoritedPokemons
     }
 
     func refresh() async throws(ApplicationError) {

@@ -114,25 +114,25 @@ extension ApplicationError.NetworkError: Hashable {
 extension ApplicationError.NetworkError: LocalizedError {
 
     public var errorDescription: String? {
-        "通信エラー"
+        "Network Error"
     }
 
     public var failureReason: String? {
         switch self {
         case let .api(error):
             let nsError: NSError = error as NSError
-            return "(\(nsError.code))通信に失敗しました。"
+            return "(\(nsError.code)) Communication failed."
         case .invalidResponse:
-            return "データ不整合が発生しました。"
+            return "Data inconsistency has occurred."
         }
     }
 
     public var recoverySuggestion: String? {
         switch self {
         case .api:
-            "時間をおいて再度お試しください。"
+            "Please try again later."
         case .invalidResponse:
-            "お問い合わせください。"
+            "Please contact us."
         }
     }
 
@@ -192,21 +192,21 @@ extension ApplicationError.DatabaseError: Hashable {
 extension ApplicationError.DatabaseError: LocalizedError {
 
     public var errorDescription: String? {
-        "データベースエラー"
+        "Database Error"
     }
 
     public var failureReason: String? {
         switch self {
         case let .write(error):
             let nsError: NSError = error as NSError
-            return "(\(nsError.code))データベース書き込みに失敗しました。"
+            return "(\(nsError.code)) Failed to write to the database."
         case let .read(error):
             let nsError: NSError = error as NSError
-            return "(\(nsError.code))データベース読み取りに失敗しました。"
+            return "(\(nsError.code)) Failed to read from the database."
         }
     }
 
     public var recoverySuggestion: String? {
-        "時間をおいて再度お試しください。再インストールによって解消される場合があります"
+        "Please try again later. Reinstalling the app may resolve the issue."
     }
 }
