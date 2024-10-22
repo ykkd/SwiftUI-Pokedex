@@ -8,5 +8,6 @@ if ! "${CI}"; then
 	xcrun --sdk macosx ${SPM_CLI_COMMON_PATH}/mint run mono0926/LicensePlist license-plist \
 	--output-path ${PROJECT_DIR}/${PRODUCT_NAME}/Settings.bundle \
 	--mintfile-path ${PROJECT_DIR}/../Mintfile \
-	--package-path ${PROJECT_DIR}/../Packages/AppPackage/Package.swift
+	--package-path ${PROJECT_DIR}/../Packages/AppPackage/Package.swift \
+	--xcodeproj-path ${PROJECT_DIR}/${PRODUCT_NAME}.xcodeproj
 fi
