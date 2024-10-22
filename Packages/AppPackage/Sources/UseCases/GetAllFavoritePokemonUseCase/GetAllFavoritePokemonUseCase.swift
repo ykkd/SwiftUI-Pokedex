@@ -16,7 +16,9 @@ public struct GetAllFavoritePokemonUseCase: Sendable {
     @Dependency(\.pokemonSwiftDataWrapperContainer) private var pokemonSwiftDataWrapperContainer
 
     public func execute() async throws(ApplicationError) -> [FavorablePokemon] {
-        try await pokemonSwiftDataWrapperContainer.container().readAllPokemon()
+        try await pokemonSwiftDataWrapperContainer
+            .container()
+            .readAllFavoritePokemon()
     }
 }
 

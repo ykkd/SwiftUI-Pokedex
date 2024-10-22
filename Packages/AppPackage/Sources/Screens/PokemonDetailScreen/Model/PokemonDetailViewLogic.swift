@@ -33,13 +33,11 @@ enum PokemonDetailViewLogic {
 
     static func generateFavorablePokemon(_ data: PokemonDetail?, isFavorite: Bool) -> FavorablePokemon? {
         if let data {
-            .init(pokemon:
-                .init(
-                    name: data.name,
-                    number: data.number,
-                    imageUrl: data.imageUrl,
-                    subImageUrl: data.subImageUrl
-                ),
+            .init(
+                name: data.name,
+                number: data.number,
+                imageUrl: data.imageUrl,
+                subImageUrl: data.subImageUrl,
                 isFavorite: isFavorite
             )
         } else {
