@@ -320,6 +320,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		F08BA92C2CC6C8BA008515C6 /* Run License-Plist */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
