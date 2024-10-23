@@ -23,6 +23,8 @@ final class FavoritePokemonListViewState {
     @ObservationIgnored
     @Dependency(\.mainLogger) private var logger
 
+    private(set) var contentId: UUID = .init()
+
     private(set) var pokemons: [Pokemon] = [] {
         didSet {
             logger.log(.debug, message: "number of pokemons: \(pokemons.count)")
@@ -58,5 +60,6 @@ final class FavoritePokemonListViewState {
 
     func refresh() async throws(ApplicationError) {
         try await getData()
+        contentId = .init()
     }
 }

@@ -31,6 +31,8 @@ final class PokemonDetailViewState {
     @ObservationIgnored
     @Dependency(\.saveFavoritePokemonUseCase) private var saveFavoritePokemonUseCase
 
+    private(set) var contentId: UUID = .init()
+
     private(set) var isLoading: Bool = false {
         didSet {
             logger.log(.debug, message: "isLoading: \(isLoading)")
@@ -49,9 +51,9 @@ final class PokemonDetailViewState {
         }
     }
 
-    let pokemonNumber: Int
-
     private(set) var isBgAniationStarted: Bool = false
+
+    let pokemonNumber: Int
 
     var shouldShowEmptyView: Bool {
         pokemonDetail == nil
@@ -74,6 +76,7 @@ final class PokemonDetailViewState {
 
     func refresh() async throws(ApplicationError) {
         try await getPokemonDetail()
+        contentId = .init()
     }
 
     func updateIsBgAniationStarted(_ value: Bool) {

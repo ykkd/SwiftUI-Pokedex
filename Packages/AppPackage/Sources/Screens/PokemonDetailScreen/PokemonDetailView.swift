@@ -40,6 +40,7 @@ public struct PokemonDetailView: View {
             withNavigation: input.withNavigation
         ) {
             content()
+                .id(state.contentId)
                 .when(state.shouldShowEmptyView) { _ in
                     emptyStateView()
                 }
