@@ -162,7 +162,6 @@ actor PokeAPIClientWrapperTests {
                 let client = PokeAPIClientWrapper()
                 let output = try await client.getPokemonDetail(testCase.number)
                 Issue.record("unexpected response: \(output)")
-
             } catch {
                 let nsError = error as NSError
                 let expectedNsError = testCase.expectation as NSError
