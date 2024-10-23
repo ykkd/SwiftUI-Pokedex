@@ -89,18 +89,7 @@ extension PokemonListViewState {
         isLoading = true
         let data = try await getPokemonListUseCase.execute(limit, offset: offset)
         totalCount = data.totalCount
-        // 新しいポケモンを追加
-        let newPokemons = data.pokemons
 
-        // 既存のポケモンと新しいポケモンを統合
-        var uniquePokemonsDict = Dictionary(uniqueKeysWithValues: pokemons.map { ($0.id, $0) }) // idをキーにしてユニークな辞書を作成
-
-        // 新しいポケモンを追加
-        for pokemon in newPokemons {
-            uniquePokemonsDict[pokemon.id] = pokemon
-        }
-
-        // 辞書から配列に変換し、ソート
-        pokemons = uniquePokemonsDict.values.sorted(by: { $0.number < $1.number })
+        pokemons = PokemonListViewLogic.makeUniqueAndSorted(current: pokemons, addition: data.pokemons)
     }
 }
