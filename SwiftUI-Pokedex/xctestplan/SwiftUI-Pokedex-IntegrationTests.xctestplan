@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "6D94FA2A-5DA0-4F6F-88F5-3AF33FB217EB",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:..\/Packages\/AppPackage",
+        "identifier" : "ScreenTests",
+        "name" : "ScreenTests"
+      }
+    }
+  ],
+  "version" : 1
+}
