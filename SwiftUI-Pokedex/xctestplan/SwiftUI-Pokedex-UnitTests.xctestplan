@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "DB04013D-CFC3-4B24-851B-C13F44667B53",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:..\/Packages\/AppPackage",
+        "identifier" : "ScreenTests",
+        "name" : "ScreenTests"
+      }
+    }
+  ],
+  "version" : 1
+}
