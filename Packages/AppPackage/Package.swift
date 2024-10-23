@@ -336,6 +336,7 @@ enum Targets: String, CaseIterable, PackageAtom {
                 Targets.entity.asDependency,
                 Targets.pokeAPIClientWrapper.asDependency,
                 Targets.testUtility.asDependency,
+                Targets.swiftDataWrapper.asDependency,
             ]
         }
     }

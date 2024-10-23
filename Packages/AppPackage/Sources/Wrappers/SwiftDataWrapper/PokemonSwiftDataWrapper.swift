@@ -13,7 +13,7 @@ import SwiftUI
 @SwiftDataActor
 public final class PokemonSwiftDataWrapper: Sendable {
 
-    private let container: ModelContainer
+    let container: ModelContainer
 
     public init(useInMemoryStore: Bool = false) {
         do {
