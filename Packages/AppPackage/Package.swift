@@ -51,6 +51,8 @@ enum Products: String, CaseIterable, PackageAtom {
     case designSystem
     case sharedExtension
     case screenExtension
+    case screenTests
+    case testUtility
 
     var targets: [String] {
         Targets.targets(for: self)
@@ -144,6 +146,8 @@ enum Targets: String, CaseIterable, PackageAtom {
     case designSystem
     case sharedExtension
     case screenExtension
+    case screenTests
+    case testUtility
 
     var targetType: TargetType {
         switch self {
@@ -166,8 +170,11 @@ enum Targets: String, CaseIterable, PackageAtom {
              .designSystem,
              .sharedExtension,
              .screenExtension,
-             .swiftDataWrapper:
+             .swiftDataWrapper,
+             .testUtility:
             .production
+        case .screenTests:
+            .test
         }
     }
 
@@ -189,7 +196,9 @@ enum Targets: String, CaseIterable, PackageAtom {
         case .dependencyContainer,
              .entity,
              .logger,
-             .designSystem:
+             .designSystem,
+             .screenTests,
+             .testUtility:
             "\(capitalizedName)"
         case .routerCore,
              .router:
@@ -217,7 +226,8 @@ enum Targets: String, CaseIterable, PackageAtom {
 
     var dependencies: [Target.Dependency] {
         switch self {
-        case .sharedExtension:
+        case .sharedExtension,
+             .testUtility:
             []
         case .entity:
             [
@@ -310,6 +320,12 @@ enum Targets: String, CaseIterable, PackageAtom {
                 Dependencies.swiftDependencies.asDependency(productName: .specified(name: "Dependencies")),
                 Targets.sharedExtension.asDependency,
                 Targets.entity.asDependency,
+            ]
+        case .screenTests:
+            [
+                Dependencies.sfSafeSymbols.asDependency(productName: .usePackageName),
+                Targets.testUtility.asDependency,
+                Targets.pokemonDetailScreen.asDependency,
             ]
         }
     }
