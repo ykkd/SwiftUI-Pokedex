@@ -322,6 +322,7 @@ enum Targets: String, CaseIterable, PackageAtom {
             ]
         case .screenTests:
             [
+                Targets.sharedExtension.asDependency,
                 Dependencies.sfSafeSymbols.asDependency(productName: .usePackageName),
                 Targets.testUtility.asDependency,
                 Targets.pokemonDetailScreen.asDependency,
