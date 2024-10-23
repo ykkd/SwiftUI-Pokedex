@@ -15,7 +15,17 @@ import TestUtility
 private import SwiftData
 
 // MARK: - PokemonSwiftDataWrapperTests
+@Suite(.serialized)
 actor PokemonSwiftDataWrapperTests {
+
+    init() async throws {
+        let wrapper = await PokemonSwiftDataWrapper()
+        try await wrapper.reset()
+    }
+}
+
+// MARK: PokemonSwiftDataWrapperTests.WritePokemonTests
+extension PokemonSwiftDataWrapperTests {
 
     actor WritePokemonTests {
         typealias TestCase = (
@@ -55,14 +65,11 @@ actor PokemonSwiftDataWrapperTests {
             ),
         ]
 
-        init() async {
-            await resetAllSavedData()
-        }
-
         @Test(arguments: Self.testCases)
         func test(testCase: TestCase) async {
             do {
                 let wrapper = await PokemonSwiftDataWrapper()
+
                 try await wrapper.writePokemon(testCase.data)
 
                 let output = try await wrapper.readAllFavoritePokemon()
@@ -84,6 +91,10 @@ actor PokemonSwiftDataWrapperTests {
             }
         }
     }
+}
+
+// MARK: PokemonSwiftDataWrapperTests.ReadAllFavoritePokemonTests
+extension PokemonSwiftDataWrapperTests {
 
     actor ReadAllFavoritePokemonTests {
         typealias TestCase = (
@@ -149,10 +160,6 @@ actor PokemonSwiftDataWrapperTests {
             ),
         ]
 
-        init() async {
-            await resetAllSavedData()
-        }
-
         @Test(arguments: Self.testCases)
         func test(testCase: TestCase) async {
             do {
@@ -178,6 +185,10 @@ actor PokemonSwiftDataWrapperTests {
             }
         }
     }
+}
+
+// MARK: PokemonSwiftDataWrapperTests.ReadFavoritePokemonTests
+extension PokemonSwiftDataWrapperTests {
 
     actor ReadFavoritePokemonTests {
         typealias TestCase = (
@@ -244,10 +255,6 @@ actor PokemonSwiftDataWrapperTests {
             ),
         ]
 
-        init() async {
-            await resetAllSavedData()
-        }
-
         @Test(arguments: Self.testCases)
         func test(testCase: TestCase) async {
             do {
@@ -272,32 +279,6 @@ actor PokemonSwiftDataWrapperTests {
             } catch {
                 Issue.record("unexpected error: \(error)")
             }
-        }
-    }
-}
-
-extension PokemonSwiftDataWrapperTests {
-
-    private static func resetAllSavedData() async {
-        do {
-            let wrapper = await PokemonSwiftDataWrapper()
-            let allPokemons = try await wrapper.readAllFavoritePokemon()
-            let context = await ModelContext(wrapper.container)
-
-            for pokemon in allPokemons {
-                let data = await PokemonModel(
-                    number: pokemon.number,
-                    name: pokemon.name,
-                    imageUrl: pokemon.imageUrl,
-                    subImageUrl: pokemon.subImageUrl,
-                    isFavorite: pokemon.isFavorite
-                )
-
-                context.delete(data)
-            }
-            try context.save()
-        } catch {
-            fatalError()
         }
     }
 }

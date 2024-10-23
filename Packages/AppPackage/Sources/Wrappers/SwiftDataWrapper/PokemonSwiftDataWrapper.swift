@@ -92,3 +92,13 @@ extension PokemonSwiftDataWrapper {
         )
     }
 }
+
+#if DEBUG
+extension PokemonSwiftDataWrapper {
+
+    func reset() throws {
+        let context = ModelContext(container)
+        try context.delete(model: PokemonModel.self)
+    }
+}
+#endif
