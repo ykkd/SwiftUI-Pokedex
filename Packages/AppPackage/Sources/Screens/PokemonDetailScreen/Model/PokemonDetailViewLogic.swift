@@ -74,7 +74,7 @@ enum PokemonDetailViewLogic {
             description = "\(ability ?? "None")"
         case let .hiddenAblity(ability):
             symbol = .circleInsetFilled
-            title = "Hidden Ablity"
+            title = "Hidden Ability"
             description = "\(ability ?? "None")"
         }
 
