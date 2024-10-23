@@ -41,6 +41,7 @@ public struct FavoritePokemonListView: View {
             withNavigation: input.withNavigation
         ) {
             content()
+                .id(state.contentId)
                 .when(state.shouldShowEmptyView) { _ in
                     emptyStateView()
                 }

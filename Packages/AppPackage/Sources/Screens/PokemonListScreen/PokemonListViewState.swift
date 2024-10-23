@@ -25,6 +25,8 @@ final class PokemonListViewState {
 
     private let limitPerPage: Int = 50
 
+    private(set) var contentId: UUID = .init()
+
     private(set) var totalCount: Int = .zero
 
     private(set) var pokemons: [Pokemon] = [] {
@@ -67,6 +69,7 @@ final class PokemonListViewState {
 
     func refresh() async throws(ApplicationError) {
         try await getInitialData()
+        contentId = .init()
     }
 
     func getNextPageIfNeeded(last pokemon: Pokemon) async throws(ApplicationError) {

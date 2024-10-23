@@ -25,6 +25,8 @@ public struct PokemonListView: View {
 
     private let trigger: TabDoubleTapTrigger?
 
+    @State var id: UUID = .init()
+
     public init(
         router: Router,
         input: CommonScreenInput,
@@ -41,6 +43,7 @@ public struct PokemonListView: View {
             withNavigation: input.withNavigation
         ) {
             content()
+                .id(state.contentId)
                 .when(state.shouldShowEmptyView) { _ in
                     emptyStateView()
                 }
