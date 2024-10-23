@@ -146,6 +146,7 @@ enum Targets: String, CaseIterable, PackageAtom {
     case sharedExtension
     case screenExtension
     case screenTests
+    case wrapperTests
     case testUtility
 
     var targetType: TargetType {
@@ -172,7 +173,8 @@ enum Targets: String, CaseIterable, PackageAtom {
              .swiftDataWrapper,
              .testUtility:
             .production
-        case .screenTests:
+        case .screenTests,
+             .wrapperTests:
             .test
         }
     }
@@ -197,6 +199,7 @@ enum Targets: String, CaseIterable, PackageAtom {
              .logger,
              .designSystem,
              .screenTests,
+             .wrapperTests,
              .testUtility:
             "\(capitalizedName)"
         case .routerCore,
@@ -327,6 +330,12 @@ enum Targets: String, CaseIterable, PackageAtom {
                 Targets.testUtility.asDependency,
                 Targets.pokemonListScreen.asDependency,
                 Targets.pokemonDetailScreen.asDependency,
+            ]
+        case .wrapperTests:
+            [
+                Targets.entity.asDependency,
+                Targets.pokeAPIClientWrapper.asDependency,
+                Targets.testUtility.asDependency,
             ]
         }
     }
