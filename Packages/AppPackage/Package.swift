@@ -51,7 +51,6 @@ enum Products: String, CaseIterable, PackageAtom {
     case designSystem
     case sharedExtension
     case screenExtension
-    case screenTests
     case testUtility
 
     var targets: [String] {

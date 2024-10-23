@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - FavorablePokemon
 public struct FavorablePokemon: Identifiable, Sendable {
 
     public var id: Int {
@@ -47,3 +48,18 @@ public struct FavorablePokemon: Identifiable, Sendable {
         await isFavoriteContainer.set(value)
     }
 }
+
+#if DEBUG
+extension FavorablePokemon {
+
+    public static func mock(data: PokemonDetail, isFavorite: Bool) -> Self {
+        .init(
+            name: data.name,
+            number: data.number,
+            imageUrl: data.imageUrl,
+            subImageUrl: data.subImageUrl,
+            isFavorite: isFavorite
+        )
+    }
+}
+#endif
