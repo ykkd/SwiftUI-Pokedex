@@ -100,3 +100,18 @@ extension PokemonDetail.Information {
         }
     }
 }
+
+#if DEBUG
+extension PokemonDetail {
+
+    public static var mock: Self {
+        .init(
+            number: 1,
+            name: "mock",
+            typeHex: "mock",
+            information: .init(infoTypes: []),
+            status: []
+        )
+    }
+}
+#endif
