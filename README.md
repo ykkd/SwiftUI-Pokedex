@@ -3,19 +3,21 @@
 | Item                        | Content                                                                                             |
 | --------------------------- | --------------------------------------------------------------------------------------------------- |
 | Target OS Version           | iOS 17.0 and above                                                                                  |
-| Programming Language (Version) | Swift (6.0)                                                                                         |
-| System Architecture          | Simplified based on Clean Architecture principles                                                    |
-| GUI Architecture             | MVState Pattern                                                                                      |
-| Module Configuration         | Multi-module structure using Swift Package (single package)                                         |
-| CI                           | WIP (Work in Progress)                                                                              |
-| UI Framework                 | SwiftUI                                                                                             |
-| Data Binding                 | Observation framework                                                                               |
-| Library Management Tool      | Swift Package Manager                                                                               |
+| Programming Language (Version) | Swift (6.0)                                                                                      |
+| System Architecture          | Simplified based on Clean Architecture principles                                                  |
+| GUI Architecture             | MVState Pattern                                                                                    |
+| Module Configuration         | Multi-module structure using Swift Package (single package)                                        |
+| CI                           | WIP (Work in Progress)                                                                             |
+| UI Framework                 | SwiftUI                                                                                            |
+| Navigation                   | NavigationStack                                                                                    |
+| Data Binding                 | Observation framework                                                                              |
+| Library Management Tool      | Swift Package Manager                                                                              |
 | Main Libraries Used in App   | swift-dependencies, swift-openapi-generator, Refreshable, SFSafeSymbols                            |
 | Static Analysis Libraries    | SwiftLint, SwiftFormat, danger-swift, husky, lint-staged, commitlint                               |
 | In-App Database              | SwiftData                                                                                          |
-| DI Method                    | swift-dependencies                                                                                  |
-| Design System                | Established early in development (including fonts, colors, and basic components)                    |
+| DI Method                    | swift-dependencies                                                                                 |
+| Design System                | Established early in development (including fonts, colors, and basic components)                   |
+| Unit and Integration Testing | swift-testing                                                                                      |
 | Additional Notes             | None                                                                                               |
 | Documentation URL            | None                                                                                               |
 
