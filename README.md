@@ -1,23 +1,23 @@
 # Information
 
-| 項目 | 内容 |
-| --- | --- |
-| 対象OSバージョン | iOS17.0~ |
-| 使用言語(バージョン) | Swift(6.0) |
-| Systemアーキテクチャ | CleanArchitectureの考え方をベースに大きく簡素化 |
-| GUIアーキテクチャ | MVState Pattern |
-| モジュール構成 | SwiftPackageを用いたマルチモジュール構成(単一パッケージ) |
-| CI | WIP |
-| UIフレームワーク | SwiftUI |
-| データバインディング | Observation framework |
-| ライブラリ管理ツール | SwiftPackageManager |
-| 主なアプリ内利用ライブラリ | swift-dependencies, swift-openapi-generator, Refreshable, SFSafeSymbols |
-| 静的解析用ライブラリ | SwiftLint, SwiftFormat, danger-swift, husky, lint-staged, commitlint |
-| アプリ内データベース | SwiftData |
-| DI手法 | swift-dependencies |
-| デザインシステム | 開発初期に整備(font, color, 基本的なコンポーネントを用意) |
-| その他備考 | None |
-| 資料URL | None |
+| Item                        | Content                                                                                             |
+| --------------------------- | --------------------------------------------------------------------------------------------------- |
+| Target OS Version           | iOS 17.0 and above                                                                                  |
+| Programming Language (Version) | Swift (6.0)                                                                                         |
+| System Architecture          | Simplified based on Clean Architecture principles                                                    |
+| GUI Architecture             | MVState Pattern                                                                                      |
+| Module Configuration         | Multi-module structure using Swift Package (single package)                                         |
+| CI                           | WIP (Work in Progress)                                                                              |
+| UI Framework                 | SwiftUI                                                                                             |
+| Data Binding                 | Observation framework                                                                               |
+| Library Management Tool      | Swift Package Manager                                                                               |
+| Main Libraries Used in App   | swift-dependencies, swift-openapi-generator, Refreshable, SFSafeSymbols                            |
+| Static Analysis Libraries    | SwiftLint, SwiftFormat, danger-swift, husky, lint-staged, commitlint                               |
+| In-App Database              | SwiftData                                                                                          |
+| DI Method                    | swift-dependencies                                                                                  |
+| Design System                | Established early in development (including fonts, colors, and basic components)                    |
+| Additional Notes             | None                                                                                               |
+| Documentation URL            | None                                                                                               |
 
 # Screenshot
 
